@@ -1,0 +1,140 @@
+services:
+  backend:
+    container_name: backend
+    build: ./backend
+    command: sh /code/entrypoint.sh
+    volumes:
+      - ./backend:/code
+      - ./backend/static_data:/vol/web/static_data
+      - ./backend/media_data:/vol/web/media_data
+    env_file:
+      - env.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - main
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - env.env
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - main
+    # for dev stage only
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    env_file:
+      - env.env
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./backend/static_data:/vol/web/static_data
+      - ./backend/media_data:/vol/web/media_data
+    depends_on:
+      - backend
+    networks:
+      - main
+
+  db:
+    container_name: db
+    image: postgres:13-alpine
+    env_file:
+      - env.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - main
+
+  redis:
+    image: redis:7.0.11-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    env_file:
+      - env.env
+    networks:
+      - main
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - env.env
+    networks:
+      - main
+
+#  celery:
+#    container_name: celery
+#    build: ./backend
+#    command: celery -A config.celery_base worker -Q send_otp,send_reset_link,main -l info
+#    volumes:
+#      - ./backend:/code
+#    env_file:
+#      - env.env
+#    depends_on:
+#      - backend
+#      - db
+#      - redis
+#      - rabbitmq
+#    networks:
+#      - main
+#
+#  celerybeat:
+#    container_name: celerybeat
+#    build: ./backend
+#    command: celery -A config.celery_base beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+#    volumes:
+#      - ./backend:/code
+#    env_file:
+#      - env.env
+#    depends_on:
+#      - backend
+#      - db
+#      - redis
+#      - rabbitmq
+#    networks:
+#      - main
+#
+#  flower:
+#    image: mher/flower
+#    container_name: flower
+#    env_file:
+#      - env.env
+#    ports:
+#      - "5555:5555"
+#    restart: always
+#    environment:
+#      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/
+#    depends_on:
+#      - celery
+#    networks:
+#      - main
+
+
+volumes:
+  static_data:
+  media_data:
+  postgres_data:
+
+networks:
+  main:
+    driver: bridge
