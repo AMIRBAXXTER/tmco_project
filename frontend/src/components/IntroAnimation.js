@@ -154,12 +154,12 @@ export default function IntroAnimation() {
         className="absolute w-screen h-screen lg:h-[115vh] lg:object-fill object-cover  z-40"
       />
       <p className="absolute bottom-13 left-1/2 -translate-x-1/2 w-full text-center text-xl md:text-3xl lg:text-4xl font-bold text-white z-50">
-        {typedText.length > 2
+        {typedText.length > 6
           ? <>
             {typedText.slice(0, typedText.length - 6)}
             <span className="text-[#3C9BD8]">{typedText.slice(-6)}</span>
           </>
-          : typedText
+          : <span className="text-[#3C9BD8]">{typedText}</span>
         }
       </p>
 
