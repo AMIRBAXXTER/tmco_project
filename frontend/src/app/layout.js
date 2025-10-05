@@ -2,6 +2,7 @@ import "./globals.css";
 import "./fonts.css"
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AuthProvider from "@/providers/AuthProvider";
 
 export const metadata = {
   title: "تمکو",
@@ -12,9 +13,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fa" dir="rtl">
       <body>
-        <Header />
-        {children}
-        <Footer/>
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
