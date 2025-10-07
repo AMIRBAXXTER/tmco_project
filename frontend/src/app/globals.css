@@ -3,3 +3,37 @@
 .clip-login-shape {
   clip-path: url(#loginShape);
 }
+
+.worm-glow-light {
+  width: 22px;
+  height: 2px;
+  background: #93d7f9;
+  border-radius: 2px;
+  position: absolute;
+  box-shadow:
+    0 0 25px rgba(147, 215, 249, 1),
+    0 0 30px rgba(147, 215, 249, 0.95),
+    0 0 35px rgba(147, 215, 249, 0.9),
+    0 0 40px rgba(147, 215, 249, 0.85),
+    0 0 45px rgba(147, 215, 249, 0.8),
+    0 0 50px rgba(147, 215, 249, 0.75);
+  filter:
+    drop-shadow(0 0 15px rgba(147, 215, 249, 0.9)) drop-shadow(0 0 20px rgba(147, 215, 249, 0.85));
+}
+
+.worm-glow-dark {
+  width: 22px;
+  height: 2px;
+  background: #1E3A8A;
+  border-radius: 2px;
+  position: absolute;
+  box-shadow:
+    0 0 25px rgb(0, 213, 255),
+    0 0 30px rgba(0, 213, 255, 0.95),
+    0 0 35px rgba(0, 213, 255, 0.9),
+    0 0 40px rgba(0, 213, 255, 0.85),
+    0 0 45px rgba(0, 213, 255, 0.8),
+    0 0 50px rgba(0, 213, 255, 0.75);
+  filter:
+    drop-shadow(0 0 15px rgba(22, 74, 107, 0.9)) drop-shadow(0 0 20px rgba(60, 155, 216, 0.85));
+}

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'ContactusApp',
     'FooterApp',
     'HomeApp',
-    'UserApp'
+    'UserApp',
     #external apps
     'rest_framework',
 ]
