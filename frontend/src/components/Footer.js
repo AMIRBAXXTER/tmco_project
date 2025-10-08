@@ -133,7 +133,7 @@ export default function Footer() {
 
                 {/* ردیف میانی */}
                 <div className="flex w-full items-end justify-between">
-                    <svg className="relative w-[90%] -translate-y-[280px] md:w-1/3 md:h-auto md:-translate-y-10" width="510" height="396" viewBox="0 0 510 396" fill="none">
+                    <svg className="relative w-[90%] -translate-y-[280px] left-32 md:left-0 md:w-1/3 md:h-auto md:-translate-y-10" width="510" height="396" viewBox="0 0 510 396" fill="none">
                         <path id="path3" d="M512 1H41.1306C19.0392 1 1.13055 18.9086 1.13055 41V355C1.13055 377.091 19.0392 395 41.1306 395H512"
                             stroke="#2A446F" strokeOpacity="0.23" strokeWidth="2" />
                     </svg>

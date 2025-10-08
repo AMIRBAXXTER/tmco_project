@@ -11,11 +11,22 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { isLogin, setIsLogin } = useContext(AuthContext);
   const [showLoginForm, setShowLoginForm] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+
 
   const handleLoginSuccess = () => {
     setIsLogin(true);
     setShowLoginForm(false);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,7 +54,10 @@ export default function Header() {
       </svg>
 
       {/* هدر دسکتاپ */}
-      <header className="absolute top-10 left-1/2 -translate-x-1/2 w-4/5 lg:w-3/5 z-50 hidden md:flex justify-between items-center bg-[#254662] shadow-2xl rounded-md py-2 px-6">
+      <header
+        className={`fixed ${scrolled ? "top-0 bg-[#254662]/40 backdrop-blur-sm" : "top-10 bg-[#254662]"
+          } left-1/2 -translate-x-1/2 w-4/5 lg:w-3/5 z-50 hidden md:flex justify-between items-center shadow-2xl rounded-md py-2 px-6 transition-all duration-300`}
+      >
         {/* ستون راست: لوگو */}
         <div className="flex items-center justify-start">
           <Image src="/header_logo.svg" alt="لوگوی شرکت" width={40} height={40} />
@@ -84,13 +98,16 @@ export default function Header() {
       </header>
 
       {/* هدر موبایل */}
-      <header className="absolute top-4 left-0 right-0 z-50 flex justify-between items-center px-4 md:hidden">
-        <button
-          onClick={() => setMenuOpen(true)}
-          className="text-[#1D324A] text-3xl"
-        >
-          <HiMenu />
-        </button>
+      {/* دکمه منوی همبرگری - ثابت */}
+      <button
+        onClick={() => setMenuOpen(true)}
+        className="fixed top-4 right-4 z-50 text-[#1D324A] text-3xl md:hidden"
+      >
+        <HiMenu />
+      </button>
+
+      {/* لوگو - معمولی و اسکرول‌شونده */}
+      <header className="absolute top-4 left-4 z-40 flex justify-center md:hidden">
         <Image src="/header_logo.svg" alt="لوگوی شرکت" width={40} height={40} />
       </header>
 
@@ -104,9 +121,8 @@ export default function Header() {
 
       {/* منوی موبایل */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-[#254662] text-white z-50 transform transition-transform duration-300 ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-64 bg-[#254662] text-white z-50 transform transition-transform duration-300 ${menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="flex justify-between items-center p-4 border-b border-white/20">
           <button onClick={() => setMenuOpen(false)} className="text-3xl">
