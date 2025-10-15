@@ -317,7 +317,7 @@ export default function DriverApp() {
             {/* خط اتصال key */}
             <svg
                 ref={keyLineRef}
-                className='absolute top-40 left-12 hidden md:block z-10'
+                className='absolute md:top-40 md:left-12 hidden md:block z-10'
                 width="127"
                 height="129"
                 viewBox="0 0 127 129"
@@ -350,7 +350,7 @@ export default function DriverApp() {
             {/* خط اتصال truck */}
             <svg
                 ref={truckLineRef}
-                className='absolute top-5 right-27 z-10'
+                className='absolute md:top-5 md:right-27 z-10'
                 width="132"
                 height="129"
                 viewBox="0 130 129"
@@ -383,7 +383,7 @@ export default function DriverApp() {
             {/* خط اتصال profile */}
             <svg
                 ref={profileLineRef}
-                className='absolute bottom-25 left-12 z-10'
+                className='absolute md:bottom-25 md:left-12 z-10'
                 width="129"
                 height="129"
                 viewBox="0 0 127 129"
@@ -416,7 +416,7 @@ export default function DriverApp() {
             {/* خط اتصال route */}
             <svg
                 ref={routeLineRef}
-                className='absolute bottom-45 right-27 z-10'
+                className='absolute md:bottom-45 md:right-27 z-10'
                 width="129"
                 height="135"
                 viewBox="0 0 129 129"

@@ -3,7 +3,7 @@ import MotionEffect from "@/animations/MotionEffect";
 
 export default function DriverDetail() {
     return (
-        <div className="w-full lg:w-1/2">
+        <div className="w-full lg:w-1/2 h-[470px] md:h-full">
             <MotionEffect effect="slideRight">
                 <span className="text-[#3C9BD8] font-bold text-2xl">اپلیکیشن راننده</span>
             </MotionEffect>

@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { LuHeadphones } from "react-icons/lu";
@@ -7,9 +7,8 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
 
 export default function Footer() {
-    const year = new Date().getFullYear();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         gsap.registerPlugin(MotionPathPlugin);
 
         const worms = [
@@ -89,7 +88,6 @@ export default function Footer() {
 
 
     }, []);
-
     return (
         <footer className="relative w-full overflow-hidden bg-white">
             
