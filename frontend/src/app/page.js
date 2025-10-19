@@ -35,7 +35,7 @@ export default function Home() {
 
       <div className="flex flex-col lg:flex-row mt-20 mr-10 w-auto h-auto">
         {/* بخش متنی سمت چپ */}
-        <div className="h-[500px] md:h-[470px] w-full md:w-1/2">
+        <div className="h-[500px] md:h-[470px] w-full lg:w-1/2">
           <MotionEffect effect="slideLeft">
             <span className="text-[#3C9BD8] font-bold text-2xl">پنل مشتریان</span>
           </MotionEffect>
@@ -70,7 +70,7 @@ export default function Home() {
         </div>
 
         {/* بخش تصویر سمت راست */}
-        <div className="relative h-[470px] w-full md:w-1/2">
+        <div className="relative h-[470px] w-full lg:w-1/2">
           <img
             src="/CustomerPanel/dashboard.png"
             alt="driver"
@@ -78,10 +78,13 @@ export default function Home() {
               absolute 
               top-0 left-0 
               h-full 
-              w-full md:w-[85%]
-              mt-10
-              md:mt-0
-              md:object-cover
+              w-full
+              object-cover object-[top_right]
+              sm:w-full
+              md:w-[100%]
+              lg:w-[85%]
+              mt-20
+              mb-5 lg:mt-0
               deep-blur-shadow
               rounded-r-2xl
               z-10
@@ -89,19 +92,19 @@ export default function Home() {
           />
           {/* truck icon */}
           <div
-            className="absolute hidden md:block top-0 right-0 border border-gray-200 rounded-xl"
+            className="absolute hidden lg:block top-0 right-0 border border-gray-200 rounded-xl"
           >
             <Image src="/DriverApp/1d.svg" alt="Truck Icon" width={56} height={56} />
           </div>
           {/* profile icon */}
           <div
-            className="absolute hidden md:block bottom-0 right-0 border border-gray-200 rounded-xl"
+            className="absolute hidden lg:block bottom-0 right-0 border border-gray-200 rounded-xl"
           >
             <Image src="/DriverApp/4a.svg" alt="Profile Icon" width={56} height={56} />
           </div>
 
           {/* line */}
-          <svg className="absolute bottom-14 right-7 z-0" width="119" height="129" viewBox="0 0 119 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="absolute hidden lg:block bottom-14 right-7 z-0" width="119" height="129" viewBox="0 0 119 129" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="path-1-inside-1_310_2010" fill="white">
               <path d="M119 129L0 129L-1.12775e-05 1.04033e-05L95 2.09815e-06C108.255 9.39372e-07 119 10.7452 119 24L119 129Z" />
             </mask>
@@ -118,15 +121,15 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row mx-10 w-full h-[700px]">
-        <div className="w-2/5">
+      <div className="px-10 flex flex-col md:flex-row mt-20 mb-40 w-full h-[700px]">
+        <div className="md:w-2/5 w-full">
           <h2 className="font-extrabold  mt-30 text-4xl text-[#121212] my-5">
             هزینه حمل بار من چقدر می شود؟
           </h2>
           <p>مبدا، مقصد و مشخصات کالا را ثبت کنید و از قیمت واقعی حمل بارتان آگاه شوید. در سامانه آنلاین محاسبه کرایه باربری در هر لحظه می‌توانید سریع و آسان هزینه حمل و نقل محموله‌هایتان را برآورد کنید.</p>
         </div>
-        <div className="w-3/5 flex items-center justify-center">
-          <div className="w-1/3 h-3/4 shadow-2xl border border-gray-200 rounded-3xl">
+        <div className="md:w-3/5 w-full h-[500px] flex items-center justify-center">
+          <div className="w-1/2 md:w-1/3 mt-50 h-full shadow-2xl border border-gray-200 rounded-3xl">
             <h5 className="font-bold text-sm text-[#425466] text-center w-full mt-5">استعلام کرایه حمل</h5>
           </div>
         </div>
@@ -134,11 +137,10 @@ export default function Home() {
 
       <TrapezoidLayout></TrapezoidLayout>
 
-
-
-
-
-
+      <div className="md:pt-20 mx-10 w-auto h-auto">
+          <h2 className="font-extrabold text-4xl mt-10">وبلاگ</h2>
+          
+      </div>
     </>
   );
 }

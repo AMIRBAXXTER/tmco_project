@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React, { useLayoutEffect, useRef } from 'react'
 import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -20,194 +20,187 @@ export default function DriverApp() {
     const profileLineRef = useRef(null)
     const routeLineRef = useRef(null)
 
-    useEffect(() => {
-        const structureEl = structureRef.current;
-        const svgEl = structureEl.querySelector('svg');
+    useLayoutEffect(() => {
+        // ایجاد context برای کنترل Mount / Unmount در App Router
+        const ctx = gsap.context(() => {
+            const structureEl = structureRef.current
+            const svgEl = structureEl?.querySelector('svg')
+            if (!structureEl || !svgEl) return
 
-        // حذف تصویر اولیه
-        const initialImg = structureEl.querySelector('img');
-        if (initialImg) initialImg.remove();
+            // حذف تصویر اولیه
+            const initialImg = structureEl.querySelector('img')
+            if (initialImg) initialImg.remove()
 
-        // آماده‌سازی مسیرهای رسم موبایل
-        const paths = svgEl.querySelectorAll('rect');
-        paths.forEach(path => {
-            const length = path.getTotalLength();
-            gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-        });
+            // آماده‌سازی مسیرهای رسم موبایل
+            const paths = svgEl.querySelectorAll('rect')
+            paths.forEach(path => {
+                const length = path.getTotalLength()
+                gsap.set(path, { strokeDasharray: length, strokeDashoffset: length })
+            })
 
-        // آماده‌سازی خطوط اتصال (ابتدا مخفی هستند)
-        const connectionLines = [keyLineRef, truckLineRef, profileLineRef, routeLineRef];
-        connectionLines.forEach(lineRef => {
-            if (lineRef.current) {
-                const path = lineRef.current.querySelector('path');
-                const length = path.getTotalLength();
+            // آماده‌سازی خطوط اتصال
+            const connectionLines = [keyLineRef, truckLineRef, profileLineRef, routeLineRef]
+            connectionLines.forEach(lineRef => {
+                const path = lineRef.current?.querySelector('path')
+                if (!path) return
+                const length = path.getTotalLength()
                 gsap.set(path, {
                     strokeDasharray: length,
                     strokeDashoffset: length,
                     opacity: 0,
                     duration: 0.8,
-                    ease: 'linear',  // 👈 سرعت ثابت
-                });
-            }
-        });
+                    ease: 'linear',
+                })
+            })
 
-        const icons = [
-            {
-                ref: keyRef,
-                lineRef: keyLineRef,
-                srcActive: '/DriverApp/2a.svg',
-                srcInactive: '/DriverApp/2d.svg',
-                structureSrc: '/DriverApp/2.png'
-            },
-            {
-                ref: profileRef,
-                lineRef: profileLineRef,
-                srcActive: '/DriverApp/4a.svg',
-                srcInactive: '/DriverApp/4d.svg',
-                structureSrc: '/DriverApp/4.png'
-            },
-            {
-                ref: routeRef,
-                lineRef: routeLineRef,
-                srcActive: '/DriverApp/3a.svg',
-                srcInactive: '/DriverApp/3d.svg',
-                structureSrc: '/DriverApp/3.png'
-            },
-            {
-                ref: truckRef,
-                lineRef: truckLineRef,
-                srcActive: '/DriverApp/1a.svg',
-                srcInactive: '/DriverApp/1d.svg',
-                structureSrc: '/DriverApp/1.png'
-            },
-        ];
+            const icons = [
+                {
+                    ref: keyRef,
+                    lineRef: keyLineRef,
+                    srcActive: '/DriverApp/2a.svg',
+                    srcInactive: '/DriverApp/2d.svg',
+                    structureSrc: '/DriverApp/2.png'
+                },
+                {
+                    ref: profileRef,
+                    lineRef: profileLineRef,
+                    srcActive: '/DriverApp/4a.svg',
+                    srcInactive: '/DriverApp/4d.svg',
+                    structureSrc: '/DriverApp/4.png'
+                },
+                {
+                    ref: routeRef,
+                    lineRef: routeLineRef,
+                    srcActive: '/DriverApp/3a.svg',
+                    srcInactive: '/DriverApp/3d.svg',
+                    structureSrc: '/DriverApp/3.png'
+                },
+                {
+                    ref: truckRef,
+                    lineRef: truckLineRef,
+                    srcActive: '/DriverApp/1a.svg',
+                    srcInactive: '/DriverApp/1d.svg',
+                    structureSrc: '/DriverApp/1.png'
+                },
+            ]
 
-        const tl = gsap.timeline({
-            defaults: { ease: 'power2.out' },
-            scrollTrigger: {
-                trigger: structureRef.current,
-                start: 'top+=2000 70%',
-                end: 'bottom+=2000 50%',
-                toggleActions: 'play none none none',
-            },
-        });
+            const tl = gsap.timeline({
+                defaults: { ease: 'power2.out' },
+                scrollTrigger: {
+                    trigger: structureRef.current,
+                    start: 'top+=2000 70%',
+                    end: 'bottom+=2000 50%',
+                    toggleActions: 'play none none none',
+                },
+            })
 
-        // مرحله ۱: رسم شدن تدریجی خطوط SVG موبایل
-        tl.to(paths, {
-            strokeDashoffset: 0,
-            duration: 2.8,
-            stagger: 0.25,
-            ease: 'power1.inOut',
-        });
+            // 🔹 مرحله ۱: رسم خطوط SVG موبایل
+            tl.to(paths, {
+                strokeDashoffset: 0,
+                duration: 2.8,
+                stagger: 0.25,
+                ease: 'power1.inOut',
+            })
 
-        // مرحله ۲: ظاهر شدن آیکون‌ها
-        tl.from(icons.map(i => i.ref.current), {
-            opacity: 0,
-            scale: 0.7,
-            stagger: 0.3,
-            duration: 0.8,
-        }, '-=1.0');
+            // 🔹 مرحله ۲: ظاهر شدن آیکون‌ها
+            tl.from(icons.map(i => i.ref.current), {
+                opacity: 0,
+                scale: 0.7,
+                stagger: 0.3,
+                duration: 0.8,
+            }, '-=1.0')
 
-        // مرحله ۳: فعال شدن به ترتیب
-        icons.forEach((icon, i) => {
-            const prevIcon = icons[i - 1];
-
-            // غیرفعال کردن آیکون قبلی
-            if (prevIcon) {
-                // برگشت خط قبلی (از موبایل به سمت آیکون)
-                tl.to(prevIcon.lineRef.current.querySelector('path'), {
-                    strokeDashoffset: prevIcon.lineRef.current.querySelector('path').getTotalLength(),
-                    duration: 0.6,
-                    ease: 'power2.in',
-                    onComplete: () => {
-                        gsap.set(prevIcon.lineRef.current.querySelector('path'), { opacity: 0 });
-                    }
-                }, '<');
+            // 🔹 مرحله ۳: فعال شدن به ترتیب
+            icons.forEach((icon, i) => {
+                const prevIcon = icons[i - 1]
 
                 // غیرفعال کردن آیکون قبلی
-                tl.to(prevIcon.ref.current.querySelector('img'), {
-                    opacity: 0,
-                    duration: 0.3,
-                    onComplete: () => {
-                        prevIcon.ref.current.querySelector('img').src = prevIcon.srcInactive;
-                    },
-                }, '<');
+                if (prevIcon?.ref.current && prevIcon?.lineRef.current) {
+                    const prevPath = prevIcon.lineRef.current.querySelector('path')
+                    if (prevPath) {
+                        tl.to(prevPath, {
+                            strokeDashoffset: prevPath.getTotalLength(),
+                            duration: 0.6,
+                            ease: 'power2.in',
+                            onComplete: () => {
+                                gsap.set(prevPath, { opacity: 0 })
+                            },
+                        }, '<')
+                    }
 
-                tl.to(prevIcon.ref.current.querySelector('img'), {
-                    opacity: 1,
-                    duration: 0.3
-                });
-            }
-
-            // فعال کردن آیکون فعلی
-            tl.to(icon.ref.current, {
-                scale: 1.2,
-                duration: 0.4,
-                onStart: () => {
-                    const imgEl = icon.ref.current.querySelector('img');
-                    gsap.to(imgEl, { opacity: 0, duration: 0.3 });
-
-                    const currentSrc = imgEl.src;
-                    const activeSrc = currentSrc.replace(/d(?=\.svg$)/, 'a');
-
-                    // پنهان کردن SVG موبایل
-                    const structureEl = structureRef.current;
-                    const svgEl = structureEl.querySelector('svg');
-                    gsap.to(svgEl, { autoAlpha: 0, duration: 0.3 });
-
-                    setTimeout(() => {
-                        // تغییر آیکون به نسخه فعال
-                        imgEl.src = activeSrc;
-
-                        // ساخت تصویر جدید داخل structureRef
-                        const newImg = document.createElement('img');
-                        newImg.src = icon.structureSrc;
-                        newImg.alt = 'structure-active';
-                        newImg.style.position = 'absolute';
-                        newImg.style.top = '0';
-                        newImg.style.left = '0';
-                        newImg.style.width = '100%';
-                        newImg.style.height = '100%';
-                        newImg.style.objectFit = 'cover';
-                        newImg.style.opacity = '0';
-                        structureEl.appendChild(newImg);
-
-                        gsap.to(newImg, { opacity: 1, duration: 0.5 });
-
-                        const oldImgs = structureEl.querySelectorAll('img');
-                        if (oldImgs.length > 1) oldImgs[0].remove();
-                    }, 300);
-
-                    gsap.to(imgEl, { opacity: 1, duration: 0.3, delay: 0.3 });
+                    const prevImg = prevIcon.ref.current.querySelector('img')
+                    if (prevImg) {
+                        tl.to(prevImg, {
+                            opacity: 0,
+                            duration: 0.3,
+                            onComplete: () => { prevImg.src = prevIcon.srcInactive },
+                        }, '<')
+                        tl.to(prevImg, { opacity: 1, duration: 0.3 })
+                    }
                 }
-            });
 
-            // رسم خط از آیکون به سمت موبایل
-            const linePath = icon.lineRef.current.querySelector('path');
+                // فعال کردن آیکون فعلی
+                if (icon.ref.current) {
+                    tl.to(icon.ref.current, {
+                        scale: 1.2,
+                        duration: 0.4,
+                        onStart: () => {
+                            const imgEl = icon.ref.current.querySelector('img')
+                            if (!imgEl) return
 
-            tl.to(linePath, {
-                opacity: 1,
-                duration: 1,
-            }, '<0.2');
+                            gsap.to(imgEl, { opacity: 0, duration: 0.3 })
+                            const structureEl = structureRef.current
+                            const svgEl = structureEl?.querySelector('svg')
+                            if (svgEl) gsap.to(svgEl, { autoAlpha: 0, duration: 0.3 })
 
-            tl.to(linePath, {
-                strokeDashoffset: 0,
-                duration: 1,
-                ease: 'linear',
-            }, '<');
+                            setTimeout(() => {
+                                imgEl.src = icon.srcActive
+                                const newImg = document.createElement('img')
+                                Object.assign(newImg, {
+                                    src: icon.structureSrc,
+                                    alt: 'structure-active',
+                                })
+                                Object.assign(newImg.style, {
+                                    position: 'absolute',
+                                    top: '0',
+                                    left: '0',
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    opacity: '0',
+                                })
+                                structureEl.appendChild(newImg)
 
-            tl.to(icon.ref.current, {
-                scale: 1.0,
-                duration: 1
-            });
+                                gsap.to(newImg, { opacity: 1, duration: 0.5 })
+                                const oldImgs = structureEl.querySelectorAll('img')
+                                if (oldImgs.length > 1) oldImgs[0].remove()
+                            }, 300)
 
-            // وقفه بین آیکون‌ها (به جز آخری)
-            if (i < icons.length - 1) {
-                tl.to({}, { duration: 0.5 });
-            }
-        });
+                            gsap.to(imgEl, { opacity: 1, duration: 0.3, delay: 0.3 })
+                        }
+                    })
+                }
 
-    }, []);
+                // رسم خط از آیکون به سمت موبایل
+                const linePath = icon.lineRef.current?.querySelector('path')
+                if (linePath) {
+                    tl.to(linePath, { opacity: 1, duration: 1 }, '<0.2')
+                    tl.to(linePath, { strokeDashoffset: 0, duration: 1, ease: 'linear' }, '<')
+                }
+
+                tl.to(icon.ref.current, { scale: 1.0, duration: 1 })
+
+                if (i < icons.length - 1) {
+                    tl.to({}, { duration: 0.5 })
+                }
+            })
+
+            // برای هماهنگی با رندر App Router
+            ScrollTrigger.refresh()
+        }, structureRef)
+
+        return () => ctx.revert() // cleanup هنگام خروج از صفحه
+    }, [])
 
     return (
         <div className="relative flex items-center justify-center w-full md:w-[600px] h-[700px] mx-auto overflow-hidden">

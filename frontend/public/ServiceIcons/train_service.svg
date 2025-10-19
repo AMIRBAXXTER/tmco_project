@@ -1,0 +1,23 @@
+<svg width="94" height="64" viewBox="0 0 94 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" width="64" height="64" rx="13" fill="#3C9BD8"/>
+<mask id="mask0_480_5597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="3" width="60" height="60">
+<path d="M42.25 58H17.75C13.5 58 10 54.525 10 50.25V15.75C10 11.5 13.475 8 17.75 8H42.25C46.5 8 50 11.475 50 15.75V50.25C50 54.525 46.525 58 42.25 58Z" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M46.25 35.5H13.75C11.675 35.5 10 33.825 10 31.75V26.75C10 24.675 11.675 23 13.75 23H46.25C48.325 23 50 24.675 50 26.75V31.75C50 33.825 48.325 35.5 46.25 35.5Z" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21.2363 47.25H21.2587" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M38.7363 47.25H38.7587" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M23.75 15.5H36.25" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</mask>
+<g mask="url(#mask0_480_5597)">
+<rect x="30" y="3" width="30" height="60" fill="white"/>
+</g>
+<mask id="mask1_480_5597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="3" width="60" height="60">
+<path d="M42.25 58H17.75C13.5 58 10 54.525 10 50.25V15.75C10 11.5 13.475 8 17.75 8H42.25C46.5 8 50 11.475 50 15.75V50.25C50 54.525 46.525 58 42.25 58Z" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M46.25 35.5H13.75C11.675 35.5 10 33.825 10 31.75V26.75C10 24.675 11.675 23 13.75 23H46.25C48.325 23 50 24.675 50 26.75V31.75C50 33.825 48.325 35.5 46.25 35.5Z" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21.2363 47.25H21.2587" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M38.7363 47.25H38.7587" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M23.75 15.5H36.25" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</mask>
+<g mask="url(#mask1_480_5597)">
+<rect y="3" width="30" height="60" fill="#3C9BD8"/>
+</g>
+</svg>

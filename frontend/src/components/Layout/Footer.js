@@ -117,7 +117,7 @@ export default function Footer() {
                         </defs>
                     </svg>
 
-                    <svg className="md:w-1/3 w-full h-auto -translate-x-5 -translate-y-52 md:translate-y-0" width="524" height="569" viewBox="0 0 524 569" fill="none">
+                    <svg className="md:w-1/3 w-[450px] h-auto mx-auto md:mx-0 -translate-y-52 md:translate-y-0" width="524" height="569" viewBox="0 0 524 569" fill="none">
                         <path id="path2" d="M523 0V349.935C523 369.347 509.062 385.957 489.945 389.328L272.46 427.672C253.342 431.043 239.405 447.653 239.405 467.065V527.772C239.405 558.327 206.531 577.6 179.868 562.676L0 462"
                             stroke="url(#paint0_linear_171_5039)" strokeOpacity="0.23" strokeWidth="2" />
                         <defs>
@@ -167,9 +167,9 @@ export default function Footer() {
                     <h2 className="w-auto h-auto md:translate-y-[-90px] mt-16 md:mt-0 text-center font-bold md:text-4xl text-3xl">اولین پلتفرم حمل و نقل ترکیبی</h2>
                     <h2 className="w-auto h-auto mt-10 md:mt-0 font-bold text-4xl">تمکو</h2>
                     <p className="mt-8 md:text-lg text-[#ADBDCC]">شرکت مدیریت تامین لجستیک نوین ایده پارس با نام اختصاری تمکو  به عنوان یکی از زیرمجموعه های هلدینگ فاخر در سال 1402 با تکیه بر تجارب قبلی بنیانگذاران آن در صنعت لجستیک کشور تأسیس گردید. حوزه اصلی فعالیت سازمان، حمل و نقل مرسوله میباشد. اين سازمان همواره سعی در ارتقاء قابلیت ها و ظرفیت های خود برای مشارکت در طیف وسیعی از صنعت لجستیک کشور را داشته و هدف اصلی خود را فراهم نمودن بالاترین کیفیت و کسب رضایت مشتريان قرار داده است.</p>
-                    <div className="flex-col md:flex-row h-full flex mt-8">
+                    <div className="flex-col md:flex-row justify-around h-full flex mt-8">
                         <div className="w-full md:w-1/4 h-1/6 mx-0 md:mx-30 md:mt-16">
-                            <div className="flex justify-around w-full h-full">
+                            <div className="flex mt-0 lg:mt-0 md:mt-25 justify-around w-full h-full">
                                 <div className="w-1/2 h-full">
                                     <div className="flex flex-col gap-4">
                                         <h2 className="font-bold">دسترسی سریع</h2>
@@ -206,7 +206,7 @@ export default function Footer() {
                             
                             
                         </div>
-                        <div className="w-full md:w-1/6 md:mr-50  h-2/6 flex justify-center">
+                        <div className="w-full md:w-[100px] md:mr-50 mt-0 md:mt-25 lg:mt-0  h-2/6 flex justify-center">
                             <img className="mt-16 ml-6 -translate-y-72 md:-translate-y-0 w-[100px] md:w-[550px] h-full" src="/footer_logo.svg" alt="logo" />
                         </div>
 
