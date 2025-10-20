@@ -3,6 +3,8 @@ import { IntroAnimation, WhyTmco, DriverApp, DriverDetail } from "@/components/H
 import MotionEffect from "@/animations/MotionEffect";
 import Image from 'next/image'
 import TrapezoidLayout from "@/components/Home/TrapezoidLayout";
+import BlogCarousel from "@/components/BlogCarousel";
+import TariffInquiry from "@/components/TariffInquiry";
 
 export default function Home() {
 
@@ -128,10 +130,8 @@ export default function Home() {
           </h2>
           <p>مبدا، مقصد و مشخصات کالا را ثبت کنید و از قیمت واقعی حمل بارتان آگاه شوید. در سامانه آنلاین محاسبه کرایه باربری در هر لحظه می‌توانید سریع و آسان هزینه حمل و نقل محموله‌هایتان را برآورد کنید.</p>
         </div>
-        <div className="md:w-3/5 w-full h-[500px] flex items-center justify-center">
-          <div className="w-1/2 md:w-1/3 mt-50 h-full shadow-2xl border border-gray-200 rounded-3xl">
-            <h5 className="font-bold text-sm text-[#425466] text-center w-full mt-5">استعلام کرایه حمل</h5>
-          </div>
+        <div className="md:w-3/5 w-full h-[600px] flex items-center justify-center">
+          <TariffInquiry></TariffInquiry>
         </div>
       </div>
 
@@ -139,7 +139,7 @@ export default function Home() {
 
       <div className="md:pt-20 mx-10 w-auto h-auto">
           <h2 className="font-extrabold text-4xl mt-10">وبلاگ</h2>
-          
+          <BlogCarousel></BlogCarousel>
       </div>
     </>
   );

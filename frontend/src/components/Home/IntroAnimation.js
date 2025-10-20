@@ -45,6 +45,7 @@ export default function IntroAnimation() {
       tl.eventCallback("onComplete", () => {
         document.body.style.overflow = "auto";
         setPhase("scroll");
+        window.dispatchEvent(new Event("intro-finished"));
       })
 
     }, containerRef);
@@ -56,15 +57,8 @@ export default function IntroAnimation() {
       const frameCount = 139;
       const currentFrame = (index) => `/TruckFrames/${String(index)}.webp`;
 
-      // پیش‌بارگذاری
-      for (let i = 1; i <= frameCount; i++) {
-        const img = new Image();
-        img.src = currentFrame(i);
-      }
-
       const obj = { frame: 1 };
-      let runOnce = false;
-      gsap.to(obj, {
+      const scrollTween = gsap.to(obj, {
         frame: frameCount,
         snap: "frame",
         ease: "none",
@@ -74,18 +68,22 @@ export default function IntroAnimation() {
           end: "+=2000",
           scrub: 1.5,
           pin: true,
-
         },
         onUpdate: () => {
-          truckRef.current.src = currentFrame(obj.frame);
+          if (truckRef.current) {
+            truckRef.current.src = currentFrame(obj.frame);
+          }
           const progress = obj.frame / frameCount;
           const charsToShow = Math.floor(progress * fullText.length);
           setTypedText(fullText.slice(0, charsToShow));
         },
       });
+
+      return () => {
+        scrollTween.scrollTrigger?.kill();
+        scrollTween.kill();
+      };
     }
-
-
   }, [phase]);
 
   return (

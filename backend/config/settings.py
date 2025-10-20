@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'FooterApp',
     'HomeApp',
     'UserApp',
+    'TariffApp',
     #external apps
     'rest_framework',
 ]
@@ -135,3 +136,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'UserApp.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}

@@ -82,7 +82,7 @@ export default function TrapezoidLayout() {
   const repeatedItems = [...aboutItems, ...aboutItems, ...aboutItems];
 
   return (
-    <div className="relative w-full h-[900px] flex items-center justify-center bg-transparent overflow-visible">
+    <div className="relative w-full h-[900px] mt-96 md:mt-0 flex items-center justify-center bg-transparent overflow-visible">
       <div className="main-trapezoid same-slope relative z-[5] w-full h-[900px] bg-[#001230]">
         <div className="w-[80%] mx-auto mt-35 h-auto">
           <h1 className="text-white mb-10 font-bold text-4xl">خدمات ما</h1>

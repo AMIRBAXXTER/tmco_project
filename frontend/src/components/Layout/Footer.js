@@ -79,10 +79,15 @@ export default function Footer() {
             });
         }
 
+        gsap.registerPlugin(MotionPathPlugin);
+        const start = () => requestAnimationFrame(() => animateWorms());
+
+        window.addEventListener('intro-finished', start);
+        window.addEventListener('resize', animateWorms);
         animateWorms();
-        window.addEventListener('resize', animateWorms); // اجرای دوباره بعد از تغییر سایز
 
         return () => {
+            window.removeEventListener('intro-finished', start);
             window.removeEventListener('resize', animateWorms);
         };
 
@@ -90,7 +95,7 @@ export default function Footer() {
     }, []);
     return (
         <footer className="relative w-full overflow-hidden bg-white">
-            
+
             {/* خطوط نورانی */}
             <div className="pointer-events-none absolute inset-0 z-40">
                 <div className="worm-glow-light dot1"></div>
@@ -178,7 +183,7 @@ export default function Footer() {
                                         <a className="text-[#ADBDCC]" href="/">تماس با ما</a>
                                         <a className="text-[#ADBDCC]" href="/">بلاگ</a>
                                     </div>
-                                    
+
                                 </div>
                                 <div className="w-1/2 h-full">
                                     <div className="flex flex-col gap-4">
@@ -186,7 +191,7 @@ export default function Footer() {
                                         <p className="text-[#ADBDCC]">کل بازدیدکنندگان:</p>
                                         <p className="text-[#ADBDCC]">بازدیدکنندگان امروز:</p>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -201,10 +206,10 @@ export default function Footer() {
                             <div className="flex-col">
                                 <IoLocationOutline size={20} color={"#ADBDCC"} /> <span>تهران ، شهرک استقلال ريا، خیابان سپاه اسلام 36، خیابان شهید عباس شفیعی هنجنی، پلاک 4 طبقه همفک</span>
                             </div>
-                            
-                            
-                            
-                            
+
+
+
+
                         </div>
                         <div className="w-full md:w-[100px] md:mr-50 mt-0 md:mt-25 lg:mt-0  h-2/6 flex justify-center">
                             <img className="mt-16 ml-6 -translate-y-72 md:-translate-y-0 w-[100px] md:w-[550px] h-full" src="/footer_logo.svg" alt="logo" />
