@@ -1,4 +1,3 @@
-"use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -8,7 +7,6 @@ import moment from "moment-jalaali";
 moment.loadPersian({ usePersianDigits: true });
 
 export default function BlogCarousel() {
-  // پست‌های تستی
   const posts = [
     {
       title: "کارایی بالاتر با معماری میکروسرویس",
@@ -38,63 +36,78 @@ export default function BlogCarousel() {
       slug: "frontend-backend-security",
       created_at: "2025-10-12T10:00:00Z",
     },
+    {
+      title: "ساخت سایت با Next.js و Tailwind CSS",
+      excerpt:
+        "در این مقاله به شما آموزش داده شده است که چگونه سایت با Next.js و Tailwind CSS ساخته شود.",
+      slug: "nextjs-tailwindcss-site",
+      created_at: "2025-10-08T15:00:00Z",
+    },
+    {
+      title: "مدیریت پروژه‌های Node.js با Docker",
+      excerpt:
+        "در این مقاله به شما آموزش داده شده است که چگونه پروژه‌های Node.js را با Docker مدیریت کنید.",
+      slug: "nodejs-docker-project",
+      created_at: "2025-10-13T11:00:00Z",
+    },
   ];
 
   return (
-    <div className="relative w-full flex items-center justify-center bg-transparent overflow-visible">
+    <>
       <Swiper
         modules={[Autoplay]}
-        loop
-        spaceBetween={30}
-        slidesPerView={"auto"}
-        speed={2500}
+        loop={true}
+        slidesPerView="auto"
+        spaceBetween={20}
+        speed={4000}
         autoplay={{
-          delay: 2500,
+          delay: 1500,
           disableOnInteraction: false,
         }}
+        freeMode={true}
+        allowTouchMove={true}
+        grabCursor={true}
+        centeredSlides={false}
         breakpoints={{
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
+          0: {
+            slidesPerView: 1,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
         }}
-        className="flex items-stretch pb-5"
       >
         {posts.map((post, index) => (
           <SwiperSlide
             key={index}
-            className="!w-[340px] flex-shrink-0 select-none border-t-[4px] border-[#3C9BD8] rounded-b-xl"
+            className="flex-shrink-0 w-1/3 shadow-lg border-t-[10px] border-[#3C9BD8] rounded-xl bg-white"
           >
-            <div className="p-6 h-full flex flex-col justify-between border border-gray-700 rounded-b-xl hover:border-[#3C9BD8] transition-colors duration-200 ease-in">
-              <div>
-                {/* عنوان */}
-                <h3 className="font-bold text-lg text-white mb-3">
-                  {post.title}
-                </h3>
-
-                {/* خلاصه متن */}
-                <p className="text-sm text-gray-300 leading-relaxed line-clamp-3">
+            {/* ... محتوای هر اسلاید ... */}
+            <div className="p-6 h-full flex flex-col justify-between shadow-2xl">
+                <h3 className="text-lg md:text-xl font-bold mb-6">{post.title}</h3>
+                <p className="text-sm md:text-base leading-relaxed line-clamp-3">
                   {post.excerpt}
                 </p>
               </div>
-
-              {/* تاریخ و لینک مشاهده */}
               <div className="mt-6 flex items-center justify-between text-sm">
-                <div className="flex items-center text-gray-400">
+                <div className="flex items-center">
                   <FaClock className="text-[#3C9BD8] mr-2 text-base" />
                   <span>{moment(post.created_at).format("jD jMMMM jYYYY")}</span>
                 </div>
-
                 <a
                   href={`/blog/${post.slug}`}
-                  className="text-[#3C9BD8] font-semibold hover:text-[#62B3F1] transition-colors duration-150 ease-in"
+                  className="text-[#3C9BD8] font-semibold hover:text-[#62B3F1] transition-colors"
                 >
                   مشاهده
                 </a>
-              </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </>
+
   );
 }

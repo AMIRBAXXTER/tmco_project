@@ -1,3 +1,4 @@
+import os
 import re
 import pandas as pd
 from rest_framework.views import APIView
@@ -135,8 +136,9 @@ class TariffCalculateView(APIView):
         if pd.isna(tariff) or float(tariff) == 0:
             tariff = None
 
+
         return Response({
             "origin": origin,
             "destination": destination,
-            "tariff": tariff if tariff else None
+            "tariff": tariff
         }, status=status.HTTP_200_OK)

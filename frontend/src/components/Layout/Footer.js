@@ -212,7 +212,7 @@ export default function Footer() {
 
                         </div>
                         <div className="w-full md:w-[100px] md:mr-50 mt-0 md:mt-25 lg:mt-0  h-2/6 flex justify-center">
-                            <img className="mt-16 ml-6 -translate-y-72 md:-translate-y-0 w-[100px] md:w-[550px] h-full" src="/footer_logo.svg" alt="logo" />
+                            <img className="mt-16 ml-6 -translate-y-90 md:-translate-y-0 w-[100px] md:w-[550px] h-full" src="/footer_logo.svg" alt="logo" />
                         </div>
 
                     </div>

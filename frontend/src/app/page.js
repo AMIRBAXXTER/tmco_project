@@ -5,6 +5,7 @@ import Image from 'next/image'
 import TrapezoidLayout from "@/components/Home/TrapezoidLayout";
 import BlogCarousel from "@/components/BlogCarousel";
 import TariffInquiry from "@/components/TariffInquiry";
+import ClientsSection from "@/components/Home/ClientsSection";
 
 export default function Home() {
 
@@ -35,7 +36,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row mt-20 mr-10 w-auto h-auto">
+      <div className="flex flex-col lg:flex-row mt-30 lg:mt-0 mr-10 w-auto h-auto">
         {/* بخش متنی سمت چپ */}
         <div className="h-[500px] md:h-[470px] w-full lg:w-1/2">
           <MotionEffect effect="slideLeft">
@@ -60,7 +61,7 @@ export default function Home() {
           </MotionEffect>
 
           <a
-            href="/files/driver-app.apk"
+            href="https://core.tmcopars.ir/panel/login"
             download
             target="_blank"
             className="bg-[#3C9BD8] text-center text-white font-bold py-3 px-25 rounded-xl 
@@ -137,10 +138,13 @@ export default function Home() {
 
       <TrapezoidLayout></TrapezoidLayout>
 
-      <div className="md:pt-20 mx-10 w-auto h-auto">
-          <h2 className="font-extrabold text-4xl mt-10">وبلاگ</h2>
-          <BlogCarousel></BlogCarousel>
+      <div className="p-10 w-screen h-auto">
+          <h2 className="font-extrabold text-4xl my-10">وبلاگ</h2>
+          <div className="flex w-full mx-auto h-[300px] mb-24">
+            <BlogCarousel></BlogCarousel>
+          </div>
       </div>
+      <ClientsSection/>
     </>
   );
 }

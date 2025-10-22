@@ -1,11 +1,37 @@
-from .models import TariffFile
+import os
 import pandas as pd
+from django.core.cache import cache
+from .models import TariffFile
+
 
 def read_latest_tariff_excel():
+    latest_cache_key = cache.get("tariff_excel_latest_key")
+
+    if latest_cache_key:
+        df = cache.get(latest_cache_key)
+        if df is not None:
+            return df
+
+    # fallback: فایل آخر را از DB بخوان و بکَش کن
     latest = TariffFile.objects.last()
-    if latest:
-        return pd.read_excel(latest.file.path)
-    return None
+    if not latest:
+        return None
+
+    path = latest.file.path
+    if not os.path.exists(path):
+        return None
+
+    stat = os.stat(path)
+    signature = f"{path}:{stat.st_mtime_ns}:{stat.st_size}"
+    cache_key = f"tariff_excel_cache:{signature}"
+
+    df = pd.read_excel(path)
+    cache.set(cache_key, df, timeout=None)
+    cache.set("tariff_excel_latest_key", cache_key, timeout=None)
+    print("📁 خوانده شده از فایل و ذخیره در Cache:", cache_key)
+
+    return df
+
 
 WEIGHT_CLASSES = [
     (400, "پراید وانت"),
