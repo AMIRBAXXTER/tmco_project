@@ -8,88 +8,119 @@ gsap.registerPlugin(ScrollTrigger);
 export default function IntroAnimation() {
   const containerRef = useRef(null);
   const truckRef = useRef(null);
+  const logoRef = useRef(null);
+  const companyNameRef = useRef(null);
   const [phase, setPhase] = useState("intro");
   const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
   const [typedText, setTypedText] = useState("");
 
+  const preloadFrames = async (frameCount = 139) => {
+    const frames = [];
+    for (let i = 1; i <= frameCount; i++) {
+      const res = await fetch(`/TruckFrames/${i}.webp`);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      frames.push(url);
+    }
+    return frames;
+  };
 
+  // 🎬 فاز intro
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
-      // آماده کردن خطوط SVG
+      // خطوط SVG
       const paths = gsap.utils.toArray(".intro-line path");
       paths.forEach((path) => {
         const length = path.getTotalLength();
         gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
       });
 
-      // انیمیشن کشیدن خطوط
+      tl.set([logoRef.current, companyNameRef.current, truckRef.current], {
+        visibility: "hidden",
+        opacity: 0,
+      });
+
+      // کشیده شدن خطوط
       paths.forEach((path, index) => {
-        tl.to(path, { strokeDashoffset: 0, duration: 2, ease: "power3.out" }, index * 0.1);
+        tl.to(
+          path,
+          { strokeDashoffset: 0, duration: 2, ease: "power3.out" },
+          index * 0.1
+        );
       });
 
       // نمایش لوگو و نام شرکت
-      tl.from(".logo", { scale: 0.5, opacity: 0, duration: 1 }, "-=0.5");
-      tl.from(".company_name", { y: 50, opacity: 0, duration: 1 }, "-=0.5");
+      tl.to(logoRef.current, { visibility: "visible", opacity: 1, scale: 1, duration: 1 }, "-=0.5");
+      tl.to(companyNameRef.current, { visibility: "visible", opacity: 1, y: 0, duration: 1 }, "-=0.5");
 
       // تغییر رنگ لوگو
-      tl.to(".logo", { filter: "grayscale(0%)", duration: 2.5, ease: "power2.inOut" });
+      tl.to(logoRef.current, { filter: "grayscale(0%)", duration: 2, ease: "power2.inOut" });
 
       // نمایش کامیون
-      tl.from(truckRef.current, { scaleY: 0, transformOrigin: "center center", duration: 2.5, ease: "power3.out" });
+      tl.to(truckRef.current, {
+        visibility: "visible",
+        scaleY: 1,
+        transformOrigin: "center center",
+        opacity: 1,
+        duration: 2.5,
+        ease: "power3.out",
+      });
 
-      // بعد از اتمام تایم‌لاین، شروع فاز اسکرول
+      // پایان intro ← شروع scroll
       tl.eventCallback("onComplete", () => {
         document.body.style.overflow = "auto";
         setPhase("scroll");
         window.dispatchEvent(new Event("intro-finished"));
-      })
-
+      });
     }, containerRef);
+
     return () => ctx.revert();
   }, []);
 
+  // 🚚 فاز اسکرول انیمیشن فریم‌به‌فریم
   useEffect(() => {
     if (phase === "scroll") {
       const frameCount = 139;
-      const currentFrame = (index) => `/TruckFrames/${String(index)}.webp`;
-
       const obj = { frame: 1 };
-      const scrollTween = gsap.to(obj, {
-        frame: frameCount,
-        snap: "frame",
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "+=2000",
-          scrub: 1.5,
-          pin: true,
-        },
-        onUpdate: () => {
-          if (truckRef.current) {
-            truckRef.current.src = currentFrame(obj.frame);
-          }
-          const progress = obj.frame / frameCount;
-          const charsToShow = Math.floor(progress * fullText.length);
-          setTypedText(fullText.slice(0, charsToShow));
-        },
-      });
 
-      return () => {
-        scrollTween.scrollTrigger?.kill();
-        scrollTween.kill();
-      };
+      preloadFrames(frameCount).then((frames) => {
+        const scrollTween = gsap.to(obj, {
+          frame: frameCount,
+          snap: "frame",
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "+=2000",
+            scrub: 1.5,
+            pin: true,
+          },
+          onUpdate: () => {
+            truckRef.current.src = frames[obj.frame - 1];
+            const progress = obj.frame / frameCount;
+            const charsToShow = Math.floor(progress * fullText.length);
+            setTypedText(fullText.slice(0, charsToShow));
+          },
+        });
+
+        return () => {
+          scrollTween.scrollTrigger?.kill();
+          scrollTween.kill();
+          frames.forEach((url) => URL.revokeObjectURL(url));
+        };
+      });
     }
   }, [phase]);
 
   return (
-    <section ref={containerRef} className="relative w-full min-h-screen bg-white">
+    <section ref={containerRef} className="relative w-full min-h-screen bg-white overflow-hidden">
 
-      {/* بک‌گراند SVG */}
+      {/* SVG پس‌زمینه */}
       <div className="absolute inset-0 z-0">
         <svg className="intro-line absolute top-0 left-0 w-1/4 h-3/5" width="508" height="570" viewBox="0 0 508 570" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M506.5 0V349.767C506.5 369.254 492.458 385.904 473.251 389.193L247.749 427.807C228.542 431.096 214.5 447.746 214.5 467.233V528.727C214.5 559.065 182.049 578.36 155.396 563.87L-32 462" stroke="url(#paint0_linear_164_185)" strokeOpacity="0.23" strokeWidth="5" />
@@ -132,40 +163,45 @@ export default function IntroAnimation() {
         </svg>
       </div>
 
-      {/* محتوا مرکزی */}
-
+      {/* مرکز صفحه */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
         <img
+          ref={logoRef}
           className="logo"
           src="/logo.svg"
           alt="Logo"
           width="80"
-          style={{ filter: "grayscale(100%)" }}
+          style={{ filter: "grayscale(100%)", visibility: "hidden", opacity: 0 }}
         />
         <img
+          ref={companyNameRef}
           src="/company_name.svg"
           alt="company name"
           width="80"
-          className="company_name"
+          style={{ visibility: "hidden", opacity: 0, transform: "translateY(50px)" }}
         />
       </div>
+
+      {/* کامیون */}
       <img
         ref={truckRef}
         src="/TruckFrames/1.webp"
         alt="Truck"
-        className="absolute w-screen h-screen lg:h-[115vh] lg:object-fill object-cover  z-40"
+        className="absolute w-screen h-screen lg:h-[115vh] object-cover lg:object-fill z-40"
+        style={{ visibility: "hidden", transform: "scaleY(0)"}}
       />
+
+      {/* متن پایین */}
       <p className="absolute bottom-13 left-1/2 mb-15 md:mb-0 -translate-x-1/2 w-full text-center text-2xl md:text-3xl lg:text-4xl font-bold text-white z-50">
-        {typedText.length > 6
-          ? <>
+        {typedText.length > 6 ? (
+          <>
             {typedText.slice(0, typedText.length - 6)}
             <span className="text-[#3C9BD8]">{typedText.slice(-6)}</span>
           </>
-          : <span className="text-[#3C9BD8]">{typedText}</span>
-        }
+        ) : (
+          <span className="text-[#3C9BD8]">{typedText}</span>
+        )}
       </p>
-
-
     </section>
   );
 }
