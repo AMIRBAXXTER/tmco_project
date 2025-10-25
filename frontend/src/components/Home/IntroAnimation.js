@@ -10,11 +10,20 @@ export default function IntroAnimation() {
   const truckRef = useRef(null);
   const logoRef = useRef(null);
   const companyNameRef = useRef(null);
-  const [phase, setPhase] = useState("intro");
-  const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
-  const [typedText, setTypedText] = useState("");
 
-  const preloadFrames = async (frameCount = 139) => {
+  const [phase, setPhase] = useState("intro");
+  const [typedText, setTypedText] = useState("");
+  const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
+  const frameCount = 139;
+
+  // 🧩 حافظه جهانی فریم‌ها
+  const getCachedFrames = async () => {
+    // اگر قبلاً کش‌شده، برگردون
+    if (window._truckFrames && Array.isArray(window._truckFrames)) {
+      return window._truckFrames;
+    }
+
+    // در غیر این صورت، لود کن و در حافظه نگه دار
     const frames = [];
     for (let i = 1; i <= frameCount; i++) {
       const res = await fetch(`/TruckFrames/${i}.webp`);
@@ -22,10 +31,19 @@ export default function IntroAnimation() {
       const url = URL.createObjectURL(blob);
       frames.push(url);
     }
+    window._truckFrames = frames;
     return frames;
   };
 
-  // 🎬 فاز intro
+  // 🧠 پیش‌لود فریم‌ها در بدو اجرای کامپوننت
+  useEffect(() => {
+    // بلافاصله شروع به لود کن (غیرمنتظرانه)
+    getCachedFrames().then(() => {
+      console.log("✅ Truck frames preloaded globally.");
+    });
+  }, []);
+
+  // 🎬 فاز INTRO
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
@@ -40,21 +58,18 @@ export default function IntroAnimation() {
         gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
       });
 
+      // المنت‌ها در ابتدا مخفی
       tl.set([logoRef.current, companyNameRef.current, truckRef.current], {
         visibility: "hidden",
         opacity: 0,
       });
 
-      // کشیده شدن خطوط
-      paths.forEach((path, index) => {
-        tl.to(
-          path,
-          { strokeDashoffset: 0, duration: 2, ease: "power3.out" },
-          index * 0.1
-        );
+      // کشیده شدن خطوط SVG
+      paths.forEach((path, i) => {
+        tl.to(path, { strokeDashoffset: 0, duration: 2, ease: "power3.out" }, i * 0.1);
       });
 
-      // نمایش لوگو و نام شرکت
+      // نمایش لوگو و نام
       tl.to(logoRef.current, { visibility: "visible", opacity: 1, scale: 1, duration: 1 }, "-=0.5");
       tl.to(companyNameRef.current, { visibility: "visible", opacity: 1, y: 0, duration: 1 }, "-=0.5");
 
@@ -65,13 +80,12 @@ export default function IntroAnimation() {
       tl.to(truckRef.current, {
         visibility: "visible",
         scaleY: 1,
-        transformOrigin: "center center",
         opacity: 1,
+        transformOrigin: "center center",
         duration: 2.5,
         ease: "power3.out",
       });
 
-      // پایان intro ← شروع scroll
       tl.eventCallback("onComplete", () => {
         document.body.style.overflow = "auto";
         setPhase("scroll");
@@ -82,13 +96,13 @@ export default function IntroAnimation() {
     return () => ctx.revert();
   }, []);
 
-  // 🚚 فاز اسکرول انیمیشن فریم‌به‌فریم
+  // 🚚 فاز SCROLL
   useEffect(() => {
     if (phase === "scroll") {
-      const frameCount = 139;
       const obj = { frame: 1 };
 
-      preloadFrames(frameCount).then((frames) => {
+      getCachedFrames().then((frames) => {
+        // اگر کاربر هنوز دارد اسکرول می‌کند — فریم‌ها آماده‌اند!
         const scrollTween = gsap.to(obj, {
           frame: frameCount,
           snap: "frame",
@@ -108,10 +122,10 @@ export default function IntroAnimation() {
           },
         });
 
+        // حذف موقع unmount
         return () => {
           scrollTween.scrollTrigger?.kill();
           scrollTween.kill();
-          frames.forEach((url) => URL.revokeObjectURL(url));
         };
       });
     }
@@ -188,7 +202,7 @@ export default function IntroAnimation() {
         src="/TruckFrames/1.webp"
         alt="Truck"
         className="absolute w-screen h-screen lg:h-[115vh] object-cover lg:object-fill z-40"
-        style={{ visibility: "hidden", transform: "scaleY(0)"}}
+        style={{ visibility: "hidden", transform: "scaleY(0)", opacity: 0 }}
       />
 
       {/* متن پایین */}
