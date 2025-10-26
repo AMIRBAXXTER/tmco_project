@@ -1,150 +1,134 @@
 "use client";
 import { IntroAnimation, WhyTmco, DriverApp, DriverDetail } from "@/components/Home";
-import MotionEffect from "@/animations/MotionEffect";
-import Image from 'next/image'
+import MotionEffect from "../animations/MotionEffect";
+import Image from "next/image";
 import TrapezoidLayout from "@/components/Home/TrapezoidLayout";
 import BlogCarousel from "@/components/BlogCarousel";
 import TariffInquiry from "@/components/TariffInquiry";
 import ClientsSection from "@/components/Home/ClientsSection";
 
 export default function Home() {
-
   return (
     <>
+      {/* 🎬 Intro Animation */}
       <main className="mb-20">
         <IntroAnimation />
       </main>
 
       <div className="md:pt-20 mx-10 w-auto h-auto">
-        <div>
-          <h3 className="font-bold mb-5 text-2xl">یک بستر یکپارچه برای مدیریت حمل و نقل سازمانی</h3>
-          <p>
-            تمکو اولین پلتفرم ترکیبی حمل و نقل، راهکاری نوین برای شرکت ها و سازمان ها فراهم می کند تا فرایندهای لجستیکی خود را در محیط دیجیتال، ساده و شفاف مدیریت کنند. این پلتفرم امکان اتصال به ارائه کنندگان محتلف حمل و نقل زمینی، ریلی و هوایی را فراهم کرده و با داده های دقیق، تصمیم گیری هوشمنده تر را ممکن می سازد.
-          </p>
-        </div>
+        {/* 🧩 معرفی پلتفرم */}
+        <MotionEffect effect="fadeUp">
+          <div>
+            <h3 className="font-bold mb-5 text-2xl">
+              یک بستر یکپارچه برای مدیریت حمل و نقل سازمانی
+            </h3>
+            <p>
+              تمکو اولین پلتفرم ترکیبی حمل و نقل، راهکاری نوین برای شرکت‌ها و سازمان‌ها فراهم می‌کند تا فرایندهای لجستیکی خود را در محیط دیجیتال، ساده و شفاف مدیریت کنند. این پلتفرم امکان اتصال به ارائه‌کنندگان مختلف حمل و نقل زمینی، ریلی و هوایی را فراهم کرده و با داده‌های دقیق، تصمیم‌گیری هوشمندتر را ممکن می‌سازد.
+            </p>
+          </div>
+        </MotionEffect>
 
+        {/* 🧠 بخش چرا تمکو */}
         <div>
           <MotionEffect effect="slideUp">
             <h2 className="font-extrabold text-3xl mt-10">چرا تمکو ؟</h2>
           </MotionEffect>
-          <WhyTmco />
+          <MotionEffect effect="fadeUp">
+            <WhyTmco />
+          </MotionEffect>
         </div>
 
-        <div className="flex flex-col gap-5 md:gap-0 lg:flex-row mt-20 w-full h-auto">
-          <DriverApp />
-          <DriverDetail />
-        </div>
+        {/* 🧍 ویژگی‌های راننده و جزئیات */}
+        <MotionEffect effect="staggeredSlideUp" className="flex flex-col gap-5 md:gap-0 lg:flex-row mt-20 w-full h-auto">
+          {[<DriverApp key="a" />, <DriverDetail key="b" />]}
+        </MotionEffect>
       </div>
 
-      <div className="flex flex-col lg:flex-row mt-30 lg:mt-0 mr-10 w-auto h-auto">
-        {/* بخش متنی سمت چپ */}
+      {/* 🧰 بخش پنل مشتریان */}
+      <MotionEffect effect="fadeScale" className="flex flex-col lg:flex-row mt-30 lg:mt-0 mr-10 w-auto h-auto">
         <div className="h-[500px] md:h-[470px] w-full lg:w-1/2">
           <MotionEffect effect="slideLeft">
             <span className="text-[#3C9BD8] font-bold text-2xl">پنل مشتریان</span>
           </MotionEffect>
 
-          <MotionEffect effect='slideUp'>
+          <MotionEffect effect="slideUp">
             <h2 className="font-extrabold text-4xl text-[#121212] my-5">
-              ابزاری برای مدیریت حرفه ای زنجیره تامین
+              ابزاری برای مدیریت حرفه‌ای زنجیره تأمین
             </h2>
             <p className="w-4/5">
-              نمایندگان و شرکای تجاری با اپلیکیشن تمکو می توانند دسترسی مستقیم به درخواست ها، سفارش ها و گزارش های حمل و نقل داشته باشند. این ابزار امکان هماهنگی سریع تر با مشتریان سازمانی و مدیریت بهینه ظرفیت را فراهم می کند.
+              نمایندگان و شرکای تجاری با اپلیکیشن تمکو می‌توانند دسترسی مستقیم به درخواست‌ها، سفارش‌ها و گزارش‌های حمل‌ونقل داشته باشند. این ابزار امکان هماهنگی سریع‌تر با مشتریان سازمانی و مدیریت بهینه ظرفیت را فراهم می‌کند.
             </p>
           </MotionEffect>
 
-          <MotionEffect effect='fadeIn' className="mb-7">
-            <span className="my-8 text-2xl font-bold block">ویژگی ها:</span>
-            <p>مقایسه و انتخاب میان ارائه کنندگان مختلف</p>
+          <MotionEffect effect="fadeIn" className="mb-7">
+            <span className="my-8 text-2xl font-bold block">ویژگی‌ها:</span>
+            <p>مقایسه و انتخاب میان ارائه‌کنندگان مختلف</p>
             <p>مدیریت سفارشات</p>
-            <p>مدیریت حمل و نقل</p>
+            <p>مدیریت حمل‌ونقل</p>
             <p>پیگیری وضعیت محموله</p>
           </MotionEffect>
 
-          <a
-            href="https://core.tmcopars.ir/panel/login"
-            download
-            target="_blank"
-            className="bg-[#3C9BD8] text-center text-white font-bold py-3 px-25 rounded-xl 
-               transition-colors duration-100 ease-in
-               hover:bg-[#036FD0]"
-          >
-            ثبت سفارش
-          </a>
+          <MotionEffect effect="scaleSlideUp">
+            <a
+              href="https://core.tmcopars.ir/panel/login"
+              download
+              target="_blank"
+              className="bg-[#3C9BD8] text-center text-white font-bold py-3 px-25 rounded-xl 
+                 transition-colors duration-100 ease-in
+                 hover:bg-[#036FD0]"
+            >
+              ثبت سفارش
+            </a>
+          </MotionEffect>
         </div>
 
-        {/* بخش تصویر سمت راست */}
-        <div className="relative h-[470px] w-full lg:w-1/2">
+        {/* بخش تصویر */}
+        <MotionEffect effect="fadeUp" className="relative h-[470px] w-full lg:w-1/2">
           <img
             src="/CustomerPanel/dashboard.png"
             alt="driver"
-            className="
-              absolute 
-              top-0 left-0 
-              h-full 
-              w-full
-              object-cover object-[top_right]
-              sm:w-full
-              md:w-[100%]
-              lg:w-[85%]
-              mt-20
-              mb-5 lg:mt-0
-              deep-blur-shadow
-              rounded-r-2xl
-              z-10
-            "
+            className="absolute top-0 left-0 h-full w-full object-cover sm:w-full md:w-[100%] lg:w-[85%] mt-20 mb-5 lg:mt-0 deep-blur-shadow rounded-r-2xl z-10"
           />
-          {/* truck icon */}
-          <div
-            className="absolute hidden lg:block top-0 right-0 border border-gray-200 rounded-xl"
-          >
+          <div className="absolute hidden lg:block top-0 right-0 border border-gray-200 rounded-xl">
             <Image src="/DriverApp/1d.svg" alt="Truck Icon" width={56} height={56} />
           </div>
-          {/* profile icon */}
-          <div
-            className="absolute hidden lg:block bottom-0 right-0 border border-gray-200 rounded-xl"
-          >
+          <div className="absolute hidden lg:block bottom-0 right-0 border border-gray-200 rounded-xl">
             <Image src="/DriverApp/4a.svg" alt="Profile Icon" width={56} height={56} />
           </div>
+        </MotionEffect>
+      </MotionEffect>
 
-          {/* line */}
-          <svg className="absolute hidden lg:block bottom-14 right-7 z-0" width="119" height="129" viewBox="0 0 119 129" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <mask id="path-1-inside-1_310_2010" fill="white">
-              <path d="M119 129L0 129L-1.12775e-05 1.04033e-05L95 2.09815e-06C108.255 9.39372e-07 119 10.7452 119 24L119 129Z" />
-            </mask>
-            <path d="M119 129L0 129L119 129ZM-1.1365e-05 -0.99999L95 -0.999998C108.807 -0.999999 120 10.1929 120 24L118 24C118 11.2974 107.703 1 95 1L-1.11901e-05 1.00001L-1.1365e-05 -0.99999ZM95 -0.999998C108.807 -0.999999 120 10.1929 120 24L120 129L118 129L118 24C118 11.2974 107.703 1 95 1L95 -0.999998ZM0 129L-1.12775e-05 1.04033e-05L0 129Z" fill="url(#paint0_linear_310_2010)" mask="url(#path-1-inside-1_310_2010)" />
-            <defs>
-              <linearGradient id="paint0_linear_310_2010" x1="115.316" y1="6.67241" x2="-49.1161" y2="-13.0184" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#165072" />
-                <stop offset="1" stopColor="#00D1FC" />
-              </linearGradient>
-            </defs>
-          </svg>
-
-
-        </div>
-      </div>
-
-      <div className="px-10 flex flex-col md:flex-row mt-20 mb-40 w-full h-[700px]">
+      {/* 🚛 بخش استعلام تعرفه */}
+      <MotionEffect effect="slideUp" className="px-10 flex flex-col md:flex-row mt-20 mb-40 w-full h-[700px]">
         <div className="md:w-2/5 w-full">
-          <h2 className="font-extrabold  mt-30 text-4xl text-[#121212] my-5">
-            هزینه حمل بار من چقدر می شود؟
+          <h2 className="font-extrabold mt-30 text-4xl text-[#121212] my-5">
+            هزینه حمل بار من چقدر می‌شود؟
           </h2>
-          <p>مبدا، مقصد و مشخصات کالا را ثبت کنید و از قیمت واقعی حمل بارتان آگاه شوید. در سامانه آنلاین محاسبه کرایه باربری در هر لحظه می‌توانید سریع و آسان هزینه حمل و نقل محموله‌هایتان را برآورد کنید.</p>
+          <p>
+            مبدا، مقصد و مشخصات کالا را ثبت کنید و از قیمت واقعی حمل بارتان آگاه شوید. در سامانه آنلاین محاسبه کرایه باربری در هر لحظه می‌توانید سریع و آسان هزینه حمل‌ونقل محموله‌هایتان را برآورد کنید.
+          </p>
         </div>
-        <div className="md:w-3/5 w-full h-[600px] flex items-center justify-center">
-          <TariffInquiry></TariffInquiry>
-        </div>
-      </div>
 
-      <TrapezoidLayout></TrapezoidLayout>
+        <MotionEffect effect="fadeUp" className="md:w-3/5 w-full h-[600px] flex items-center justify-center">
+          <TariffInquiry />
+        </MotionEffect>
+      </MotionEffect>
 
-      <div className="p-10 w-screen h-auto">
-          <h2 className="font-extrabold text-4xl my-10">وبلاگ</h2>
-          <div className="flex w-full mx-auto h-[300px] mb-24">
-            <BlogCarousel></BlogCarousel>
-          </div>
-      </div>
-      <ClientsSection/>
+      {/* 🔷 طرح شیب‌دار */}
+      <MotionEffect effect="fadeIn">
+        <TrapezoidLayout />
+      </MotionEffect>
+
+      {/* 📰 بخش وبلاگ */}
+      <MotionEffect effect="staggeredFadeIn" className="p-10 w-screen h-auto">
+        {[<h2 key="blog-title" className="font-extrabold text-4xl my-10">وبلاگ</h2>,
+          <BlogCarousel key="blog-carousel" />]}
+      </MotionEffect>
+
+      {/* 🤝 بخش مشتریان */}
+      <MotionEffect effect="scaleSlideUp">
+        <ClientsSection />
+      </MotionEffect>
     </>
   );
 }

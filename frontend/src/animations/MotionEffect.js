@@ -13,8 +13,8 @@ const variants = {
     staggeredFadeIn: {
         visible: {
             transition: {
-                staggerChildren: 0.5, // ⬆️ افزایش فاصله بین آیتم‌ها
-                delayChildren: 0.5,   // (اختیاری) تأخیر شروع بین مجموعه و آیتم‌ها
+                staggerChildren: 0.5,
+                delayChildren: 0.5,
             },
         },
     },

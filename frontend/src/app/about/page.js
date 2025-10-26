@@ -1,11 +1,19 @@
 "use client";
 
-export default function Home() {
+import LuminousGrid from "./components/LuminousGrid";
+import AboutTitle from "./components/AboutTitle";
+import TopSection from "./components/TopSection";
+import BottomSection from "./components/BottomSection";
+import AboutBottom from "./components/AboutBottom";
 
+export default function AboutPage() {
   return (
     <>
-    <p>about</p>
+      <LuminousGrid />
+      <AboutTitle />
+      <TopSection />
+      <BottomSection />
+      <AboutBottom />
     </>
-
   );
 }

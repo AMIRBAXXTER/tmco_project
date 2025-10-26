@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import LinkList from "./HeaderLink";
 import Image from "next/image";
 import { HiMenu, HiX } from "react-icons/hi";

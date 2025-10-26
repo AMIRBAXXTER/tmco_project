@@ -83,27 +83,25 @@ export default function BlogCarousel() {
         {posts.map((post, index) => (
           <SwiperSlide
             key={index}
-            className="flex-shrink-0 w-1/3 shadow-lg border-t-[10px] border-[#3C9BD8] rounded-xl bg-white"
+            className="w-1/3 h-[800px shadow-lg border-t-[10px] border-[#3C9BD8] rounded-xl bg-white"
           >
             {/* ... محتوای هر اسلاید ... */}
-            <div className="p-6 h-full flex flex-col justify-between shadow-2xl">
+            <a href={`/blog/${post.slug}`} className="block h-[300px]">
+              <div className="p-6 h-full flex flex-col justify-between shadow-2xl">
                 <h3 className="text-lg md:text-xl font-bold mb-6">{post.title}</h3>
                 <p className="text-sm md:text-base leading-relaxed line-clamp-3">
                   {post.excerpt}
                 </p>
-              </div>
-              <div className="mt-6 flex items-center justify-between text-sm">
-                <div className="flex items-center">
-                  <FaClock className="text-[#3C9BD8] mr-2 text-base" />
-                  <span>{moment(post.created_at).format("jD jMMMM jYYYY")}</span>
+                <div className="mt-6 flex items-center justify-between text-sm">
+                  <div className="flex items-center">
+                    <FaClock className="text-[#3C9BD8] mr-2 text-base" />
+                    <span>{moment(post.created_at).format("jD jMMMM jYYYY")}</span>
+                  </div>
                 </div>
-                <a
-                  href={`/blog/${post.slug}`}
-                  className="text-[#3C9BD8] font-semibold hover:text-[#62B3F1] transition-colors"
-                >
-                  مشاهده
-                </a>
-            </div>
+              </div>
+
+            </a>
+
           </SwiperSlide>
         ))}
       </Swiper>

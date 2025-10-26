@@ -93,7 +93,12 @@ export default function IntroAnimation() {
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert(); // تمام انیمیشن‌ها و تایم‌لاین‌ها رو می‌کشه بیرون
+      gsap.globalTimeline.clear(); // برای اطمینان، هرچی انیمیشن معرفی‌شده هست پاک شه
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill()); // هر SCROLLTRIGGER حذف بشه
+      document.body.style.overflow = "auto"; // اسکرول رو آزاد کن
+    }
   }, []);
 
   // 🚚 فاز SCROLL
@@ -126,6 +131,9 @@ export default function IntroAnimation() {
         return () => {
           scrollTween.scrollTrigger?.kill();
           scrollTween.kill();
+          ScrollTrigger.getAll().forEach(t => t.kill());
+          gsap.globalTimeline.clear();
+          document.body.style.overflow = "auto";
         };
       });
     }
@@ -157,7 +165,7 @@ export default function IntroAnimation() {
         </svg>
 
         <svg className="intro-line absolute bottom-0 left-0 w-1/4 h-1/3" width="515" height="352" viewBox="0 0 515 352" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 1H473.544C505.635 1 524.661 36.8904 506.65 63.4504L96 669" stroke="url(#paint0_linear_164_187)" strokeOpacity="0.23" strokeWidth="5" />
+          <path d="M0 1H473.544C505.635 1 524.661 36.8904 506.65 63.4504L96 669" stroke="url(#paint0_linear_164_187)" strokeOpacity="0.23" strokeWidth="7" />
           <defs>
             <linearGradient id="paint0_linear_164_187" x1="4.89625e-05" y1="535.5" x2="642" y2="-22" gradientUnits="userSpaceOnUse">
               <stop stopColor="#2A446F" stopOpacity="0" />
