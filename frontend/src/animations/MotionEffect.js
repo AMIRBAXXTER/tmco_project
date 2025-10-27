@@ -23,11 +23,11 @@ const variants = {
         visible: { opacity: 1, transition: { duration: 1, ease: "easeOut" } },
     },
     slideLeft: {
-        hidden: { opacity: 0, x: 80 },
+        hidden: { opacity: 1, x: 180 },
         visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeOut" } },
     },
     slideRight: {
-        hidden: { opacity: 0, x: -80 },
+        hidden: { opacity: 1, x: -180 },
         visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeOut" } },
     },
     fadeUp: {

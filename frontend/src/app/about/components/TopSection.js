@@ -6,10 +6,10 @@ export default function TopSection() {
   const imageSrc = "/AboutUsMasks/top.png";
 
   return (
-    <MotionEffect effect="fadeScale" className="flex flex-col md:flex-row w-full min-h-screen">
+    <MotionEffect effect="slideLeft" className="flex flex-col md:flex-row w-full min-h-screen">
       {/* بخش SVG با ماسک و تصویر دینامیک */}
       <MotionEffect
-        effect="maskReveal" // افکت باز شدن فرم ماسکی با اسلاید تدریجی
+        effect="slideLeft" // افکت باز شدن فرم ماسکی با اسلاید تدریجی
         className="flex-1 flex justify-center items-center bg-gray-50"
       >
         <svg
@@ -37,7 +37,7 @@ export default function TopSection() {
 
       {/* بخش متنی همراه افکت مرحله‌ای */}
       <MotionEffect
-        effect="staggeredSlideUp" // هر المان متنی جداگانه بالا میاد با تأخیر کوتاه
+        effect="fadeIn" // هر المان متنی جداگانه بالا میاد با تأخیر کوتاه
         className="flex-1 flex flex-col justify-center items-start p-10 bg-white"
       >
         {[

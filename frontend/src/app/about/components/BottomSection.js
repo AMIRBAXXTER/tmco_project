@@ -7,12 +7,11 @@ export default function BottomSection() {
 
   return (
     <MotionEffect 
-      effect="slideUp" // ورود کل سکشن با حرکت رو به بالا
+      effect="slideRight"
       className="flex flex-col md:flex-row-reverse w-full min-h-screen"
     >
-      {/* بخش SVG با ماسک و تصویر */}
       <MotionEffect
-        effect="maskReveal" // باز شدن ماسک از چپ به راست یا پایین به بالا
+        effect="slideRight"
         className="flex-1 flex justify-center items-center bg-gray-50"
       >
         <svg
@@ -38,9 +37,8 @@ export default function BottomSection() {
         </svg>
       </MotionEffect>
 
-      {/* متن داخل صفحه */}
       <MotionEffect 
-        effect="staggeredSlideUp" // نمایش مرحله‌ای عنوان و پاراگراف
+        effect="fadeIn"
         className="flex-1 flex flex-col justify-center items-start p-10 bg-white"
       >
         {[

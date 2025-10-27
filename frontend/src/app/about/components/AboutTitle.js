@@ -5,7 +5,7 @@ import MotionEffect from "@/animations/MotionEffect";
 export default function AboutTitle() {
   return (
     <MotionEffect
-      effect="fadeScale"
+      effect="scaleSlideUp"
       className="flex flex-col justify-center items-center 
                  w-full min-h-screen 
                  bg-white
@@ -13,7 +13,7 @@ export default function AboutTitle() {
                  md:pt-[180px]"
     >
       <MotionEffect
-        effect="staggeredFadeIn"
+        effect="scaleSlideUp"
         className="flex flex-col gap-8 
                    w-full sm:w-5/6 md:w-2/3 
                    p-6 md:p-10 

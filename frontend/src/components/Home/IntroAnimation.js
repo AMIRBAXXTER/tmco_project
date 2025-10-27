@@ -94,11 +94,13 @@ export default function IntroAnimation() {
     }, containerRef);
 
     return () => {
-      ctx.revert(); // تمام انیمیشن‌ها و تایم‌لاین‌ها رو می‌کشه بیرون
-      gsap.globalTimeline.clear(); // برای اطمینان، هرچی انیمیشن معرفی‌شده هست پاک شه
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill()); // هر SCROLLTRIGGER حذف بشه
-      document.body.style.overflow = "auto"; // اسکرول رو آزاد کن
-    }
+      ctx.revert(); // همه‌ی انیمیشن‌های داخل این کامپوننت رو تمیز می‌کنه
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger === containerRef.current) trigger.kill(); // فقط تریگرهای مربوط به خودش
+      });
+      document.body.style.overflow = "auto";
+    };
+
   }, []);
 
   // 🚚 فاز SCROLL

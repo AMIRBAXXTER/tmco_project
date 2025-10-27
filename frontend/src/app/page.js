@@ -114,15 +114,13 @@ export default function Home() {
         </MotionEffect>
       </MotionEffect>
 
-      {/* 🔷 طرح شیب‌دار */}
-      <MotionEffect effect="fadeIn">
-        <TrapezoidLayout />
-      </MotionEffect>
+
+      <TrapezoidLayout />
 
       {/* 📰 بخش وبلاگ */}
       <MotionEffect effect="staggeredFadeIn" className="p-10 w-screen h-auto">
         {[<h2 key="blog-title" className="font-extrabold text-4xl my-10">وبلاگ</h2>,
-          <BlogCarousel key="blog-carousel" />]}
+        <BlogCarousel key="blog-carousel" />]}
       </MotionEffect>
 
       {/* 🤝 بخش مشتریان */}

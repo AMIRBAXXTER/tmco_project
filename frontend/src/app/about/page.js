@@ -5,6 +5,7 @@ import AboutTitle from "./components/AboutTitle";
 import TopSection from "./components/TopSection";
 import BottomSection from "./components/BottomSection";
 import AboutBottom from "./components/AboutBottom";
+import OurLeaders from "./components/OurLeaders";
 
 export default function AboutPage() {
   return (
@@ -14,6 +15,7 @@ export default function AboutPage() {
       <TopSection />
       <BottomSection />
       <AboutBottom />
+      <OurLeaders />
     </>
   );
 }

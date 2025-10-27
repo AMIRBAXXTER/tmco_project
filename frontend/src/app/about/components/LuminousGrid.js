@@ -11,7 +11,7 @@ export default function LuminousGrid() {
 
     const worms = [
       { el: ".dot-horizontal", path: "#path-horizontal", duration: 8 },
-      { el: ".dot-vertical", path: "#path-vertical", duration: 4 },
+      { el: ".dot-vertical", path: "#path-vertical", duration: 2 },
     ];
 
     const animateWorms = () => {
@@ -38,7 +38,7 @@ export default function LuminousGrid() {
   }, []);
 
   return (
-    <MotionEffect effect="fadeIn" className="absolute inset-0 w-full h-[150px] md:h-[300px]">
+    <div className="absolute inset-0 w-full h-[150px] md:h-[300px]">
       <svg className="absolute -top-25 md:-top-15 left-0 w-full" style={{ height: "240px" }} viewBox="0 0 1920 180">
         {[...Array(8)].map((_, row) => (
           <g key={row} transform={`translate(0, ${row * 60})`}>
@@ -80,6 +80,6 @@ export default function LuminousGrid() {
           strokeWidth="0"
         />
       </svg>
-    </MotionEffect>
+    </div>
   );
 }
