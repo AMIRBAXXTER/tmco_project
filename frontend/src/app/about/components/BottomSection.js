@@ -3,7 +3,7 @@ import React from "react";
 import MotionEffect from "@/animations/MotionEffect";
 
 export default function BottomSection() {
-  const imageSrc = "/AboutUsMasks/bottom.png";
+  const imageSrc = "/AboutUsMasks/bottom.webp";
 
   return (
     <MotionEffect 

@@ -105,11 +105,14 @@ export default function IntroAnimation() {
 
   // 🚚 فاز SCROLL
   useEffect(() => {
+    let isMounted = true; // ✅ وضعیت mount
+
     if (phase === "scroll") {
       const obj = { frame: 1 };
 
       getCachedFrames().then((frames) => {
-        // اگر کاربر هنوز دارد اسکرول می‌کند — فریم‌ها آماده‌اند!
+        if (!isMounted) return; // ⛔️ جلوگیری از اجرا بعد از unmount
+
         const scrollTween = gsap.to(obj, {
           frame: frameCount,
           snap: "frame",
@@ -122,24 +125,31 @@ export default function IntroAnimation() {
             pin: true,
           },
           onUpdate: () => {
+            if (!truckRef.current) return; // ✅ جلوگیری از خطای null
             truckRef.current.src = frames[obj.frame - 1];
+
             const progress = obj.frame / frameCount;
             const charsToShow = Math.floor(progress * fullText.length);
             setTypedText(fullText.slice(0, charsToShow));
           },
         });
 
-        // حذف موقع unmount
+        // ✅ Cleanup کامل هنگام ترک صفحه
         return () => {
           scrollTween.scrollTrigger?.kill();
           scrollTween.kill();
-          ScrollTrigger.getAll().forEach(t => t.kill());
+          ScrollTrigger.getAll().forEach((t) => t.kill());
           gsap.globalTimeline.clear();
           document.body.style.overflow = "auto";
         };
       });
     }
+
+    return () => {
+      isMounted = false; // ✅ unmount یعنی promise دیگه اجرا نشه
+    };
   }, [phase]);
+
 
   return (
     <section ref={containerRef} className="relative w-full min-h-screen bg-white overflow-hidden">

@@ -3,7 +3,7 @@ import React from "react";
 import MotionEffect from "@/animations/MotionEffect";
 
 export default function TopSection() {
-  const imageSrc = "/AboutUsMasks/top.png";
+  const imageSrc = "/AboutUsMasks/top.webp";
 
   return (
     <MotionEffect effect="slideLeft" className="flex flex-col md:flex-row w-full min-h-screen">
