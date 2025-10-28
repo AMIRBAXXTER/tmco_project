@@ -1,6 +1,6 @@
 "use client";
 
-import LuminousGrid from "./components/LuminousGrid";
+import LuminousGrid from "@/components/Layout/LuminousGrid";
 import AboutTitle from "./components/AboutTitle";
 import TopSection from "./components/TopSection";
 import BottomSection from "./components/BottomSection";

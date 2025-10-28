@@ -33,11 +33,11 @@ export default function Header() {
     <>
       {/* هدر دسکتاپ */}
       <header
-        className={`fixed ${scrolled ? "top-0 h-12 bg-[#254662]/40 backdrop-blur-sm" : "top-10 bg-[#254662]"
+        className={`fixed ${scrolled ? "top-0 h-12 bg-[#254662]/40  backdrop-blur-sm" : "top-10 bg-[#254662]"
           } left-1/2 -translate-x-1/2 w-4/5 lg:w-3/5 z-50 hidden md:flex justify-between items-center shadow-2xl rounded-md py-2 px-6 transition-all duration-300`}
       >
         {/* ستون راست: لوگو */}
-        <div className={`flex ${scrolled ? "w-7" : ""} items-center justify-start`}>
+        <div className={`flex] ${scrolled ? "w-7" : "drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)]"} items-center justify-start`}>
           <Image src="/logofull.svg" alt="لوگوی شرکت" width={40} height={40} />
         </div>
 
@@ -58,7 +58,7 @@ export default function Header() {
       </button>
 
       {/* لوگو - معمولی و اسکرول‌شونده */}
-      <header className="absolute top-4 left-4 z-50 flex justify-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] md:hidden">
+      <header className="absolute top-4 left-4 z-50 flex justify-center drop-shadow-[0_2px_4px_rgba(255,255,255,1)] md:hidden">
         <Image src="/logofull.svg" alt="لوگوی شرکت" width={40} height={40} />
       </header>
 
