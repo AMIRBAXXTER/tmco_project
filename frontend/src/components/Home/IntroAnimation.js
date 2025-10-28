@@ -243,8 +243,6 @@ export default function IntroAnimation() {
                 <rect x="70" y="15" width="25" height="25" fill="#3C9BD8" />
                 <circle id="wheel-left" cx="15" cy="42" r="7" fill="black" />
                 <circle id="wheel-right" cx="80" cy="42" r="7" fill="black" />
-                {/* لوگوی Tamco */}
-                <text x="8" y="27" fontSize="14" fontWeight="700" fill="white">Tamco</text>
               </g>
             </svg>
           </div>
