@@ -13,17 +13,16 @@ export default function IntroAnimation() {
 
   const [phase, setPhase] = useState("intro");
   const [typedText, setTypedText] = useState("");
+  const [framesReady, setFramesReady] = useState(false); // ✅ وضعیت لود فریم‌ها
   const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
   const frameCount = 139;
 
   // 🧩 حافظه جهانی فریم‌ها
   const getCachedFrames = async () => {
-    // اگر قبلاً کش‌شده، برگردون
     if (window._truckFrames && Array.isArray(window._truckFrames)) {
       return window._truckFrames;
     }
 
-    // در غیر این صورت، لود کن و در حافظه نگه دار
     const frames = [];
     for (let i = 1; i <= frameCount; i++) {
       const res = await fetch(`/TruckFrames/${i}.webp`);
@@ -35,48 +34,100 @@ export default function IntroAnimation() {
     return frames;
   };
 
-  // 🧠 پیش‌لود فریم‌ها در بدو اجرای کامپوننت
+  // 🧠 پیش‌لود فریم‌ها
   useEffect(() => {
-    // بلافاصله شروع به لود کن (غیرمنتظرانه)
     getCachedFrames().then(() => {
+      setFramesReady(true);
       console.log("✅ Truck frames preloaded globally.");
     });
   }, []);
 
+  // 🎞️ انیمیشن لودر قبل از شروع intro
+  useEffect(() => {
+    if (!framesReady) {
+      const ctx = gsap.context(() => {
+        // جاده زیر کامیون حرکت کند
+        gsap.to("#loader-truck .road-line", {
+          strokeDashoffset: 100,
+          duration: 1,
+          repeat: -1,
+          ease: "linear"
+        });
+
+        // چرخ‌های کامیون بچرخند (ولی خودش حرکت نکند)
+        gsap.to(["#wheel-left", "#wheel-right"], {
+          rotation: 360,
+          transformOrigin: "center center",
+          duration: 1.2,
+          repeat: -1,
+          ease: "linear"
+        });
+
+        // درخشش لوگو Tamco برای حس زنده بودن
+        gsap.to("#truck-body", {
+          repeat: -1,
+          yoyo: true,
+          duration: 0.8,
+          filter: "brightness(1.6)",
+          ease: "power1.inOut"
+        });
+      });
+
+      return () => ctx.revert();
+    }
+  }, [framesReady]);
+
+
+
   // 🎬 فاز INTRO
   useEffect(() => {
+    if (!framesReady) return; // ✅ صبر کن تا فریم‌ها آماده بشن
+
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
-      // خطوط SVG
       const paths = gsap.utils.toArray(".intro-line path");
       paths.forEach((path) => {
         const length = path.getTotalLength();
         gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
       });
 
-      // المنت‌ها در ابتدا مخفی
       tl.set([logoRef.current, companyNameRef.current, truckRef.current], {
         visibility: "hidden",
         opacity: 0,
       });
 
-      // کشیده شدن خطوط SVG
       paths.forEach((path, i) => {
-        tl.to(path, { strokeDashoffset: 0, duration: 2, ease: "power3.out" }, i * 0.1);
+        tl.to(path, {
+          strokeDashoffset: 0,
+          duration: 2,
+          ease: "power3.out",
+        }, i * 0.1);
       });
 
-      // نمایش لوگو و نام
-      tl.to(logoRef.current, { visibility: "visible", opacity: 1, scale: 1, duration: 1 }, "-=0.5");
-      tl.to(companyNameRef.current, { visibility: "visible", opacity: 1, y: 0, duration: 1 }, "-=0.5");
+      tl.to(logoRef.current, {
+        visibility: "visible",
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+      }, "-=0.5");
 
-      // تغییر رنگ لوگو
-      tl.to(logoRef.current, { filter: "grayscale(0%)", duration: 2, ease: "power2.inOut" });
+      tl.to(companyNameRef.current, {
+        visibility: "visible",
+        opacity: 1,
+        y: 0,
+        duration: 1,
+      }, "-=0.5");
 
-      // نمایش کامیون
+      tl.to(logoRef.current, {
+        filter: "grayscale(0%)",
+        duration: 2,
+        ease: "power2.inOut",
+      });
+
       tl.to(truckRef.current, {
         visibility: "visible",
         scaleY: 1,
@@ -86,6 +137,7 @@ export default function IntroAnimation() {
         ease: "power3.out",
       });
 
+      // 👇🏻 انتقال به فاز scroll فقط بعد از پایان Intro کامل
       tl.eventCallback("onComplete", () => {
         document.body.style.overflow = "auto";
         setPhase("scroll");
@@ -94,24 +146,29 @@ export default function IntroAnimation() {
     }, containerRef);
 
     return () => {
-      ctx.revert(); // همه‌ی انیمیشن‌های داخل این کامپوننت رو تمیز می‌کنه
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === containerRef.current) trigger.kill(); // فقط تریگرهای مربوط به خودش
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger === containerRef.current) trigger.kill();
       });
       document.body.style.overflow = "auto";
     };
+  }, [framesReady]); // ✅ فقط وقتی فریم‌ها آماده شدن اجرا کن
 
-  }, []);
 
-  // 🚚 فاز SCROLL
+  // 🚚 فاز SCROLL با کنترل کامل
   useEffect(() => {
-    let isMounted = true; // ✅ وضعیت mount
+    let isMounted = true;
 
-    if (phase === "scroll") {
+    if (phase === "scroll" && framesReady) {
       const obj = { frame: 1 };
+      const framesPromise = getCachedFrames();
 
-      getCachedFrames().then((frames) => {
-        if (!isMounted) return; // ⛔️ جلوگیری از اجرا بعد از unmount
+      document.body.style.overflow = "hidden"; // 🚫 جلوگیری از scroll قبل از لود
+
+      framesPromise.then((frames) => {
+        if (!isMounted) return;
+
+        document.body.style.overflow = "auto"; // حالا اجازه‌ی scroll بده
 
         const scrollTween = gsap.to(obj, {
           frame: frameCount,
@@ -125,7 +182,7 @@ export default function IntroAnimation() {
             pin: true,
           },
           onUpdate: () => {
-            if (!truckRef.current) return; // ✅ جلوگیری از خطای null
+            if (!truckRef.current) return;
             truckRef.current.src = frames[obj.frame - 1];
 
             const progress = obj.frame / frameCount;
@@ -134,7 +191,11 @@ export default function IntroAnimation() {
           },
         });
 
-        // ✅ Cleanup کامل هنگام ترک صفحه
+        // ✅ Refresh فقط اگر کاربر هنوز اسکرول نکرده
+        setTimeout(() => {
+          if (window.scrollY < 30) ScrollTrigger.refresh();
+        }, 500);
+
         return () => {
           scrollTween.scrollTrigger?.kill();
           scrollTween.kill();
@@ -146,13 +207,56 @@ export default function IntroAnimation() {
     }
 
     return () => {
-      isMounted = false; // ✅ unmount یعنی promise دیگه اجرا نشه
+      isMounted = false;
     };
-  }, [phase]);
+  }, [phase, framesReady]);
 
-
+  // 🧱 رندر JSX
   return (
-    <section ref={containerRef} className="relative w-full min-h-screen bg-white overflow-hidden">
+    <section
+      ref={containerRef}
+      className="relative w-full min-h-screen bg-white overflow-hidden"
+    >
+      {/* لودر موقت */}
+      {!framesReady && (
+        <div
+          className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white overflow-hidden"
+        >
+          {/* SVG کامیون ثابت روی جاده متحرک */}
+          <div className="relative w-[220px] h-[100px]">
+            <svg
+              id="loader-truck"
+              width="220"
+              height="100"
+              viewBox="0 0 220 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* 👇 سه خط جاده متحرک */}
+              <line className="road-line" x1="0" y1="85" x2="220" y2="85" stroke="#3C9BD8" strokeWidth="3" strokeDasharray="12 8" />
+              <line className="road-line" x1="0" y1="92" x2="220" y2="92" stroke="#3C9BD8" strokeWidth="3" strokeDasharray="12 8" />
+              <line className="road-line" x1="0" y1="99" x2="220" y2="99" stroke="#3C9BD8" strokeWidth="3" strokeDasharray="12 8" />
+
+              {/* 🚚 خود کامیون – ثابت */}
+              <g id="truck-group" transform="translate(75, 35)">
+                <rect id="truck-body" x="0" y="5" width="70" height="35" rx="5" fill="#2A446F" />
+                <rect x="70" y="15" width="25" height="25" fill="#3C9BD8" />
+                <circle id="wheel-left" cx="15" cy="42" r="7" fill="black" />
+                <circle id="wheel-right" cx="80" cy="42" r="7" fill="black" />
+                {/* لوگوی Tamco */}
+                <text x="8" y="27" fontSize="14" fontWeight="700" fill="white">Tamco</text>
+              </g>
+            </svg>
+          </div>
+
+          {/* متن پایین لودر */}
+          <p className="text-sm text-[#2A446F] mt-6 font-semibold tracking-wide">
+            در حال بارگذاری...
+          </p>
+        </div>
+      )}
+
+
 
       {/* SVG پس‌زمینه */}
       <div className="absolute inset-0 z-0">
@@ -197,6 +301,7 @@ export default function IntroAnimation() {
         </svg>
       </div>
 
+
       {/* مرکز صفحه */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
         <img
@@ -212,14 +317,18 @@ export default function IntroAnimation() {
           src="/company_name.svg"
           alt="company name"
           width="80"
-          style={{ visibility: "hidden", opacity: 0, transform: "translateY(50px)" }}
+          style={{
+            visibility: "hidden",
+            opacity: 0,
+            transform: "translateY(50px)",
+          }}
         />
       </div>
 
       {/* کامیون */}
       <img
         ref={truckRef}
-        src="/TruckFrames/1.webp"
+        src="/TruckFrames/1.webp" // ✅ placeholder اولیه
         alt="Truck"
         className="absolute w-screen h-screen lg:h-[115vh] object-cover lg:object-fill z-40"
         style={{ visibility: "hidden", transform: "scaleY(0)", opacity: 0 }}
