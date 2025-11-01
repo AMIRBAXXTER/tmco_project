@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function LinkList() {
+export default function LinkList({ onLinkClick }) {
   const pathname = usePathname();
 
   const links = [
@@ -21,6 +21,7 @@ export default function LinkList() {
           <Link
             key={link.href}
             href={link.href}
+            onClick={onLinkClick}
             className={`px-1 py-2 rounded-md transition  font-bold
                        ${isActive ? "text-[#3C9BD8]" : "text-white hover:text-[#c3dafd]"}`}
           >

@@ -83,7 +83,7 @@ export default function Header() {
 
         {/* لینک‌ها */}
         <div className="flex flex-col items-start px-6 space-y-4 mt-4">
-          <LinkList />
+          <LinkList onLinkClick={menuOpen ? () => setMenuOpen(false) : undefined} />
         </div>
       </div>
     </>

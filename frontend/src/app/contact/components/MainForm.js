@@ -117,7 +117,7 @@ export default function MainForm() {
                   <path d="M16.5 28.5H21C21.7956 28.5 22.5587 28.8161 23.1213 29.3787C23.6839 29.9413 24 30.7044 24 31.5V36C24 36.7956 23.6839 37.5587 23.1213 38.1213C22.5587 38.6839 21.7956 39 21 39H19.5C18.7044 39 17.9413 38.6839 17.3787 38.1213C16.8161 37.5587 16.5 36.7956 16.5 36V28.5ZM16.5 28.5C16.5 26.7272 16.8492 24.9717 17.5276 23.3338C18.2061 21.6959 19.2005 20.2076 20.4541 18.9541C21.7076 17.7005 23.1959 16.7061 24.8338 16.0276C26.4717 15.3492 28.2272 15 30 15C31.7728 15 33.5283 15.3492 35.1662 16.0276C36.8041 16.7061 38.2923 17.7005 39.5459 18.9541C40.7995 20.2076 41.7939 21.6959 42.4724 23.3338C43.1508 24.9717 43.5 26.7272 43.5 28.5M43.5 28.5V36C43.5 36.7956 43.1839 37.5587 42.6213 38.1213C42.0587 38.6839 41.2956 39 40.5 39H39C38.2044 39 37.4413 38.6839 36.8787 38.1213C36.3161 37.5587 36 36.7956 36 36V31.5C36 30.7044 36.3161 29.9413 36.8787 29.3787C37.4413 28.8161 38.2044 28.5 39 28.5H43.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M43.5 36V39C43.5 40.5913 42.8679 42.1174 41.7426 43.2426C40.6174 44.3679 39.0913 45 37.5 45H30" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-base font-medium">02191095436</span>
+                <span className="text-base md:text-lg font-medium">02191095436</span>
               </div>
 
               {/* ✉ ایمیل */}
@@ -129,7 +129,7 @@ export default function MainForm() {
                   <path d="M42 18H18C16.3431 18 15 19.3431 15 21V39C15 40.6569 16.3431 42 18 42H42C43.6569 42 45 40.6569 45 39V21C45 19.3431 43.6569 18 42 18Z"
                     stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-base font-medium">info@tmcopars.ir</span>
+                <span className="text-base md:text-lg font-medium">info@tmcopars.ir</span>
               </div>
 
               {/* 📍 آدرس */}
@@ -141,7 +141,7 @@ export default function MainForm() {
                   <path d="M30 31.5C32.4853 31.5 34.5 29.4853 34.5 27C34.5 24.5147 32.4853 22.5 30 22.5C27.5147 22.5 25.5 24.5147 25.5 27C25.5 29.4853 27.5147 31.5 30 31.5Z"
                     stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-base font-medium leading-6 text-right">
+                <span className="text-base md:text-lg font-medium leading-6 text-right">
                   تهران، شهرک استقلال ریا، خیابان سپاه اسلام ۳۶، خیابان شهید عباس شفیعی هنجنی، پلاک ۴، طبقه همکف
                 </span>
               </div>
@@ -215,7 +215,7 @@ export default function MainForm() {
                   onChange={handleChange}
                   className="px-3 py-2 rounded-md font-bold outline-none border 
                              border-[#888888] placeholder-[#888888]
-                             focus:ring-2 focus:ring-[#3C9BD8]"
+                             focus:ring-2 focus:ring-[#3C9BD8] resize-none"
                   placeholder="نظر یا پیشنهاد خود را اینجا بنویسید..."
                   required
                 ></textarea>
