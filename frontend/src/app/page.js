@@ -1,4 +1,5 @@
 "use client";
+import { use, useEffect, useState } from "react";
 import { IntroAnimation, WhyTmco, DriverApp, DriverDetail } from "@/components/Home";
 import MotionEffect from "../animations/MotionEffect";
 import Image from "next/image";
@@ -8,6 +9,16 @@ import TariffInquiry from "@/components/TariffInquiry";
 import ClientsSection from "@/components/Home/ClientsSection";
 
 export default function Home() {
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/articles")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+      });
+  }, []);
   return (
     <>
       {/* 🎬 Intro Animation */}
@@ -120,7 +131,7 @@ export default function Home() {
       {/* 📰 بخش وبلاگ */}
       <MotionEffect effect="staggeredFadeIn" className="p-10 w-screen h-auto">
         {[<h2 key="blog-title" className="font-extrabold text-4xl my-10">وبلاگ</h2>,
-        <BlogCarousel key="blog-carousel" />]}
+        <BlogCarousel posts={posts} />]}
       </MotionEffect>
 
       {/* 🤝 بخش مشتریان */}
