@@ -9,6 +9,7 @@ class CategorySerializer(ModelSerializer):
 
 
 class BlogSerializer(ModelSerializer):
+    category = CategorySerializer()
     class Meta:
         model = Blog
         fields = '__all__'

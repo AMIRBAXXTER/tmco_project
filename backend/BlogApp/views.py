@@ -1,7 +1,11 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from .models import Category, Blog
 from .serializers import CategorySerializer, BlogSerializer
+from .pagination import BlogPagination
 
 
 class CategoryViewSet(ModelViewSet):
@@ -12,11 +16,12 @@ class CategoryViewSet(ModelViewSet):
 class BlogViewSet(ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    pagination_class = BlogPagination
 
     def get_queryset(self):
         queryset = Blog.objects.all()
 
-        category = self.request.query_params.get('category')  # یا category_id
+        category = self.request.query_params.get('category')
         search = self.request.query_params.get('search')
 
         if category:
@@ -29,3 +34,9 @@ class BlogViewSet(ModelViewSet):
             )
 
         return queryset.order_by('-created_at')
+
+    @action(detail=False, methods=['get'], url_path='(?P<slug>[^/.]+)')
+    def get_by_slug(self, request, slug=None):
+        blog = get_object_or_404(Blog, slug=slug)
+        serializer = self.get_serializer(blog)
+        return Response(serializer.data)
