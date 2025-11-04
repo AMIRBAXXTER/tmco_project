@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import LuminousGrid from "@/components/Layout/LuminousGrid";
 import SearchCategory from "./components/SearchCategory";
-import BlogCarousel from "@/components/BlogCarousel";
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
@@ -19,7 +18,7 @@ export default function Home() {
 
   return (
     <>
-      <LuminousGrid />
+      {/* <LuminousGrid /> */}
       <SearchCategory />
     </>
   );

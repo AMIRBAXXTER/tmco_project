@@ -117,7 +117,7 @@ export default function SearchCategory() {
     return (
         <MotionEffect
             effect="scaleSlideUp"
-            className="flex flex-col justify-center items-center w-full min-h-screen bg-white px-5 md:px-10 md:pt-[180px]"
+            className="flex flex-col justify-center items-center w-full min-h-screen bg-white px-5 md:pt-[180px]"
         >
             <MotionEffect
                 effect="scaleSlideUp"
