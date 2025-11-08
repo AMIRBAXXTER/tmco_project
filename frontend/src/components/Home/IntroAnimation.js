@@ -15,7 +15,7 @@ export default function IntroAnimation() {
   const [typedText, setTypedText] = useState("");
   const [framesReady, setFramesReady] = useState(false);
 
-  const fullText = "CI/CD با استفاده از Docker و Kubernetes";
+  const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
   const frameCount = 139;
 
   // حافظه فریم‌ها
