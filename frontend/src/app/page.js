@@ -16,7 +16,7 @@ export default function Home() {
     fetch("/api/articles")
       .then((res) => res.json())
       .then((data) => {
-        setPosts(data);
+        setPosts(data.results);
       });
   }, []);
   return (

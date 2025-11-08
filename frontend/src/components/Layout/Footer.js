@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import React, { useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -8,14 +9,15 @@ import { IoLocationOutline } from "react-icons/io5";
 
 gsap.registerPlugin(MotionPathPlugin);
 
-// جلوگیری از انباشته شدن انیمیشن‌ها بین رندرها/ریسایزها
+// ✅ جلوگیری از انباشته‌شدن انیمیشن‌ها بین رندرها
 let _wormTweens = [];
 
 export default function Footer() {
-
   useLayoutEffect(() => {
-    gsap.registerPlugin(MotionPathPlugin);
+    // 🚫 در محیط SSR اصلاً اجرا نکن
+    if (typeof window === "undefined" || typeof document === "undefined") return;
 
+    gsap.registerPlugin(MotionPathPlugin);
     let prevWidth = window.innerWidth;
 
     const worms = [
@@ -28,24 +30,29 @@ export default function Footer() {
     ];
 
     const isBackgroundLight = (x, y) => {
+      if (typeof document === "undefined") return false;
       let el = document.elementFromPoint(x, y);
       if (!el) return false;
 
-      if (el.classList.contains("worm-glow-light") || el.classList.contains("worm-glow-dark")) {
+      // شفاف‌سازی برای بررسی زیر عنصر glow
+      if (
+        el.classList.contains("worm-glow-light") ||
+        el.classList.contains("worm-glow-dark")
+      ) {
         el.style.pointerEvents = "none";
         const under = document.elementFromPoint(x, y);
         el.style.pointerEvents = "";
         el = under;
       }
-      if (!el) return false;
 
+      if (!el) return false;
       if (el.closest(".footer-dark-section")) return false;
       if (el.closest(".bg-white")) return true;
       return false;
     };
 
     const animateWorms = () => {
-      _wormTweens.forEach(t => t.kill());
+      _wormTweens.forEach((t) => t.kill());
       _wormTweens = [];
 
       worms.forEach(({ el, path }) => {
@@ -55,12 +62,12 @@ export default function Footer() {
           repeat: -1,
           ease: "none",
           motionPath: {
-            path: path,
+            path,
             align: path,
             autoRotate: true,
             alignOrigin: [0.5, 0.5],
           },
-          onUpdate: function () {
+          onUpdate: () => {
             const dot = document.querySelector(el);
             if (!dot) return;
             const bbox = dot.getBoundingClientRect();
@@ -92,18 +99,17 @@ export default function Footer() {
 
     const start = () => requestAnimationFrame(() => animateWorms());
 
-    window.addEventListener('intro-finished', start);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("intro-finished", start);
+    window.addEventListener("resize", handleResize);
     animateWorms();
 
     return () => {
-      window.removeEventListener('intro-finished', start);
-      window.removeEventListener('resize', handleResize);
-      // تمیزکاری انیمیشن‌ها
-      _wormTweens.forEach(t => t.kill());
+      window.removeEventListener("intro-finished", start);
+      window.removeEventListener("resize", handleResize);
+      _wormTweens.forEach((t) => t.kill());
       _wormTweens = [];
+      gsap.globalTimeline.clear(); // 🧹 جلوگیری از memory leak در HMR
     };
-
   }, []);
 
   return (

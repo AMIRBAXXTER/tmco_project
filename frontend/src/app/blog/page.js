@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import LuminousGrid from "@/components/Layout/LuminousGrid";
 import SearchCategory from "./components/SearchCategory";
 
@@ -8,8 +8,9 @@ export default function Home() {
 
   // بررسی سایز صفحه برای تشخیص موبایل یا دسکتاپ
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // کمتر از 768px یعنی موبایل
+      setIsMobile(window.innerWidth < 768);
     };
     handleResize(); // اجرا در بار اول
     window.addEventListener("resize", handleResize);
@@ -17,9 +18,11 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <main className="bg-white min-h-screen">
+      <Suspense fallback={<p className="text-gray-500 text-center mt-10">در حال بارگذاری...</p>}>
+        <SearchCategory />
+      </Suspense>
       {/* <LuminousGrid /> */}
-      <SearchCategory />
-    </>
+    </main>
   );
 }

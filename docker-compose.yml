@@ -20,17 +20,17 @@ services:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
     ports:
       - "3000:3000"
     restart: always
     networks:
       - main
     # for dev stage only
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: npm run dev
+    # volumes:
+    #   - ./frontend:/app
+    #   - /app/node_modules
+    # command: npm run dev
 
   nginx:
     container_name: nginx

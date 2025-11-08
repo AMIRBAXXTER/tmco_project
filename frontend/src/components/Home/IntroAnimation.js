@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-document.body.style.overflow = "hidden";
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 export default function IntroAnimation() {
   const containerRef = useRef(null);
@@ -14,15 +13,15 @@ export default function IntroAnimation() {
 
   const [phase, setPhase] = useState("intro");
   const [typedText, setTypedText] = useState("");
-  const [framesReady, setFramesReady] = useState(false); // ✅ وضعیت لود فریم‌ها
+  const [framesReady, setFramesReady] = useState(false);
+
   const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
   const frameCount = 139;
 
-  // 🧩 حافظه جهانی فریم‌ها
+  // حافظه فریم‌ها
   const getCachedFrames = async () => {
-    if (window._truckFrames && Array.isArray(window._truckFrames)) {
-      return window._truckFrames;
-    }
+    if (typeof window === "undefined") return [];
+    if (window._truckFrames && Array.isArray(window._truckFrames)) return window._truckFrames;
 
     const frames = [];
     for (let i = 1; i <= frameCount; i++) {
@@ -35,36 +34,31 @@ export default function IntroAnimation() {
     return frames;
   };
 
-  // 🧠 پیش‌لود فریم‌ها
+  // پیش‌لود
   useEffect(() => {
-    getCachedFrames().then(() => {
-      setFramesReady(true);
-    });
+    if (typeof window === "undefined") return;
+    getCachedFrames().then(() => setFramesReady(true));
   }, []);
 
-  // 🎞️ انیمیشن لودر قبل از شروع intro
+  // Loader animation
   useEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined") return;
     document.body.style.overflow = "hidden";
     if (!framesReady) {
       const ctx = gsap.context(() => {
-        // جاده زیر کامیون حرکت کند
         gsap.to("#loader-truck", {
-          scale: 1.02,             // فقط کمی بزرگ و کوچک بشه
+          scale: 1.02,
           duration: 1.2,
           yoyo: true,
           repeat: -1,
-          ease: "sine.inOut"
+          ease: "sine.inOut",
         });
-
-        // 🔹 فقط جاده حرکت کنه (نوار نقاله)
         gsap.to("#loader-truck .road-line", {
-          strokeDashoffset: 100,   // عدد بزرگتر = سرعت بیشتر
+          strokeDashoffset: 100,
           duration: 0.8,
           repeat: -1,
-          ease: "linear"
+          ease: "linear",
         });
-
-        // 🔹 چرخ‌ها فقط بچرخن
         gsap.to(["#wheel-left", "#wheel-right"], {
           rotation: 360,
           scale: 1.05,
@@ -72,40 +66,35 @@ export default function IntroAnimation() {
           transformOrigin: "center center",
           duration: 1.2,
           repeat: -1,
-          ease: "linear"
+          ease: "linear",
         });
-
-        // 🔹 بدنه کامیون کمی درخشندگی بگیره
         gsap.to("#truck-body", {
           repeat: -1,
           yoyo: true,
           duration: 0.8,
           filter: "brightness(1.6)",
-          ease: "power1.inOut"
+          ease: "power1.inOut",
         });
-
       });
-
       return () => ctx.revert();
     }
   }, [framesReady]);
 
-
-
-  // 🎬 فاز INTRO
+  // INTRO animation
   useEffect(() => {
-    if (!framesReady) return; // ✅ صبر کن تا فریم‌ها آماده بشن
+    if (typeof window === "undefined" || typeof document === "undefined") return;
+    if (!framesReady) return;
 
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
-
       const paths = gsap.utils.toArray(".intro-line path");
-      paths.forEach((path) => {
-        const length = path.getTotalLength();
-        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+
+      paths.forEach((p) => {
+        const len = p.getTotalLength();
+        gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
       });
 
       tl.set([logoRef.current, companyNameRef.current, truckRef.current], {
@@ -113,12 +102,8 @@ export default function IntroAnimation() {
         opacity: 0,
       });
 
-      paths.forEach((path, i) => {
-        tl.to(path, {
-          strokeDashoffset: 0,
-          duration: 2,
-          ease: "power3.out",
-        }, i * 0.1);
+      paths.forEach((p, i) => {
+        tl.to(p, { strokeDashoffset: 0, duration: 2, ease: "power3.out" }, i * 0.1);
       });
 
       tl.to(logoRef.current, {
@@ -126,68 +111,53 @@ export default function IntroAnimation() {
         opacity: 1,
         scale: 1,
         duration: 1,
-      }, "-=0.5");
+      }, "-=0.5")
+        .to(companyNameRef.current, {
+          visibility: "visible",
+          opacity: 1,
+          y: 0,
+          duration: 1,
+        }, "-=0.5")
+        .to(logoRef.current, {
+          filter: "grayscale(0%)",
+          duration: 2,
+          ease: "power2.inOut",
+        })
+        .to(truckRef.current, {
+          visibility: "visible",
+          scaleY: 1,
+          opacity: 1,
+          transformOrigin: "center center",
+          duration: 2.5,
+          ease: "power3.out",
+        });
 
-      tl.to(companyNameRef.current, {
-        visibility: "visible",
-        opacity: 1,
-        y: 0,
-        duration: 1,
-      }, "-=0.5");
-
-      tl.to(logoRef.current, {
-        filter: "grayscale(0%)",
-        duration: 2,
-        ease: "power2.inOut",
-      });
-
-      tl.to(truckRef.current, {
-        visibility: "visible",
-        scaleY: 1,
-        opacity: 1,
-        transformOrigin: "center center",
-        duration: 2.5,
-        ease: "power3.out",
-      });
-
-      // 👇🏻 انتقال به فاز scroll فقط بعد از پایان Intro کامل
       tl.eventCallback("onComplete", async () => {
         const frames = await getCachedFrames();
-        if (truckRef.current) {
-          truckRef.current.src = frames[0]; // فریم اول رو صدا بزن قبل از فعال شدن scrolltrigger
-        }
+        if (truckRef.current && frames.length) truckRef.current.src = frames[0];
         setPhase("scroll");
         document.body.style.overflow = "auto";
         window.dispatchEvent(new Event("intro-finished"));
       });
-
     }, containerRef);
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.trigger === containerRef.current) trigger.kill();
-      });
+      ScrollTrigger.getAll().forEach((t) => t.kill());
       document.body.style.overflow = "auto";
     };
-  }, [framesReady]); // ✅ فقط وقتی فریم‌ها آماده شدن اجرا کن
+  }, [framesReady]);
 
-
-  // 🚚 فاز SCROLL با کنترل کامل
+  // Scroll animation (سرعت متعادل)
   useEffect(() => {
-    let isMounted = true;
-
+    if (typeof window === "undefined" || typeof document === "undefined") return;
+    let mounted = true;
     if (phase === "scroll" && framesReady) {
       const obj = { frame: 1 };
       const framesPromise = getCachedFrames();
 
-      document.body.style.overflow = "hidden"; // 🚫 جلوگیری از scroll قبل از لود
-
       framesPromise.then((frames) => {
-        if (!isMounted) return;
-
-        document.body.style.overflow = "auto"; // حالا اجازه‌ی scroll بده
-
+        if (!mounted) return;
         const scrollTween = gsap.to(obj, {
           frame: frameCount,
           snap: "frame",
@@ -196,45 +166,33 @@ export default function IntroAnimation() {
             trigger: containerRef.current,
             start: "top top",
             end: "+=2000",
-            scrub: 1.5,
+            scrub: 2.5,
             pin: true,
           },
           onUpdate: () => {
             if (!truckRef.current) return;
             truckRef.current.src = frames[obj.frame - 1];
-
             const progress = obj.frame / frameCount;
-            const charsToShow = Math.floor(progress * fullText.length);
-            setTypedText(fullText.slice(0, charsToShow));
+            const chars = Math.floor(progress * fullText.length);
+            setTypedText(fullText.slice(0, chars));
           },
         });
 
-        // ✅ Refresh فقط اگر کاربر هنوز اسکرول نکرده
-        setTimeout(() => {
-          if (window.scrollY < 30) ScrollTrigger.refresh();
-        }, 500);
+        setTimeout(() => window.scrollY < 30 && ScrollTrigger.refresh(), 400);
 
         return () => {
-          scrollTween.scrollTrigger?.kill();
           scrollTween.kill();
           ScrollTrigger.getAll().forEach((t) => t.kill());
           gsap.globalTimeline.clear();
-          document.body.style.overflow = "auto";
         };
       });
     }
-
-    return () => {
-      isMounted = false;
-    };
+    return () => (mounted = false);
   }, [phase, framesReady]);
 
-  // 🧱 رندر JSX
+  // JSX اصلی (مانند نسخه‌ی ارسالی)
   return (
-    <section
-      ref={containerRef}
-      className="relative w-full min-h-screen bg-white overflow-hidden"
-    >
+    <section ref={containerRef} className="relative w-full min-h-screen bg-white overflow-hidden">
       {/* لودر موقت */}
       {!framesReady && (
         <div
@@ -307,9 +265,7 @@ export default function IntroAnimation() {
           </p>
         </div>
       )}
-
-
-
+      
       {/* SVG پس‌زمینه */}
       <div className="absolute inset-0 z-0">
         <svg className="intro-line absolute top-0 left-0 w-1/4 h-3/5" width="508" height="570" viewBox="0 0 508 570" fill="none" xmlns="http://www.w3.org/2000/svg">

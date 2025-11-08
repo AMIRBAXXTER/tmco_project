@@ -7,6 +7,9 @@ import "swiper/css";
 
 export default function TrapezoidLayout() {
   useEffect(() => {
+    // ✅ فقط در مرورگر اجرا بشه
+    if (typeof window === "undefined" || typeof document === "undefined") return;
+
     const BASE_WIDTH = 1920;
     const BASE_HEIGHT = 900;
 
@@ -35,7 +38,8 @@ export default function TrapezoidLayout() {
         const isTop = el.classList.contains("top-piece");
         const isBottom = el.classList.contains("bottom-piece");
         if (isTop) el.style.transform += ` translateY(${yEdgeOffset * scaleY}px)`;
-        else if (isBottom) el.style.transform += ` translateY(-${yEdgeOffset * scaleY}px)`;
+        else if (isBottom)
+          el.style.transform += ` translateY(-${yEdgeOffset * scaleY}px)`;
 
         if (tanTheta > 0.25) {
           const scale = Math.min(1.15, 1 + (tanTheta - 0.25) * 0.6);
@@ -59,22 +63,25 @@ export default function TrapezoidLayout() {
     return () => window.removeEventListener("resize", updateClipPathsAndPositions);
   }, []);
 
-  // آیتم‌های کروسل
+  // 🧩 آیتم‌های کروسل
   const aboutItems = [
     {
       icon: "/ServiceIcons/train_service.svg",
       title: "خدمات ریلی",
-      description: "حمل و نقل ریلی مطمئن و اقتصادی، بهترین گزینه برای جابجایی محموله‌های بزرگ و حجیم.",
+      description:
+        "حمل و نقل ریلی مطمئن و اقتصادی، بهترین گزینه برای جابجایی محموله‌های بزرگ و حجیم.",
     },
     {
       icon: "/ServiceIcons/plane_service.svg",
       title: "خدمات هوایی",
-      description: "حمل و نقل هوایی سریع و ایمن با پوشش گسترده بین‌المللی، برای تحویل به‌موقع محموله‌های شما.",
+      description:
+        "حمل و نقل هوایی سریع و ایمن با پوشش گسترده بین‌المللی، برای تحویل به‌موقع محموله‌های شما.",
     },
     {
       icon: "/ServiceIcons/truck_service.svg",
       title: "خدمات زمینی",
-      description: "بهترین خدمات حمل و نقل زمینی با تضمین امنیت و سرعت، برای جابه‌جایی بارهای شما در سراسر کشور.",
+      description:
+        "بهترین خدمات حمل و نقل زمینی با تضمین امنیت و سرعت، برای جابه‌جایی بارهای شما در سراسر کشور.",
     },
   ];
 
@@ -87,8 +94,10 @@ export default function TrapezoidLayout() {
         <div className="w-[80%] mx-auto mt-35 h-auto">
           <h1 className="text-white mb-10 font-bold text-4xl">خدمات ما</h1>
           <p className="text-white leading-relaxed">
-            تمکو زیرساختی دیجیتال برای اتصال شرکت‌ها به ارائه‌دهندگان خدمات حمل‌ونقل در سه بخش اصلی زمینی، ریلی و هوایی است.
-            این پلتفرم با یکپارچه‌سازی داده‌ها و فرآیندها، دید کامل و شفافیت عملیاتی در اختیار مدیران لجستیک قرار می‌دهد.
+            تمکو زیرساختی دیجیتال برای اتصال شرکت‌ها به
+            ارائه‌دهندگان خدمات حمل‌ونقل در سه بخش اصلی زمینی، ریلی و هوایی است.
+            این پلتفرم با یکپارچه‌سازی داده‌ها و فرآیندها، دید کامل و شفافیت
+            عملیاتی در اختیار مدیران لجستیک قرار می‌دهد.
           </p>
 
           <a
@@ -129,10 +138,9 @@ export default function TrapezoidLayout() {
                       width={60}
                       height={60}
                       className="mb-4"
+                      priority
                     />
-                    <h3 className="font-bold text-lg text-white">
-                      {item.title}
-                    </h3>
+                    <h3 className="font-bold text-lg text-white">{item.title}</h3>
                     <p className="text-sm mt-3 text-gray-300 leading-relaxed">
                       {item.description}
                     </p>
