@@ -23,7 +23,10 @@ jobs:
       - name: Build Docker image (convert repo to lowercase)
         run: |
           REPO_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          docker build -t ghcr.io/${REPO_LC}/temco-frontend:latest .
+          docker build \
+            -f frontend/Dockerfile.prod \
+            -t ghcr.io/${REPO_LC}/temco-frontend:latest \
+            ./frontend
 
       - name: Push Docker image
         run: |
