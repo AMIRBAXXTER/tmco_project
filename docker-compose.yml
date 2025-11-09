@@ -24,15 +24,15 @@ services:
     networks:
       - main
     # for prod stage only
-    image: ghcr.io/amirbaxxter/temco-frontend:latest
+    # image: ghcr.io/amirbaxxter/temco-frontend:latest
     # for dev stage only
-    # build:
-    # context: ./frontend
-    # dockerfile: Dockerfile.dev
-    # volumes:
-    #   - ./frontend:/app
-    #   - /app/node_modules
-    # command: npm run dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
 
   nginx:
     container_name: nginx
