@@ -2,7 +2,7 @@ services:
   backend:
     container_name: backend
     build: ./backend
-    image: ghcr.io/amirbaxxter/temco-frontend:latest
+    image: ghcr.io/amirbaxxter/tmco-backend:latest
     command: sh /code/entrypoint.sh
     volumes:
       - ./backend:/code
@@ -29,7 +29,7 @@ services:
       - main
 
     # for prod stage only
-    image: ghcr.io/amirbaxxter/temco-frontend:latest
+    image: ghcr.io/amirbaxxter/tmco-frontend:latest
 
     # for dev stage only
     # build:
