@@ -10,7 +10,8 @@ services:
     image: ghcr.io/amirbaxxter/tmco-backend:latest
 
     volumes:
-      - ./backend:/code
+#    for dev stage only
+#      - ./backend:/code
       - ./backend/static:/vol/web/static
       - ./backend/media:/vol/web/media
     ports:
