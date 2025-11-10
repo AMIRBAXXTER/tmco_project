@@ -1,7 +1,7 @@
 services:
   backend:
     container_name: backend
-    build: ./backend
+#    build: ./backend
     image: ghcr.io/amirbaxxter/tmco-backend:latest
     command: sh /code/entrypoint.sh
     volumes:
