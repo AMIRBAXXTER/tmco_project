@@ -1,9 +1,14 @@
 services:
   backend:
     container_name: backend
+
+#    for dev stage only
 #    build: ./backend
+#    command: sh /code/entrypoint.sh
+
+#    for prod stage only
     image: ghcr.io/amirbaxxter/tmco-backend:latest
-    command: sh /code/entrypoint.sh
+
     volumes:
       - ./backend:/code
       - ./backend/static:/vol/web/static
