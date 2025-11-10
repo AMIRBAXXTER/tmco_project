@@ -74,7 +74,7 @@ services:
       - POSTGRES_USER=tmco_project_user
       - POSTGRES_PASSWORD=A$%^12Hhdk*V185Ui%32vbOTt&&25
     volumes:
-      - ./db_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - main
 
