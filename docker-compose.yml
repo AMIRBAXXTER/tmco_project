@@ -161,7 +161,7 @@ networks:
     driver: bridge
 
 volumes:
-  db_data:
+  postgres_data:
   redis_data:
   static_data:
   media_data:
