@@ -1,4 +1,4 @@
-name: Build and Publish Docker Image
+name: Build and Publish Backend Image
 
 on:
   push:
@@ -24,11 +24,11 @@ jobs:
         run: |
           REPO_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           docker build \
-            -f frontend/Dockerfile.prod \
-            -t ghcr.io/${REPO_LC}/temco-frontend:latest \
-            ./frontend
+            -f backend/Dockerfile \
+            -t ghcr.io/${REPO_LC}/tmco-backend:latest \
+            ./backend
 
       - name: Push Docker image
         run: |
           REPO_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          docker push ghcr.io/${REPO_LC}/temco-frontend:latest
+          docker push ghcr.io/${REPO_LC}/tmco-backend:latest

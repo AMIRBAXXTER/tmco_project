@@ -2,6 +2,7 @@ services:
   backend:
     container_name: backend
     build: ./backend
+    image: ghcr.io/amirbaxxter/temco-frontend:latest
     command: sh /code/entrypoint.sh
     volumes:
       - ./backend:/code
@@ -13,6 +14,9 @@ services:
       - db
       - redis
       - rabbitmq
+    environment:
+      - PHASE_ENV=production
+#      - PHASE_ENV=development
     networks:
       - main
 
@@ -23,8 +27,10 @@ services:
     restart: always
     networks:
       - main
+
     # for prod stage only
     image: ghcr.io/amirbaxxter/temco-frontend:latest
+
     # for dev stage only
     # build:
     #   context: ./frontend
