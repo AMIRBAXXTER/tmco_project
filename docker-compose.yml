@@ -12,8 +12,8 @@ services:
     volumes:
 #    for dev stage only
 #      - ./backend:/code
-      - static_data:/vol/web/static
-      - media_data:/vol/web/media
+      - static_data:/code/static
+      - media_data:/code/media
     ports:
       - "8000:8000"
     depends_on:
@@ -53,8 +53,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static_data:/vol/web/static
-      - media_data:/vol/web/media
+      - static_data:/code/static
+      - media_data:/code/media
     depends_on:
       - backend
       - frontend
@@ -154,5 +154,3 @@ networks:
 volumes:
   db_data:
   redis_data:
-  static_data:
-  media_data:
