@@ -3,13 +3,13 @@ services:
     container_name: backend
 
 # -------- DEV STAGE ----------
-    build: ./backend
-    image: backend
-    command: sh /code/entrypoint.sh
+#    build: ./backend
+#    image: backend
+#    command: sh /code/entrypoint.sh
 # --------------------------------
 
 # -------- PROD STAGE ----------
-#    image: ghcr.io/amirbaxxter/tmco-backend:latest
+    image: ghcr.io/amirbaxxter/tmco-backend:latest
 # --------------------------------
 
     volumes:
