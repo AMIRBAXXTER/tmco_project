@@ -13,7 +13,7 @@ services:
 # --------------------------------
 
     volumes:
-      - ./backend:/code
+#      - ./backend:/code
       - static_data:/code/static
       - media_data:/code/media
       - ${HOST_BACKUP_PATH}:/host_backups
@@ -129,10 +129,10 @@ services:
 
   celery:
     container_name: celery
-    image: backend
+    image: ghcr.io/amirbaxxter/tmco-backend:latest
     command: celery -A config.celery_base worker -Q db_backup -l info
     volumes:
-      - ./backend:/code
+#      - ./backend:/code
       - ./backups:/backups
     depends_on:
       - backend
@@ -157,10 +157,10 @@ services:
 
   celerybeat:
     container_name: celerybeat
-    image: backend
+    image: ghcr.io/amirbaxxter/tmco-backend:latest
     command: celery -A config.celery_base beat -l info
     volumes:
-      - ./backend:/code
+#      - ./backend:/code
       - ./backups:/backups
     depends_on:
       - backend
