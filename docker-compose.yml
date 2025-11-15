@@ -139,7 +139,7 @@ services:
     # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-backend:latest
     # --------------------------------
-    command: celery -A config.celery_base worker -Q db_backup,views_handler -l info
+    command: python -m celery -A config.celery_base worker -Q db_backup,views_handler -l info
     volumes:
 #      - ./backend:/code
       - ./backups:/backups
@@ -174,7 +174,7 @@ services:
     # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-backend:latest
     # --------------------------------
-    command: celery -A config.celery_base beat -l info
+    command: python -m celery -A config.celery_base beat -l info
     volumes:
 #      - ./backend:/code
       - ./backups:/backups
