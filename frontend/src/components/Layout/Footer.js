@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { usePathname } from "next/navigation";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -14,7 +14,22 @@ gsap.registerPlugin(MotionPathPlugin);
 let _wormTweens = [];
 
 export default function Footer() {
+
+  const [dailyViews, setDailyViews] = useState(0);
+  const [totalViews, setTotalViews] = useState(0);
+
   const pathname = usePathname();
+
+  useEffect(() => {
+    fetch("/api/add-views")
+      .then((res) => res.json())
+      .then((data) => {
+        setDailyViews(data.daily_views);
+        setTotalViews(data.total_views);
+        console.log(data);
+      }).catch(err => console.error("Get views failed:", err));
+  }, []);
+
   useLayoutEffect(() => {
     // 🚫 در محیط SSR اصلاً اجرا نکن
     if (typeof window === "undefined" || typeof document === "undefined") return;
@@ -210,8 +225,8 @@ export default function Footer() {
                 <div className="w-1/2 h-full">
                   <div className="flex flex-col gap-4">
                     <h2 className="font-bold">آمار بازدیدکنندگان</h2>
-                    <p className="text-[#ADBDCC]">کل بازدیدکنندگان:</p>
-                    <p className="text-[#ADBDCC]">بازدیدکنندگان امروز:</p>
+                    <p className="text-[#ADBDCC]">کل بازدیدکنندگان: {totalViews}</p>
+                    <p className="text-[#ADBDCC]">بازدیدکنندگان امروز: {dailyViews}</p>
                   </div>
 
                 </div>

@@ -22,4 +22,5 @@ urlpatterns = [
     path('api/', include('TariffApp.urls')),
     path('api/', include('ContactusApp.urls')),
     path('api/', include('BlogApp.urls')),
+    path('api/', include('FooterApp.urls')),
 ]

@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'fa-ir'
 
 TIME_ZONE = "Asia/Tehran"
-USE_TZ = True
+USE_TZ = False
 
 USE_I18N = True
 
@@ -171,19 +171,18 @@ RABBITMQ_PASS = os.getenv("RABBITMQ_DEFAULT_PASS", "rabbitmq_password")
 RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbitmq")
 RABBITMQ_PORT = os.getenv("RABBITMQ_PORT", "5672")
 
-REDIS_HOST = os.getenv("REDIS_HOST", "redis")
-REDIS_PORT = os.getenv("REDIS_PORT", "6379")
-REDIS_DB_RESULT = os.getenv("REDIS_DB_RESULT", "0")
-REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "")
+REDIS_DB_RESULT = os.getenv("REDIS_DB_RESULT", "1")
 
 CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASS}@{RABBITMQ_HOST}:{RABBITMQ_PORT}//"
 CELERY_RESULT_BACKEND = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB_RESULT}"
 
 CELERY_TASK_QUEUES = (
     Queue("db_backup", routing_key="db_backup.#"),
+    Queue("views_handler", routing_key="views_handler.#"),
     Queue("main", routing_key="main.#"),
 )
 
 CELERY_TASK_DEFAULT_QUEUE = "main"
 CELERY_TASK_DEFAULT_EXCHANGE_TYPE = "direct"
 CELERY_TASK_DEFAULT_ROUTING_KEY = "main.default"
+

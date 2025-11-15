@@ -32,8 +32,8 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - TZ=Asia/Tehran
     networks:
@@ -94,13 +94,15 @@ services:
     container_name: redis
     image: redis:7.0.11-alpine
     command: >
-      sh -c "redis-server
-        --requirepass $$REDIS_PASSWORD
+      redis-server
+        --dir /data
+        --dbfilename dump.rdb
+        --appendfilename appendonly.aof
         --appendonly yes
+        --save 60 1
+        --requirepass ${REDIS_PASSWORD}
         --maxmemory 256mb
-        --maxmemory-policy allkeys-lru"
-    environment:
-      - REDIS_PASSWORD=13761376
+        --maxmemory-policy allkeys-lru
     ports:
       - "6379:6379" # در پروداکشن حذف شود
     volumes:
@@ -129,8 +131,15 @@ services:
 
   celery:
     container_name: celery
+    # -------- DEV STAGE ----------
+#    build: ./backend
+#    image: backend
+    # --------------------------------
+
+    # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-backend:latest
-    command: celery -A config.celery_base worker -Q db_backup -l info
+    # --------------------------------
+    command: celery -A config.celery_base worker -Q db_backup,views_handler -l info
     volumes:
 #      - ./backend:/code
       - ./backups:/backups
@@ -148,8 +157,8 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - TZ=Asia/Tehran
     networks:
@@ -157,7 +166,14 @@ services:
 
   celerybeat:
     container_name: celerybeat
+    # -------- DEV STAGE ----------
+#    build: ./backend
+#    image: backend
+    # --------------------------------
+
+    # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-backend:latest
+    # --------------------------------
     command: celery -A config.celery_base beat -l info
     volumes:
 #      - ./backend:/code
@@ -176,8 +192,8 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - TZ=Asia/Tehran
     networks:

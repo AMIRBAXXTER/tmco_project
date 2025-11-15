@@ -12,6 +12,10 @@ app.conf.beat_schedule = {
         "task": "UserApp.tasks.backup_postgres_db",
         "schedule": crontab(hour="4", minute="0"),
     },
+    "update-daily-views": {
+        "task": "FooterApp.tasks.update_daily_views",
+        "schedule": crontab(hour="0", minute="0"),
+    },
 }
 
 app.autodiscover_tasks()

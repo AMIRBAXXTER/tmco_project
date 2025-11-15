@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { IntroAnimation, WhyTmco, DriverApp, DriverDetail } from "@/components/Home";
 import MotionEffect from "../animations/MotionEffect";
 import Image from "next/image";
@@ -12,12 +12,25 @@ export default function Home() {
 
   const [posts, setPosts] = useState([]);
 
+
   useEffect(() => {
     fetch("/api/articles")
       .then((res) => res.json())
       .then((data) => {
         setPosts(data.results);
       });
+  }, []);
+
+  useEffect(() => {
+    const alreadyPosted = sessionStorage.getItem("viewPosted");
+    if (alreadyPosted) return;
+    fetch("/api/add-views/", { method: "POST" })
+      .then((res) => res.json())
+      .then(() => console.log("View added on full reload"))
+      .catch((err) => console.error("Add view failed:", err));
+
+    sessionStorage.setItem("viewPosted", true);
+
   }, []);
   return (
     <>
