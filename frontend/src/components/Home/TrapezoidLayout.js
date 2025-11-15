@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -100,13 +101,13 @@ export default function TrapezoidLayout() {
             عملیاتی در اختیار مدیران لجستیک قرار می‌دهد.
           </p>
 
-          <a
+          <Link
             href="/about"
             className="bg-[#3C9BD8] text-center text-white mt-10 font-bold w-[250px] inline-block py-3 rounded-xl 
             transition-colors duration-100 ease-in hover:bg-[#036FD0]"
           >
             درباره ما
-          </a>
+          </Link>
 
           {/* 🔹 کروسل پیوسته و آرام */}
           <div className="mt-20 w-full">

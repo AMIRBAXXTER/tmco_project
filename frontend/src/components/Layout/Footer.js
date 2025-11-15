@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useLayoutEffect, useState, useEffect } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { usePathname } from "next/navigation";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -262,10 +263,10 @@ export default function Footer() {
                 <div className="w-1/2 h-full">
                   <div className="flex flex-col gap-2">
                     <h2 className="font-bold">دسترسی سریع</h2>
-                    <a className="text-[#ADBDCC]" href="/">خدمات ما</a>
-                    <a className="text-[#ADBDCC]" href="/">درباره ما</a>
-                    <a className="text-[#ADBDCC]" href="/">تماس با ما</a>
-                    <a className="text-[#ADBDCC]" href="/">بلاگ</a>
+                    <Link className="text-[#ADBDCC]" href="/services">خدمات ما</Link>
+                    <Link className="text-[#ADBDCC]" href="/about">درباره ما</Link>
+                    <Link className="text-[#ADBDCC]" href="/contact">تماس با ما</Link>
+                    <Link className="text-[#ADBDCC]" href="/blog">بلاگ</Link>
                   </div>
                 </div>
                 <div className="w-1/2 h-full">
