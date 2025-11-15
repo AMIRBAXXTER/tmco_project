@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e  # stop on error
+export PATH="/usr/local/bin:$PATH"
 
 if [ "$1" != "" ]; then
   echo "[$(date)] Running custom command: $@"
