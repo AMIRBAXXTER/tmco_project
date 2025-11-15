@@ -271,8 +271,8 @@ export default function Footer() {
                 <div className="w-1/2 h-full">
                   <div className="flex flex-col gap-2">
                     <h2 className="font-bold">آمار بازدیدکنندگان</h2>
-                    <p className="text-[#ADBDCC]">کل بازدیدکنندگان:239800</p>
-                    <p className="text-[#ADBDCC]">بازدیدکنندگان امروز:2599</p>
+                    <p className="text-[#ADBDCC]">کل بازدیدکنندگان:{totalViews}</p>
+                    <p className="text-[#ADBDCC]">بازدیدکنندگان امروز:{dailyViews}</p>
                   </div>
                 </div>
               </div>
