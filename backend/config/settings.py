@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'TariffApp',
     # external apps
     'rest_framework',
-    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
