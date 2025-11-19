@@ -5,7 +5,9 @@ from .models import DailyView
 
 @admin.register(DailyView)
 class DailyViewsAdmin(admin.ModelAdmin):
-    list_display = ("persian_date", "count")
+    list_display = ("date", "persian_date", "count")
+    fields = ("date", "count")
+    list_editable = ("count",)
 
     def persian_date(self, obj):
         jd = jdatetime.date.fromgregorian(date=obj.date)
