@@ -30,12 +30,12 @@ export default function ServicesTitle() {
 
           <h1
             key="main-title"
-            className="font-bold text-3xl md:text-5xl text-center leading-tight"
+            className="font-bold text-3xl leading-tight text-justify"
           >
             راهکارهای جامع حمل و نقل و لجیستیک برای کسب و کارهای مدرن
           </h1>,
 
-          <p key="description" className="w-full sm:w-4/5 text-center text-base md:text-lg mx-auto leading-relaxed text-gray-700">
+          <p key="description" className="w-full sm:w-4/5 text-center text-base md:text-lg mx-auto leading-relaxed text-gray-700 text-justify">
             تمکو یک پلتفرم جامع برای مدیریت رانندگان، نمایندگی ها و مشتریان سازمانی است. طراحی شده برای شرکت هایی که به دنبال شفافیت، مقیاس پذیری و کاهش هزینه های عملیاتی  هستند.
           </p>,
           <a
@@ -43,7 +43,7 @@ export default function ServicesTitle() {
             href="/files/driver-app.apk"
             download
             target="_blank"
-            className="bg-[#3C9BD8] text-center text-white font-bold w-1/2 py-3 rounded-xl 
+            className="bg-[#3C9BD8] text-center text-white font-bold w-1/2 py-4 rounded-xl 
                transition-colors duration-100 ease-in
                hover:bg-[#036FD0]"
           >

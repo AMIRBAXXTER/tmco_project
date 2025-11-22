@@ -30,12 +30,12 @@ export default function AboutTitle() {
 
           <h1
             key="main-title"
-            className="font-bold text-3xl md:text-5xl text-center leading-tight"
+            className="font-bold text-3xl leading-tight text-justify"
           >
             تمکو اولین پلتفرم حمل و نقل ترکیبی
           </h1>,
 
-          <p key="paragraph" className="w-full sm:w-4/5 text-center text-base md:text-lg mx-auto leading-relaxed text-gray-700">
+          <p key="paragraph" className="w-full sm:w-4/5 text-base md:text-lg mx-auto leading-relaxed text-gray-700 text-justify">
             ما در تمکو با نگاهی نو به صنعت حمل‌ونقل، سیستمی هوشمند طراحی کرده‌ایم که ارتباط میان شرکت‌های سفارش‌دهنده‌ی بار و ناوگان حمل را به‌صورت دقیق، سریع و شفاف برقرار می‌کند. هدف ما ایجاد هماهنگی کامل بین نیاز به حمل و ظرفیت ناوگان است تا هر سفر، بیش‌ترین بهره‌وری و اطمینان خاطر را برای مشتری و راننده به‌همراه داشته باشد.
 
             الگوریتم هوشمند دایون‌تک با تحلیل داده‌های مسیر، وزن و زمان تحویل، مسیرهای بهینه و تقسیم‌بندی دقیق بار را پیشنهاد می‌دهد تا هیچ لحظه‌ای از چرخه‌ی حمل بی‌استفاده نماند.

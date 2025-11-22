@@ -141,7 +141,7 @@ export default function MainForm() {
                   <path d="M30 31.5C32.4853 31.5 34.5 29.4853 34.5 27C34.5 24.5147 32.4853 22.5 30 22.5C27.5147 22.5 25.5 24.5147 25.5 27C25.5 29.4853 27.5147 31.5 30 31.5Z"
                     stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-base md:text-lg font-medium leading-6 text-right">
+                <span className="text-base md:text-lg font-medium leading-6 text-right text-justify">
                   تهران، شهرک استقلال ریا، خیابان سپاه اسلام ۳۶، خیابان شهید عباس شفیعی هنجنی، پلاک ۴، طبقه همکف
                 </span>
               </div>

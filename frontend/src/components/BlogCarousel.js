@@ -46,7 +46,7 @@ export default function BlogCarousel({ posts }) {
                   <h3 className="text-lg md:text-xl font-bold mb-3 text-[#0A2540] line-clamp-2">
                     {post.title}
                   </h3>
-                  <p className="text-sm md:text-base text-gray-700 leading-relaxed line-clamp-4">
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed line-clamp-4 text-justify">
                     {post.content || "—"}
                   </p>
                 </div>

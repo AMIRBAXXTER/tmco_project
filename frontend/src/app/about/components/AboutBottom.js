@@ -29,7 +29,7 @@ export default function AboutBottom() {
 
           <p
             key="paragraph"
-            className="w-full sm:w-4/5 text-center mx-auto text-base md:text-lg leading-relaxed text-gray-700"
+            className="w-full sm:w-4/5 mx-auto text-base md:text-lg leading-relaxed text-gray-700 text-justify"
           >
             ما در تمکو باور داریم که حمل‌ونقل تنها جابه‌جایی بار نیست، بلکه
             زنجیره‌ای از اعتماد، دقت و تصمیم‌گیری هوشمند است. هر مسیر برای ما

@@ -55,7 +55,7 @@ export default function BottomSection() {
         <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]">
           مطمئن و اقتصادی
         </h2>
-        <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl">
+        <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl text-justify">
           در دنیای امروز، سرعت دیگر تنها معیار نیست؛ دقت و برنامه‌ریزی هوشمند اهمیت بیشتری دارد. خدمات ریلی تمکو با استفاده از فناوری‌های داده‌محور، مسیرها را پیش از حرکت تحلیل و بهینه‌سازی می‌کند. هر واگن مجهز به سیستم رصد لحظه‌ای است تا موقعیت و وضعیت بار در تمام مسیر قابل‌پیگیری باشد. نتیجه؟ انتقال مطمئن، منظم و اقتصادی؛ مخصوص برندهایی که به کیفیت و شفافیت اهمیت می‌دهند.
         </p>
       </MotionEffect>

@@ -55,7 +55,7 @@ export default function MiddleSection() {
         <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]">
           سریع و ایمن
         </h2>
-        <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl">
+        <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl text-justify">
           وقتی زمان مهم‌تر از هر چیز است، تمکو راه‌حل شماست. شبکه هوایی ما با اتصال مستقیم به سامانه‌های جهانی پرواز، برنامه‌ریزی و رهگیری محموله‌ها را با دقت میلی‌ثانیه انجام می‌دهد. از لحظهٔ بارگیری تا تحویل، همه‌چیز به‌صورت دیجیتال پایش می‌شود. این یعنی سرعت واقعی با امنیت تضمین‌شده — برای محموله‌هایی که ارزش‌شان فراتر از عدد است.
         </p>
       </MotionEffect>

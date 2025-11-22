@@ -55,7 +55,7 @@ export default function BottomSection() {
         <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]">
           امنیت و سرعت
         </h2>
-        <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl">
+        <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl text-justify">
           جاده هنوز قلب زنجیرهٔ تأمین است، اما در تمکو با موتور فناوری می‌تپد. ناوگان زمینی ما با سیستم موقعیت‌یابی و تحلیل لحظه‌ای ترافیک، هر مسیر را با هوش مصنوعی انتخاب می‌کند تا تحویل‌ها سریع‌تر و کم‌هزینه‌تر انجام شوند. همه‌چیز، از زمان حرکت تا رسیدن، قابل‌پیگیری و گزارش‌دهی است. امنیت، پاسخ‌گویی و سرعت؛ سه پایه‌ای که حمل‌ونقل زمینی تمکو بر آن استوار است.
         </p>
       </MotionEffect>

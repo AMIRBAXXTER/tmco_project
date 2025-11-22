@@ -43,11 +43,11 @@ export default function TopSection() {
         {[
           <h2
             key="title"
-            className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]"
+            className="text-3xl font-bold mb-6 text-[#0A2540] text-justify"
           >
             پیوند هوشمند میان بار و مسیر
           </h2>,
-          <p key="desc" className="text-[#0A2540] text-xl leading-relaxed">
+          <p key="desc" className="text-[#0A2540] text-xl leading-relaxed text-justify">
             ما در شرکت تمکو، پلی بین صاحبان کالا و ناوگان حمل‌ونقل هستیم. با
             بهره‌گیری از سامانه تخصیص هوشمند سفر، هر سفارش در کوتاه‌ترین زمان
             ممکن، دقیق‌ترین راننده را برای خود پیدا می‌کند. نتیجه؟ سرعت بیشتر،

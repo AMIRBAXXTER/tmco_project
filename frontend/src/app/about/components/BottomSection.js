@@ -44,13 +44,13 @@ export default function BottomSection() {
         {[
           <h2
             key="title"
-            className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]"
+            className="text-3xl font-bold mb-6 text-[#0A2540] text-justify"
           >
             فناوری، موتور محرک لجستیک نوین
           </h2>,
           <p
             key="desc"
-            className="text-[#0A2540] text-xl leading-relaxed"
+            className="text-[#0A2540] text-xl leading-relaxed text-justify"
           >
             در دنیای امروز حمل‌ونقل، هوشمندی یعنی تصمیم لحظه‌ای و مسیر بهینه. 
             سامانه‌ی ما به شرکت‌هایی چون تیپاکس و اسنپ‌شاپ کمک می‌کند تا تخصیص 
