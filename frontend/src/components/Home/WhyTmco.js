@@ -15,7 +15,7 @@ export default function StaticGrid() {
                 <div key={index} className="flex items-center gap-2">
                     <img src={reason.logo} alt={`Reason ${index + 1}`} className="w-7 h-7 mr-4" />
                     <img src="/WhyTmco/Line.svg"></img>
-                    <p className="text-lg">{reason.description}</p>
+                    <p className="text-lg text-justify">{reason.description}</p>
                 </div>
             ))}
         </MotionEffect>

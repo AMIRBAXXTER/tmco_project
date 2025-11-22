@@ -43,10 +43,10 @@ export default function Home() {
         {/* 🧩 معرفی پلتفرم */}
         <MotionEffect effect="fadeUp">
           <div>
-            <h3 className="font-bold mb-5 text-2xl">
+            <h3 className="font-bold mb-5 text-2xl text-justify">
               یک بستر یکپارچه برای مدیریت حمل و نقل سازمانی
             </h3>
-            <p>
+            <p className="text-justify">
               تمکو اولین پلتفرم ترکیبی حمل و نقل، راهکاری نوین برای شرکت‌ها و سازمان‌ها فراهم می‌کند تا فرایندهای لجستیکی خود را در محیط دیجیتال، ساده و شفاف مدیریت کنند. این پلتفرم امکان اتصال به ارائه‌کنندگان مختلف حمل و نقل زمینی، ریلی و هوایی را فراهم کرده و با داده‌های دقیق، تصمیم‌گیری هوشمندتر را ممکن می‌سازد.
             </p>
           </div>
@@ -76,10 +76,10 @@ export default function Home() {
           </MotionEffect>
 
           <MotionEffect effect="slideUp">
-            <h2 className="font-extrabold text-4xl text-[#121212] my-5">
+            <h2 className="font-extrabold text-4xl text-[#121212] my-5 text-justify">
               ابزاری برای مدیریت حرفه‌ای زنجیره تأمین
             </h2>
-            <p className="w-4/5">
+            <p className="w-4/5 text-justify">
               نمایندگان و شرکای تجاری با اپلیکیشن تمکو می‌توانند دسترسی مستقیم به درخواست‌ها، سفارش‌ها و گزارش‌های حمل‌ونقل داشته باشند. این ابزار امکان هماهنگی سریع‌تر با مشتریان سازمانی و مدیریت بهینه ظرفیت را فراهم می‌کند.
             </p>
           </MotionEffect>
@@ -125,10 +125,10 @@ export default function Home() {
       {/* 🚛 بخش استعلام تعرفه */}
       <MotionEffect effect="slideUp" className="px-10 flex flex-col md:flex-row mt-20 mb-40 w-full h-[700px]">
         <div className="md:w-2/5 w-full">
-          <h2 className="font-extrabold mt-30 text-4xl text-[#121212] my-5">
+          <h2 className="font-extrabold mt-30 text-4xl text-[#121212] my-5 text-justify">
             هزینه حمل بار من چقدر می‌شود؟
           </h2>
-          <p>
+          <p className="text-justify">
             مبدا، مقصد و مشخصات کالا را ثبت کنید و از قیمت واقعی حمل بارتان آگاه شوید. در سامانه آنلاین محاسبه کرایه باربری در هر لحظه می‌توانید سریع و آسان هزینه حمل‌ونقل محموله‌هایتان را برآورد کنید.
           </p>
         </div>

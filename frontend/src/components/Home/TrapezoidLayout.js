@@ -94,7 +94,7 @@ export default function TrapezoidLayout() {
       <div className="main-trapezoid same-slope relative z-[5] w-full h-[900px] bg-[#001230]">
         <div className="w-[80%] mx-auto mt-35 h-auto">
           <h1 className="text-white mb-10 font-bold text-4xl">خدمات ما</h1>
-          <p className="text-white leading-relaxed">
+          <p className="text-white leading-relaxed text-justify">
             تمکو زیرساختی دیجیتال برای اتصال شرکت‌ها به
             ارائه‌دهندگان خدمات حمل‌ونقل در سه بخش اصلی زمینی، ریلی و هوایی است.
             این پلتفرم با یکپارچه‌سازی داده‌ها و فرآیندها، دید کامل و شفافیت
@@ -142,7 +142,7 @@ export default function TrapezoidLayout() {
                       priority
                     />
                     <h3 className="font-bold text-lg text-white">{item.title}</h3>
-                    <p className="text-sm mt-3 text-gray-300 leading-relaxed">
+                    <p className="text-sm mt-3 text-gray-300 leading-relaxed text-justify">
                       {item.description}
                     </p>
                   </div>
