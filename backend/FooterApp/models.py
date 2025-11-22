@@ -1,8 +1,9 @@
 from django.db import models
+from datetime import date
 
 class DailyView(models.Model):
     count = models.IntegerField(default=0)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=date.today)
 
     def __str__(self):
         return f"{self.date} - {self.count}"
