@@ -3,17 +3,17 @@ services:
     container_name: backend
 
 # -------- DEV STAGE ----------
-    build: ./backend
-    image: backend
-    command: sh /code/entrypoint.sh
+#    build: ./backend
+#    image: backend
+#    command: sh /code/entrypoint.sh
 # --------------------------------
 
 # -------- PROD STAGE ----------
-#    image: ghcr.io/amirbaxxter/tmco-backend:latest
+    image: ghcr.io/amirbaxxter/tmco-backend:latest
 # --------------------------------
 
     volumes:
-      - ./backend:/code
+#      - ./backend:/code
       - static_data:/code/static
       - media_data:/code/media
       - ${HOST_BACKUP_PATH}:/host_backups
@@ -42,16 +42,16 @@ services:
   frontend:
     container_name: frontend
 # -------- DEV STAGE ----------
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: npm run dev
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile.dev
+#    volumes:
+#      - ./frontend:/app
+#      - /app/node_modules
+#    command: npm run dev
 # --------------------------------
 # -------- PROD STAGE ----------
-#    image: ghcr.io/amirbaxxter/tmco-frontend:latest
+    image: ghcr.io/amirbaxxter/tmco-frontend:latest
 # --------------------------------
     environment:
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
@@ -132,17 +132,17 @@ services:
   celery:
     container_name: celery
     # -------- DEV STAGE ----------
-    build: ./backend
-    image: backend
+#    build: ./backend
+#    image: backend
     # --------------------------------
 
     # -------- PROD STAGE ----------
-#    image: ghcr.io/amirbaxxter/tmco-backend:latest
+    image: ghcr.io/amirbaxxter/tmco-backend:latest
     # --------------------------------
     entrypoint: ""
     command: python -m celery -A config.celery_base worker -Q db_backup,views_handler -l info
     volumes:
-      - ./backend:/code
+#      - ./backend:/code
       - ./backups:/backups
     depends_on:
       - backend
@@ -168,17 +168,17 @@ services:
   celerybeat:
     container_name: celerybeat
     # -------- DEV STAGE ----------
-    build: ./backend
-    image: backend
+#    build: ./backend
+#    image: backend
     # --------------------------------
 
     # -------- PROD STAGE ----------
-#    image: ghcr.io/amirbaxxter/tmco-backend:latest
+    image: ghcr.io/amirbaxxter/tmco-backend:latest
     # --------------------------------
     entrypoint: ""
     command: python -m celery -A config.celery_base beat -l info
     volumes:
-      - ./backend:/code
+#      - ./backend:/code
       - ./backups:/backups
     depends_on:
       - backend
