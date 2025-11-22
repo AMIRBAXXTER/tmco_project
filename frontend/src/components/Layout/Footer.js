@@ -252,7 +252,7 @@ export default function Footer() {
           <h2 className="w-auto h-auto md:translate-y-[-90px] mt-16 md:mt-0 text-center font-bold md:text-3xl text-3xl">
             اولین پلتفرم حمل و نقل ترکیبی
           </h2>
-          <h2 className="w-auto h-auto mt-10 md:mt-0 font-bold text-4xl">تمکو</h2>
+          <h2 className="w-auto h-auto mt-10 md:mt-0 font-bold text-3xl">تمکو</h2>
           <p className="mt-8 md:text-lg text-[#ADBDCC] text-justify">
             شرکت مدیریت تامین لجستیک نوین ایده پارس با نام اختصاری تمکو  به عنوان یکی از زیرمجموعه های هلدینگ فاخر در سال 1402 با تکیه بر تجارب قبلی بنیانگذاران آن در صنعت لجستیک کشور تأسیس گردید. حوزه اصلی فعالیت سازمان، حمل و نقل مرسوله میباشد. اين سازمان همواره سعی در ارتقاء قابلیت ها و ظرفیت های خود برای مشارکت در طیف وسیعی از صنعت لجستیک کشور را داشته و هدف اصلی خود را فراهم نمودن بالاترین کیفیت و کسب رضایت مشتريان قرار داده است.
           </p>

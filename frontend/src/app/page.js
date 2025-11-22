@@ -76,7 +76,7 @@ export default function Home() {
           </MotionEffect>
 
           <MotionEffect effect="slideUp">
-            <h2 className="font-extrabold text-4xl text-[#121212] my-5 text-justify">
+            <h2 className="font-extrabold text-3xl text-[#121212] my-5">
               ابزاری برای مدیریت حرفه‌ای زنجیره تأمین
             </h2>
             <p className="w-4/5 text-justify">
@@ -125,7 +125,7 @@ export default function Home() {
       {/* 🚛 بخش استعلام تعرفه */}
       <MotionEffect effect="slideUp" className="px-10 flex flex-col md:flex-row mt-20 mb-40 w-full h-[700px]">
         <div className="md:w-2/5 w-full">
-          <h2 className="font-extrabold mt-30 text-4xl text-[#121212] my-5 text-justify">
+          <h2 className="font-extrabold mt-30 text-3xl text-[#121212] my-5">
             هزینه حمل بار من چقدر می‌شود؟
           </h2>
           <p className="text-justify">
