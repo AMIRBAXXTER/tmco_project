@@ -111,7 +111,7 @@ export default function Home() {
           <img
             src="/CustomerPanel/dashboard.png"
             alt="driver"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain deep-blur-shadow rounded-r-2xl"
           />
           <div className="absolute hidden lg:block top-0 right-0 border border-gray-200 rounded-xl">
             <Image src="/DriverApp/1d.svg" alt="Truck Icon" width={56} height={56} />
