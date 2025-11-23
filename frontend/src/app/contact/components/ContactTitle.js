@@ -30,7 +30,7 @@ export default function ContactTitle() {
 
                     <p
                         key="main-title"
-                        className="font-bold text-2xl leading-tight w-full whitespace-pre-line text-justify"
+                        className="text-xl leading-tight w-full whitespace-pre-line text-justify"
                     >
                         {`ما در تمکو ارزش زیادی برای نظرات و پیشنهادهای شما قائل هستیم.
 

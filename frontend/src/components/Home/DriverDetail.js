@@ -3,13 +3,13 @@ import MotionEffect from "@/animations/MotionEffect";
 
 export default function DriverDetail() {
     return (
-        <div className="w-full lg:w-1/2 h-[470px] md:h-full">
+        <div className="w-full lg:w-3/4 h-[470px] md:h-full lg:mr-20">
             <MotionEffect effect="slideRight">
                 <span className="text-[#3C9BD8] font-bold text-2xl">اپلیکیشن راننده</span>
             </MotionEffect>
 
             <MotionEffect effect='slideUp'>
-                <h2 className="font-extrabold text-3xl text-[#121212] my-5">انتخاب بهترین مسیر، تنها با یک کلیک</h2>
+                <h2 className="font-bold text-2xl text-[#121212] my-5">انتخاب بهترین مسیر، تنها با یک کلیک</h2>
                 <p className="w-4/5 text-justify">اپلیکیشن تمکو به شما امکان می دهد در یک بستر واحد، سرویس های مختلف حمل و نقل را مقایسه کنید، سفارش دهید و وضعیت محموله را به صورت لحظه ای پیگیری کنید.</p>
             </MotionEffect>
             <MotionEffect effect='fadeIn'>

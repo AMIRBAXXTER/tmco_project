@@ -48,8 +48,7 @@ export default function Header() {
         {/* ستون راست: لوگو */}
         <div
           className={`flex ${scrolled
-              ? "w-7"
-              : "drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)]"
+              && "w-7"
             } items-center justify-start`}
         >
           <Image

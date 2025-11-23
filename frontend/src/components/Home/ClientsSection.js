@@ -17,7 +17,7 @@ export default function ClientsSection() {
   return (
     <section className="px-8 sm:px-12 lg:px-20 py-20 bg-[#f3f9fc]">
       <MotionEffect effect="slideUp">
-        <h2 className="font-extrabold text-4xl text-[#121212] mb-12 text-center">
+        <h2 className="font-bold text-2xl text-[#121212] mb-12 text-center">
           مشتریان ما
         </h2>
       </MotionEffect>

@@ -46,8 +46,8 @@ export default function Home() {
             <h3 className="font-bold mb-5 text-2xl text-justify">
               یک بستر یکپارچه برای مدیریت حمل و نقل سازمانی
             </h3>
-            <p className="text-justify">
-              تمکو اولین پلتفرم ترکیبی حمل و نقل، راهکاری نوین برای شرکت‌ها و سازمان‌ها فراهم می‌کند تا فرایندهای لجستیکی خود را در محیط دیجیتال، ساده و شفاف مدیریت کنند. این پلتفرم امکان اتصال به ارائه‌کنندگان مختلف حمل و نقل زمینی، ریلی و هوایی را فراهم کرده و با داده‌های دقیق، تصمیم‌گیری هوشمندتر را ممکن می‌سازد.
+            <p className="text-justify [word-spacing:2px]">
+              تمکو اولین پلتفرم ترکیبی حمل و نقل، راهکاری نوین برای شرکت‌ها و سازمان‌ها فراهم می‌کند تا فرایندهای لجستیکی خود را در محیط دیجیتال، ساده و شفاف مدیریت کنند. این پلتفرم امکان اتصال به ارائه‌کنندگان مختلف حمل و نقل زمینی، ریلی، هوایی و دریایی را فراهم کرده و با داده‌های دقیق، تصمیم‌گیری هوشمندتر را ممکن می‌سازد.
             </p>
           </div>
         </MotionEffect>
@@ -55,7 +55,7 @@ export default function Home() {
         {/* 🧠 بخش چرا تمکو */}
         <div>
           <MotionEffect effect="slideUp">
-            <h2 className="font-extrabold text-3xl mt-10">چرا تمکو ؟</h2>
+            <h2 className="font-bold text-2xl mt-10">چرا تمکو ؟</h2>
           </MotionEffect>
           <MotionEffect effect="fadeUp">
             <WhyTmco />
@@ -76,7 +76,7 @@ export default function Home() {
           </MotionEffect>
 
           <MotionEffect effect="slideUp">
-            <h2 className="font-extrabold text-3xl text-[#121212] my-5">
+            <h2 className="font-bold text-2xl text-[#121212] my-5">
               ابزاری برای مدیریت حرفه‌ای زنجیره تأمین
             </h2>
             <p className="w-4/5 text-justify">
@@ -111,7 +111,7 @@ export default function Home() {
           <img
             src="/CustomerPanel/dashboard.png"
             alt="driver"
-            className="absolute top-0 left-0 h-full w-full object-cover sm:w-full md:w-[100%] lg:w-[85%] mt-20 mb-5 lg:mt-0 deep-blur-shadow rounded-r-2xl z-10"
+            className="w-full h-full object-contain"
           />
           <div className="absolute hidden lg:block top-0 right-0 border border-gray-200 rounded-xl">
             <Image src="/DriverApp/1d.svg" alt="Truck Icon" width={56} height={56} />
@@ -125,7 +125,7 @@ export default function Home() {
       {/* 🚛 بخش استعلام تعرفه */}
       <MotionEffect effect="slideUp" className="px-10 flex flex-col md:flex-row mt-20 mb-40 w-full h-[700px]">
         <div className="md:w-2/5 w-full">
-          <h2 className="font-extrabold mt-30 text-3xl text-[#121212] my-5">
+          <h2 className="font-bold mt-30 text-2xl text-[#121212] my-5">
             هزینه حمل بار من چقدر می‌شود؟
           </h2>
           <p className="text-justify">
@@ -143,7 +143,7 @@ export default function Home() {
 
       {/* 📰 بخش وبلاگ */}
       <MotionEffect effect="staggeredFadeIn" className="p-10 w-screen h-auto">
-        {[<h2 key="blog-title" className="font-extrabold text-4xl my-10">وبلاگ</h2>,
+        {[<h2 key="blog-title" className="font-bold text-2xl my-10">وبلاگ</h2>,
         <BlogCarousel posts={posts} />]}
       </MotionEffect>
 

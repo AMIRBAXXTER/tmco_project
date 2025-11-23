@@ -347,10 +347,10 @@ export default function IntroAnimation() {
         {typedText.length > 6 ? (
           <>
             {typedText.slice(0, typedText.length - 6)}
-            <span className="text-[#3C9BD8]">{typedText.slice(-6)}</span>
+            <span className="text-[#64c2fc] bg-[#00123096] p-1 rounded-4xl">{typedText.slice(-6)}</span>
           </>
         ) : (
-          <span className="text-[#3C9BD8]">{typedText}</span>
+          <span className="text-[#64c2fc]">{typedText}</span>
         )}
       </p>
     </section>
