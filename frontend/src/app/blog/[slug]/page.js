@@ -66,7 +66,7 @@ export default function BlogDetail({ params }) {
           <img
             src={post.image || "/images/default.jpg"}
             alt={post.title}
-            className="w-full h-[460px] object-cover rounded-lg mb-8"
+            className="w-full aspect-[16/9] object-cover rounded-lg mb-8"
           />
 
           <h1 className="text-[#0A2540] font-bold text-2xl md:text-3xl mb-6">

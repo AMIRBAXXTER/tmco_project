@@ -343,7 +343,7 @@ export default function IntroAnimation() {
       />
 
       {/* متن پایین */}
-      <p className="absolute bottom-13 left-1/2 mb-15 md:mb-0 -translate-x-1/2 w-full text-center text-2xl md:text-3xl lg:text-4xl font-bold text-white z-50">
+      <p className="absolute bottom-13 left-1/2 mb-15 md:mb-0 -translate-x-1/2 w-full text-center text-2xl md:text-5xl lg:text-6xl font-bold text-white z-50">
         {typedText.length > 6 ? (
           <>
             {typedText.slice(0, typedText.length - 6)}

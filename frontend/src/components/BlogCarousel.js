@@ -37,7 +37,7 @@ export default function BlogCarousel({ posts }) {
               <img
                 src={post.image || "/images/default.jpg"}
                 alt={post.title}
-                className="w-full h-[250px] object-cover"
+                className="w-full aspect-[16/9] object-cover"
               />
 
               {/* 🔹 محتوای کارت (با ارتفاع ثابت و متن محدود) */}
