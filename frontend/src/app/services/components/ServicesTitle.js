@@ -35,11 +35,13 @@ export default function ServicesTitle() {
             راهکارهای جامع حمل و نقل و لجیستیک برای کسب و کارهای مدرن
           </h1>,
 
-          <p key="description" className="w-full sm:w-4/5 text-center text-base md:text-lg mx-auto leading-relaxed text-gray-700 text-justify">
-            تمکو یک پلتفرم جامع برای مدیریت رانندگان، نمایندگی ها و مشتریان سازمانی است. طراحی شده برای شرکت هایی که به دنبال شفافیت، مقیاس پذیری و کاهش هزینه های عملیاتی  هستند.
+          <p key="description" className="w-full sm:w-4/5 text-base md:text-lg mx-auto leading-relaxed text-gray-700 text-justify">
+            تمکو یک پلتفرم یکپارچه و هوشمند برای مدیریت <strong>رانندگان، نمایندگی‌ها و مشتریان سازمانی</strong> است؛
+            راهکاری که برای شرکت‌هایی طراحی شده که به دنبال <strong>شفافیت کامل، مقیاس‌پذیری در عملیات و کاهش هزینه‌های لجستیکی</strong> هستند.
+            تمکو با دیجیتالی‌کردن فرآیندهای حمل‌ونقل و ارائه ابزارهای مدیریت لحظه‌ای، به سازمان‌ها کمک می‌کند تا مسیرهای پیچیده لجستیکی خود را ساده، قابل‌پیگیری و بهینه کنند.
           </p>,
           <a
-          key="download-button"
+            key="download-button"
             href="/files/driver-app.apk"
             download
             target="_blank"

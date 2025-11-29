@@ -11,6 +11,12 @@ import ClientsSection from "@/components/Home/ClientsSection";
 export default function Home() {
 
   const [posts, setPosts] = useState([]);
+  const features = [
+    { title: "دسترسی به ارائه‌دهندگان مختلف حمل‌ونقل" },
+    { title: "مدیریت سفارشات سازمانی" },
+    { title: "مدیریت مراحل حمل‌ونقل" },
+    { title: "پیگیری لحظه‌ای وضعیت محموله" },
+  ]
 
 
   useEffect(() => {
@@ -47,7 +53,9 @@ export default function Home() {
               یک بستر یکپارچه برای مدیریت حمل و نقل سازمانی
             </h3>
             <p className="text-justify [word-spacing:2px]">
-              تمکو اولین پلتفرم ترکیبی حمل و نقل، راهکاری نوین برای شرکت‌ها و سازمان‌ها فراهم می‌کند تا فرایندهای لجستیکی خود را در محیط دیجیتال، ساده و شفاف مدیریت کنند. این پلتفرم امکان اتصال به ارائه‌کنندگان مختلف حمل و نقل زمینی، ریلی، هوایی و دریایی را فراهم کرده و با داده‌های دقیق، تصمیم‌گیری هوشمندتر را ممکن می‌سازد.
+              تمکو، نخستین پلتفرم ترکیبی حمل‌ونقل در ایران، راهکاری نوآورانه برای شرکت‌ها و سازمان‌ها ارائه می‌دهد تا تمام فرآیندهای لجستیکی خود را در یک محیط دیجیتال، ساده، شفاف و قابل‌اعتماد مدیریت کنند.
+              <br />
+              با اتصال یکپارچه به ارائه‌دهندگان حمل‌ونقل <strong>زمینی، ریلی، هوایی و دریایی،</strong> و با تکیه بر داده‌های دقیق و به‌روز، تمکو امکان <strong>تصمیم‌گیری سریع‌تر، کاهش هزینه‌ها و افزایش بهره‌وری</strong> را فراهم می‌کند.
             </p>
           </div>
         </MotionEffect>
@@ -63,7 +71,7 @@ export default function Home() {
         </div>
 
         {/* 🧍 ویژگی‌های راننده و جزئیات */}
-        <MotionEffect effect="staggeredSlideUp" className="flex flex-col gap-5 md:gap-0 lg:flex-row mt-20 w-full h-auto">
+        <MotionEffect effect="staggeredSlideUp" className="flex flex-col-reverse gap-5 md:gap-0 lg:flex-row mt-20 w-full h-auto">
           {[<DriverApp key="a" />, <DriverDetail key="b" />]}
         </MotionEffect>
       </div>
@@ -86,10 +94,11 @@ export default function Home() {
 
           <MotionEffect effect="fadeIn" className="mb-7">
             <span className="my-8 text-2xl font-bold block">ویژگی‌ها:</span>
-            <p>مقایسه و انتخاب میان ارائه‌کنندگان مختلف</p>
-            <p>مدیریت سفارشات</p>
-            <p>مدیریت حمل‌ونقل</p>
-            <p>پیگیری وضعیت محموله</p>
+            {features.map((feature, index) => (
+              <div key={index}>
+                <h3 className="text-[#121212] font-bold text-lg mb-5">{feature.title}</h3>
+              </div>
+            ))}
           </MotionEffect>
 
           <MotionEffect effect="scaleSlideUp">
@@ -111,7 +120,7 @@ export default function Home() {
           <img
             src="/CustomerPanel/dashboard.png"
             alt="driver"
-            className="w-full h-full object-contain deep-blur-shadow rounded-r-2xl"
+            className="absolute top-0 left-0 h-full w-[450px] object-contain mt-20 mb-5 lg:mt-0 deep-blur-shadow rounded-r-2xl z-10"
           />
           <div className="absolute hidden lg:block top-0 right-0 border border-gray-200 rounded-xl">
             <Image src="/DriverApp/1d.svg" alt="Truck Icon" width={56} height={56} />
@@ -129,8 +138,15 @@ export default function Home() {
             هزینه حمل بار من چقدر می‌شود؟
           </h2>
           <p className="text-justify">
-            مبدا، مقصد و مشخصات کالا را ثبت کنید و از قیمت واقعی حمل بارتان آگاه شوید. در سامانه آنلاین محاسبه کرایه باربری در هر لحظه می‌توانید سریع و آسان هزینه حمل‌ونقل محموله‌هایتان را برآورد کنید.
+            برای محاسبه دقیق هزینه حمل بار، کافی است مبدأ، مقصد و مشخصات محموله را ثبت کنید. سامانه آنلاین محاسبه کرایه باربری تمکو با استفاده از داده‌های به‌روز و اتصال به شبکه گسترده ارائه‌دهندگان حمل‌ونقل، هزینه واقعی و منصفانه حمل‌ونقل را در چند ثانیه به شما نمایش می‌دهد.
           </p>
+          <p className="text-justify mt-10 text-2xl">با این ابزار می‌توانید:</p>
+          <ul>
+            <li className="mr-5 my-2">قیمت‌ها را به‌صورت لحظه‌ای مقایسه کنید.</li>
+            <li className="mr-5 mb-2">بهترین روش حمل‌ونقل را انتخاب کنید.</li>
+            <li className="mr-5 mb-2">از هزینه‌های پنهان جلوگیری کنید.</li>
+            <li className="mr-5 mb-2">از هزینه‌های پنهان جلوگیری کنید.</li>
+          </ul>
         </div>
 
         <MotionEffect effect="fadeUp" className="md:w-3/5 w-full h-[600px] flex items-center justify-center">

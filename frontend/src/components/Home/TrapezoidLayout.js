@@ -70,25 +70,25 @@ export default function TrapezoidLayout() {
       icon: "/ServiceIcons/train_service.svg",
       title: "خدمات ریلی",
       description:
-        "حمل و نقل ریلی مطمئن و اقتصادی، بهترین گزینه برای جابجایی محموله‌های بزرگ و حجیم.",
+        "از طریق تمکو می‌توانید ظرفیت‌های ریلی را رزرو، مدیریت و وضعیت بار را در تمام مراحل پیگیری کنید.",
     },
     {
       icon: "/ServiceIcons/plane_service.svg",
       title: "خدمات هوایی",
       description:
-        "حمل و نقل هوایی سریع و ایمن با پوشش گسترده بین‌المللی، برای تحویل به‌موقع محموله‌های شما.",
+        "تمکو دسترسی شما را به خطوط هوایی معتبر فراهم کرده و روند رزرو، پیگیری و تحویل را شفاف و قابل‌اعتماد می‌کند.",
     },
     {
       icon: "/ServiceIcons/truck_service.svg",
       title: "خدمات زمینی",
       description:
-        "بهترین خدمات حمل و نقل زمینی با تضمین امنیت و سرعت، برای جابه‌جایی بارهای شما در سراسر کشور.",
+        "تمکو با دسترسی به انواع ناوگان زمینی، امکان انتخاب بهترین مسیر و مدیریت لحظه‌ای را فراهم می‌کند.",
     },
     {
-      icon: "/ServiceIcons/plane_service.svg",
+      icon: "/ServiceIcons/marine_service.svg",
       title: "خدمات دریایی",
       description:
-        "حمل و نقل دریایی گسترده  مناسب برای انتقال محموله‌های حجیم و صادراتی با هزینه‌ای اقتصادی و امنیتی بالا.",
+        "از طریق تمکو می‌توانید سرویس‌های کانتینری و فریت دریایی را مقایسه کرده و به‌صورت یکپارچه مدیریت کنید.",
     }
   ];
 
@@ -96,15 +96,12 @@ export default function TrapezoidLayout() {
   const repeatedItems = [...aboutItems, ...aboutItems, ...aboutItems];
 
   return (
-    <div className="relative w-full h-[900px] mt-96 md:mt-0 flex items-center justify-center bg-transparent overflow-visible">
+    <div className="relative w-full h-[900px] mt-[600px] md:mt-0 flex items-center justify-center bg-transparent overflow-visible">
       <div className="main-trapezoid same-slope relative z-[5] w-full h-[900px] bg-[#001230]">
         <div className="w-[80%] mx-auto mt-35 h-auto">
           <h1 className="text-white mb-10 font-bold text-4xl">خدمات ما</h1>
           <p className="text-white leading-relaxed text-justify">
-            تمکو زیرساختی دیجیتال برای اتصال شرکت‌ها به
-            ارائه‌دهندگان خدمات حمل‌ونقل در سه بخش اصلی زمینی، ریلی و هوایی است.
-            این پلتفرم با یکپارچه‌سازی داده‌ها و فرآیندها، دید کامل و شفافیت
-            عملیاتی در اختیار مدیران لجستیک قرار می‌دهد.
+            تمکو یک زیرساخت دیجیتال یکپارچه است که شرکت‌ها و سازمان‌ها را به معتبرترین ارائه‌دهندگان خدمات حمل‌ونقل در چهار حوزه <strong>زمینی، ریلی، هوایی و دریایی</strong> متصل می‌کند.
           </p>
 
           <Link

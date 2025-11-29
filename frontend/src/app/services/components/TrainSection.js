@@ -2,13 +2,13 @@
 import React from "react";
 import MotionEffect from "@/animations/MotionEffect";
 
-export default function BottomSection() {
+export default function TrainSection() {
   const imageSrc = "/ServicesMasks/train.webp";
 
   return (
     <MotionEffect
       effect="slideRight"
-      className="flex flex-col md:flex-row-reverse w-full min-h-screen"
+      className="flex flex-col-reverse gap-12 md:flex-row-reverse w-full min-h-screen"
     >
       {/* SVG Section — 1/3 width */}
       <MotionEffect
@@ -53,10 +53,13 @@ export default function BottomSection() {
       >
         <h3 className="text-[#3C9BD8] mb-5 font-bold text-xl md:text-2xl text-center">خدمات ریلی</h3>
         <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]">
-          مطمئن و اقتصادی
+          مطمئن، اقتصادی و کاملاً قابل‌اعتماد
         </h2>
         <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl text-justify">
-          در دنیای امروز، سرعت دیگر تنها معیار نیست؛ دقت و برنامه‌ریزی هوشمند اهمیت بیشتری دارد. خدمات ریلی تمکو با استفاده از فناوری‌های داده‌محور، مسیرها را پیش از حرکت تحلیل و بهینه‌سازی می‌کند. هر واگن مجهز به سیستم رصد لحظه‌ای است تا موقعیت و وضعیت بار در تمام مسیر قابل‌پیگیری باشد. نتیجه؟ انتقال مطمئن، منظم و اقتصادی؛ مخصوص برندهایی که به کیفیت و شفافیت اهمیت می‌دهند.
+          در دنیای امروز، سرعت تنها یک مزیت نیست؛ <strong>دقت، ثبات و برنامه‌ریزی هوشمند</strong> نقش مهم‌تری در موفقیت زنجیره تأمین بازی می‌کنند.
+          خدمات ریلی تمکو بر پایه زیرساخت‌های پیشرفته و فناوری‌های داده‌محور طراحی شده تا حمل‌ونقل سازمانی را <strong>ایمن، منظم و اقتصادی</strong> کند.
+          تمکو پیش از شروع هر عملیات، مسیرها و ظرفیت‌ها را تحلیل و بهینه‌سازی می‌کند تا بهترین ترکیب از <strong>زمان، هزینه و امنیت</strong> به دست آید.
+          تمامی واگن‌ها به سیستم <strong>رصد لحظه‌ای</strong> مجهز هستند؛ بنابراین موقعیت و وضعیت بار در تمام طول مسیر شفاف و قابل‌پیگیری است.
         </p>
       </MotionEffect>
     </MotionEffect>

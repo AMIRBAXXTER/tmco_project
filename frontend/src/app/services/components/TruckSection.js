@@ -2,13 +2,13 @@
 import React from "react";
 import MotionEffect from "@/animations/MotionEffect";
 
-export default function BottomSection() {
+export default function TruckSection() {
   const imageSrc = "/ServicesMasks/truck.webp";
 
   return (
     <MotionEffect
       effect="slideRight"
-      className="flex flex-col md:flex-row-reverse w-full min-h-screen"
+      className="flex flex-col-reverse gap-12 md:flex-row-reverse w-full min-h-screen"
     >
       {/* SVG Section — 1/3 width */}
       <MotionEffect
@@ -53,10 +53,12 @@ export default function BottomSection() {
       >
         <h3 className="text-[#3C9BD8] mb-5 font-bold text-xl md:text-2xl text-center">خدمات زمینی</h3>
         <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]">
-          امنیت و سرعت
+          ترکیب امنیت، سرعت و هوشمندی
         </h2>
         <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl text-justify">
-          جاده هنوز قلب زنجیرهٔ تأمین است، اما در تمکو با موتور فناوری می‌تپد. ناوگان زمینی ما با سیستم موقعیت‌یابی و تحلیل لحظه‌ای ترافیک، هر مسیر را با هوش مصنوعی انتخاب می‌کند تا تحویل‌ها سریع‌تر و کم‌هزینه‌تر انجام شوند. همه‌چیز، از زمان حرکت تا رسیدن، قابل‌پیگیری و گزارش‌دهی است. امنیت، پاسخ‌گویی و سرعت؛ سه پایه‌ای که حمل‌ونقل زمینی تمکو بر آن استوار است.
+          جاده همچنان <strong>قلب تپنده زنجیره تأمین</strong> است؛ اما در تمکو این قلب با <strong>موتور فناوری و تحلیل داده</strong> به حرکت در می‌آید.
+          ناوگان زمینی تمکو با بهره‌گیری از <strong>سیستم‌های موقعیت‌یابی پیشرفته</strong> و <strong>تحلیل لحظه‌ای ترافیک</strong>، مسیرها را به‌صورت هوشمند انتخاب می‌کند تا محموله‌ها <strong>سریع‌تر، ایمن‌تر و با هزینه کمتر</strong> به مقصد برسند.
+          تمام مراحل عملیات از لحظه ثبت سفارش تا زمان تحویل  در سیستم تمکو <strong>پایش، ثبت و قابل‌ردیابی</strong> است. این یعنی شفافیت کامل برای سازمان‌ها و کنترل دقیق بر زمان، مسیر و وضعیت بار.
         </p>
       </MotionEffect>
     </MotionEffect>

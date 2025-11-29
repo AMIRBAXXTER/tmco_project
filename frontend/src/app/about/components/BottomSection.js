@@ -6,7 +6,7 @@ export default function BottomSection() {
   const imageSrc = "/AboutUsMasks/bottom.webp";
 
   return (
-    <MotionEffect 
+    <MotionEffect
       effect="slideRight"
       className="flex flex-col md:flex-row-reverse w-full min-h-screen"
     >
@@ -37,7 +37,7 @@ export default function BottomSection() {
         </svg>
       </MotionEffect>
 
-      <MotionEffect 
+      <MotionEffect
         effect="fadeIn"
         className="flex-1 flex flex-col justify-center items-start p-10 bg-white"
       >
@@ -52,11 +52,13 @@ export default function BottomSection() {
             key="desc"
             className="text-[#0A2540] text-xl leading-relaxed text-justify"
           >
-            در دنیای امروز حمل‌ونقل، هوشمندی یعنی تصمیم لحظه‌ای و مسیر بهینه. 
-            سامانه‌ی ما به شرکت‌هایی چون تیپاکس و اسنپ‌شاپ کمک می‌کند تا تخصیص 
-            رانندگان و مدیریت سفرها را بدون اتلاف زمان انجام دهند. 
-            ما آینده‌ی لجستیک را ساده‌تر، سریع‌تر و یکپارچه‌تر ساخته‌ایم.
+            در دنیای امروز، حمل‌ونقل تنها با جابه‌جایی معنا پیدا نمی‌کند؛ <strong>هوشمندی، تصمیم‌گیری لحظه‌ای و انتخاب مسیر بهینه</strong> هسته اصلی عملیات موفق هستند.
+            زیرساخت فناوری تمکو همین امکان را برای کسب‌وکارها فراهم می‌کند.
+            سامانه ما به شرکت‌هایی مانند <strong>تیپاکس</strong> و <strong>اسنپ‌شاپ</strong> کمک کرده تا فرآیندهای مهمی مثل <strong>تخصیص راننده، مدیریت سفرها و هماهنگی ناوگان</strong> را بدون اتلاف زمان، دقیق، سریع و کاملاً خودکار انجام دهند.
           </p>,
+          <p key="desc2" className="text-[#0A2540] text-xl leading-relaxed text-justify mt-5">
+            ما آینده لجستیک را <strong>ساده‌تر، سریع‌تر و یکپارچه‌تر</strong> کرده‌ایم؛ آینده‌ای که در آن داده تصمیم می‌گیرد، و تمکو مسیر را هموار می‌سازد.
+          </p>
         ]}
       </MotionEffect>
     </MotionEffect>

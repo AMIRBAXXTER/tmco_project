@@ -2,22 +2,29 @@ import React from 'react'
 import MotionEffect from "@/animations/MotionEffect";
 
 export default function DriverDetail() {
+    const features = [
+        { title: "مقایسه و انتخاب هوشمند ارائه‌دهندگان حمل‌ونقل" },
+        { title: "مدیریت یکپارچه سفارش‌ها" },
+        { title: "مدیریت کامل فرآیند حمل‌ونقل" },
+        { title: "پیگیری وضعیت محموله به صورت لحظه‌ای" },
+    ]
     return (
-        <div className="w-full lg:w-3/4 h-[470px] md:h-full lg:mr-20">
+        <div className="w-full lg:w-3/4 h-[600px] md:h-full lg:mr-20">
             <MotionEffect effect="slideRight">
-                <span className="text-[#3C9BD8] font-bold text-2xl">اپلیکیشن راننده</span>
+                <span className="text-[#3C9BD8] font-bold text-2xl">اپلیکیشن راننده تمکو</span>
             </MotionEffect>
 
             <MotionEffect effect='slideUp'>
                 <h2 className="font-bold text-2xl text-[#121212] my-5">انتخاب بهترین مسیر، تنها با یک کلیک</h2>
-                <p className="w-4/5 text-justify">اپلیکیشن تمکو به شما امکان می دهد در یک بستر واحد، سرویس های مختلف حمل و نقل را مقایسه کنید، سفارش دهید و وضعیت محموله را به صورت لحظه ای پیگیری کنید.</p>
+                <p className="w-4/5 text-justify">اپلیکیشن راننده تمکو، تمام نیازهای حمل‌ونقل را در یک بستر هوشمند و ساده در اختیار رانندگان قرار می‌دهد.</p>
             </MotionEffect>
             <MotionEffect effect='fadeIn'>
                 <span className="my-8 text-2xl font-bold block">ویژگی ها:</span>
-                <p>مقایسه و انتخاب میان ارائه کنندگان مختلف</p>
-                <p>مدیریت سفارشات</p>
-                <p>مدیریت حمل و نقل</p>
-                <p>پیگیری وضعیت محموله</p>
+                {features.map((feature, index) => (
+                    <div key={index}>
+                        <h3 className="text-[#121212] font-bold text-lg mb-5">{feature.title}</h3>
+                    </div>
+                ))}
             </MotionEffect>
             <div className="flex gap-6 mt-7">
                 <a
