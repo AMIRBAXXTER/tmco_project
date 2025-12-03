@@ -30,7 +30,7 @@ export default function IntroAnimation() {
     }
 
     // 1) دانلود ZIP – فقط یک درخواست!
-    const res = await fetch("/truck_frames.zip");
+    const res = await fetch("/truck_frames.frames");
     const zipBlob = await res.blob();
 
     // 2) باز کردن ZIP در مرورگر
