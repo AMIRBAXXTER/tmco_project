@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import JSZip from "jszip";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
@@ -20,17 +21,42 @@ export default function IntroAnimation() {
 
   // حافظه فریم‌ها
   const getCachedFrames = async () => {
+    // برای SSR
     if (typeof window === "undefined") return [];
-    if (window._truckFrames && Array.isArray(window._truckFrames)) return window._truckFrames;
+
+    // اگر قبلاً لود شده بود از کش بخوانیم
+    if (window._truckFrames && Array.isArray(window._truckFrames)) {
+      return window._truckFrames;
+    }
+
+    // 1) دانلود ZIP – فقط یک درخواست!
+    const res = await fetch("/truck_frames.zip");
+    const zipBlob = await res.blob();
+
+    // 2) باز کردن ZIP در مرورگر
+    const zip = await JSZip.loadAsync(zipBlob);
 
     const frames = [];
-    for (let i = 1; i <= frameCount; i++) {
-      const res = await fetch(`/TruckFrames/${i}.webp`);
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+
+    // 3) گرفتن لیست فایل‌ها و مرتب‌سازی براساس شماره فریم
+    const sortedFiles = Object.keys(zip.files)
+      .filter((name) => name.endsWith(".webp"))
+      .sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)[0], 10);
+        const numB = parseInt(b.match(/\d+/)[0], 10);
+        return numA - numB;
+      });
+
+    // 4) استخراج فایل‌ها و ساخت blob URL
+    for (const fileName of sortedFiles) {
+      const fileData = await zip.files[fileName].async("blob");
+      const url = URL.createObjectURL(fileData);
       frames.push(url);
     }
+
+    // 5) ذخیره در global cache
     window._truckFrames = frames;
+
     return frames;
   };
 
@@ -265,7 +291,7 @@ export default function IntroAnimation() {
           </p>
         </div>
       )}
-      
+
       {/* SVG پس‌زمینه */}
       <div className="absolute inset-0 z-0">
         <svg className="intro-line absolute top-0 left-0 w-1/4 h-3/5" width="508" height="570" viewBox="0 0 508 570" fill="none" xmlns="http://www.w3.org/2000/svg">
