@@ -15,6 +15,7 @@ export default function IntroAnimation() {
   const [phase, setPhase] = useState("intro");
   const [typedText, setTypedText] = useState("");
   const [framesReady, setFramesReady] = useState(false);
+  const [firstFrame, setFirstFrame] = useState(null);
 
   const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
   const frameCount = 139;
@@ -56,6 +57,7 @@ export default function IntroAnimation() {
 
     // 5) ذخیره در global cache
     window._truckFrames = frames;
+    setFirstFrame(frames[0])
 
     return frames;
   };
@@ -362,8 +364,8 @@ export default function IntroAnimation() {
       {/* کامیون */}
       <img
         ref={truckRef}
-        src="/TruckFrames/1.webp" // ✅ placeholder اولیه
         alt="Truck"
+        src={firstFrame}
         className="absolute w-screen h-screen lg:h-[115vh] object-cover lg:object-fill z-40"
         style={{ visibility: "hidden", transform: "scaleY(0)", opacity: 0 }}
       />

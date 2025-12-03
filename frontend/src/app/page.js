@@ -116,7 +116,7 @@ export default function Home() {
         </div>
 
         {/* بخش تصویر */}
-        <MotionEffect effect="fadeUp" className="relative h-[470px] w-full lg:w-1/2">
+        <MotionEffect effect="fadeUp" className="relative h-[470px] w-full lg:w-1/2 mt-35">
           <img
             src="/CustomerPanel/dashboard.png"
             alt="driver"
