@@ -12,27 +12,45 @@ export default function IntroAnimation() {
   const logoRef = useRef(null);
   const companyNameRef = useRef(null);
 
+  // --- استیت‌ها ---
   const [phase, setPhase] = useState("intro");
   const [typedText, setTypedText] = useState("");
   const [framesReady, setFramesReady] = useState(false);
 
+  // نوع دستگاه (mobile | desktop)
+  const [deviceType, setDeviceType] = useState(
+    typeof window !== "undefined" && window.innerWidth < 768
+      ? "mobile"
+      : "desktop"
+  );
+
   const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
   const frameCount = 139;
 
-  // --- کش جهانی برای فریم‌ها ---
-  const getCachedFrames = async () => {
+  // --- تشخیص نوع دستگاه ---
+  const getDeviceType = () =>
+    window.innerWidth < 768 ? "mobile" : "desktop";
+
+  // --- تابع جدید لود فریم‌های موبایل/دسکتاپ ---
+  const getFrames = async (type) => {
     if (typeof window === "undefined") return [];
 
-    if (window._truckFrames && Array.isArray(window._truckFrames)) {
-      return window._truckFrames;
+    const cacheKey =
+      type === "mobile" ? "_truckFramesMobile" : "_truckFramesDesktop";
+    const fileName =
+      type === "mobile" ? "/mobile.frames" : "/desktop.frames";
+
+    // کش موجود؟
+    if (window[cacheKey] && Array.isArray(window[cacheKey])) {
+      return window[cacheKey];
     }
 
-    const res = await fetch("/truck_frames.frames");
+    // لود ZIP
+    const res = await fetch(fileName);
     const zipBlob = await res.blob();
     const zip = await JSZip.loadAsync(zipBlob);
 
     const frames = [];
-
     const sortedFiles = Object.keys(zip.files)
       .filter((name) => name.endsWith(".webp"))
       .sort((a, b) => {
@@ -47,67 +65,46 @@ export default function IntroAnimation() {
       frames.push(url);
     }
 
-    window._truckFrames = frames;
+    window[cacheKey] = frames;
     return frames;
   };
 
-  // --- پیش‌لود ---
+  // --- لود اولیه فریم‌ها براساس نوع دستگاه ---
   useEffect(() => {
     if (typeof window === "undefined") return;
-    getCachedFrames().then(() => setFramesReady(true));
+
+    const type = getDeviceType();
+    setDeviceType(type);
+
+    getFrames(type).then(() => setFramesReady(true));
   }, []);
 
-  // --- لودر ---
+  // --- آپدیت استیت deviceType هنگام resize/rotate ---
   useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") return;
+    const handleResize = () => {
+      const current = getDeviceType();
+      setDeviceType(current);
+    };
 
-    document.body.style.overflow = "hidden";
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
 
-    if (!framesReady) {
-      const ctx = gsap.context(() => {
-        gsap.to("#loader-truck", {
-          scale: 1.02,
-          duration: 1.2,
-          yoyo: true,
-          repeat: -1,
-          ease: "sine.inOut",
-        });
-        gsap.to("#loader-truck .road-line", {
-          strokeDashoffset: 100,
-          duration: 0.8,
-          repeat: -1,
-          ease: "linear",
-        });
-        gsap.to(["#wheel-left", "#wheel-right"], {
-          rotation: 360,
-          scale: 1.05,
-          yoyo: true,
-          transformOrigin: "center center",
-          duration: 1.2,
-          repeat: -1,
-          ease: "linear",
-        });
-        gsap.to("#truck-body", {
-          repeat: -1,
-          yoyo: true,
-          duration: 0.8,
-          filter: "brightness(1.6)",
-          ease: "power1.inOut",
-        });
-      });
-      return () => ctx.revert();
-    }
-  }, [framesReady]);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, []);
 
+  // --- روی اولین فریم ست شود ---
   useEffect(() => {
     if (!framesReady) return;
 
-    getCachedFrames().then((frames) => {
+    getFrames(deviceType).then((frames) => {
       if (truckRef.current && frames.length) {
         truckRef.current.src = frames[0];
       }
     });
-  }, [framesReady]);
+  }, [framesReady, deviceType]);
 
   // --- انیمیشن INTRO ---
   useEffect(() => {
@@ -135,11 +132,12 @@ export default function IntroAnimation() {
         tl.to(p, { strokeDashoffset: 0, duration: 2, ease: "power3.out" }, i * 0.1);
       });
 
-      tl.to(
-        logoRef.current,
-        { visibility: "visible", opacity: 1, scale: 1, duration: 1 },
-        "-=0.5"
-      )
+      tl.to(logoRef.current, {
+        visibility: "visible",
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+      })
         .to(
           companyNameRef.current,
           { visibility: "visible", opacity: 1, y: 0, duration: 1 },
@@ -160,7 +158,7 @@ export default function IntroAnimation() {
         });
 
       tl.eventCallback("onComplete", async () => {
-        const frames = await getCachedFrames();
+        const frames = await getFrames(deviceType);
         if (truckRef.current && frames.length) truckRef.current.src = frames[0];
 
         setPhase("scroll");
@@ -174,7 +172,7 @@ export default function IntroAnimation() {
       ScrollTrigger.getAll().forEach((t) => t.kill());
       document.body.style.overflow = "auto";
     };
-  }, [framesReady]);
+  }, [framesReady, deviceType]);
 
   // --- اسکرول ---
   useEffect(() => {
@@ -183,7 +181,7 @@ export default function IntroAnimation() {
 
     const obj = { frame: 1 };
 
-    getCachedFrames().then((frames) => {
+    getFrames(deviceType).then((frames) => {
       if (!mounted) return;
 
       const scrollTween = gsap.to(obj, {
@@ -217,7 +215,7 @@ export default function IntroAnimation() {
     });
 
     return () => (mounted = false);
-  }, [phase, framesReady]);
+  }, [phase, framesReady, deviceType]);
 
   // --- JSX ---
   return (
