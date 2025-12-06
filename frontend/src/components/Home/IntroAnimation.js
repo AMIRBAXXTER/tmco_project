@@ -15,31 +15,24 @@ export default function IntroAnimation() {
   const [phase, setPhase] = useState("intro");
   const [typedText, setTypedText] = useState("");
   const [framesReady, setFramesReady] = useState(false);
-  const [firstFrame, setFirstFrame] = useState(null);
 
   const fullText = "تمکو اولین پلتفرم حمل و نقل ترکیبی";
   const frameCount = 139;
 
-  // حافظه فریم‌ها
+  // --- کش جهانی برای فریم‌ها ---
   const getCachedFrames = async () => {
-    // برای SSR
     if (typeof window === "undefined") return [];
 
-    // اگر قبلاً لود شده بود از کش بخوانیم
     if (window._truckFrames && Array.isArray(window._truckFrames)) {
       return window._truckFrames;
     }
 
-    // 1) دانلود ZIP – فقط یک درخواست!
     const res = await fetch("/truck_frames.frames");
     const zipBlob = await res.blob();
-
-    // 2) باز کردن ZIP در مرورگر
     const zip = await JSZip.loadAsync(zipBlob);
 
     const frames = [];
 
-    // 3) گرفتن لیست فایل‌ها و مرتب‌سازی براساس شماره فریم
     const sortedFiles = Object.keys(zip.files)
       .filter((name) => name.endsWith(".webp"))
       .sort((a, b) => {
@@ -48,30 +41,28 @@ export default function IntroAnimation() {
         return numA - numB;
       });
 
-    // 4) استخراج فایل‌ها و ساخت blob URL
     for (const fileName of sortedFiles) {
       const fileData = await zip.files[fileName].async("blob");
       const url = URL.createObjectURL(fileData);
       frames.push(url);
     }
 
-    // 5) ذخیره در global cache
     window._truckFrames = frames;
-    setFirstFrame(frames[0])
-
     return frames;
   };
 
-  // پیش‌لود
+  // --- پیش‌لود ---
   useEffect(() => {
     if (typeof window === "undefined") return;
     getCachedFrames().then(() => setFramesReady(true));
   }, []);
 
-  // Loader animation
+  // --- لودر ---
   useEffect(() => {
     if (typeof window === "undefined" || typeof document === "undefined") return;
+
     document.body.style.overflow = "hidden";
+
     if (!framesReady) {
       const ctx = gsap.context(() => {
         gsap.to("#loader-truck", {
@@ -108,10 +99,20 @@ export default function IntroAnimation() {
     }
   }, [framesReady]);
 
-  // INTRO animation
   useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") return;
     if (!framesReady) return;
+
+    getCachedFrames().then((frames) => {
+      if (truckRef.current && frames.length) {
+        truckRef.current.src = frames[0];
+      }
+    });
+  }, [framesReady]);
+
+  // --- انیمیشن INTRO ---
+  useEffect(() => {
+    if (!framesReady) return;
+    if (typeof window === "undefined") return;
 
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
@@ -134,18 +135,16 @@ export default function IntroAnimation() {
         tl.to(p, { strokeDashoffset: 0, duration: 2, ease: "power3.out" }, i * 0.1);
       });
 
-      tl.to(logoRef.current, {
-        visibility: "visible",
-        opacity: 1,
-        scale: 1,
-        duration: 1,
-      }, "-=0.5")
-        .to(companyNameRef.current, {
-          visibility: "visible",
-          opacity: 1,
-          y: 0,
-          duration: 1,
-        }, "-=0.5")
+      tl.to(
+        logoRef.current,
+        { visibility: "visible", opacity: 1, scale: 1, duration: 1 },
+        "-=0.5"
+      )
+        .to(
+          companyNameRef.current,
+          { visibility: "visible", opacity: 1, y: 0, duration: 1 },
+          "-=0.5"
+        )
         .to(logoRef.current, {
           filter: "grayscale(0%)",
           duration: 2,
@@ -163,6 +162,7 @@ export default function IntroAnimation() {
       tl.eventCallback("onComplete", async () => {
         const frames = await getCachedFrames();
         if (truckRef.current && frames.length) truckRef.current.src = frames[0];
+
         setPhase("scroll");
         document.body.style.overflow = "auto";
         window.dispatchEvent(new Event("intro-finished"));
@@ -176,57 +176,57 @@ export default function IntroAnimation() {
     };
   }, [framesReady]);
 
-  // Scroll animation (سرعت متعادل)
+  // --- اسکرول ---
   useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") return;
+    if (phase !== "scroll" || !framesReady) return;
     let mounted = true;
-    if (phase === "scroll" && framesReady) {
-      const obj = { frame: 1 };
-      const framesPromise = getCachedFrames();
 
-      framesPromise.then((frames) => {
-        if (!mounted) return;
-        const scrollTween = gsap.to(obj, {
-          frame: frameCount,
-          snap: "frame",
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "+=2000",
-            scrub: 2.5,
-            pin: true,
-          },
-          onUpdate: () => {
-            if (!truckRef.current) return;
-            truckRef.current.src = frames[obj.frame - 1];
-            const progress = obj.frame / frameCount;
-            const chars = Math.floor(progress * fullText.length);
-            setTypedText(fullText.slice(0, chars));
-          },
-        });
+    const obj = { frame: 1 };
 
-        setTimeout(() => window.scrollY < 30 && ScrollTrigger.refresh(), 400);
+    getCachedFrames().then((frames) => {
+      if (!mounted) return;
 
-        return () => {
-          scrollTween.kill();
-          ScrollTrigger.getAll().forEach((t) => t.kill());
-          gsap.globalTimeline.clear();
-        };
+      const scrollTween = gsap.to(obj, {
+        frame: frameCount,
+        snap: "frame",
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=2000",
+          scrub: 2.5,
+          pin: true,
+        },
+        onUpdate: () => {
+          if (!truckRef.current) return;
+          truckRef.current.src = frames[obj.frame - 1];
+
+          const progress = obj.frame / frameCount;
+          const chars = Math.floor(progress * fullText.length);
+          setTypedText(fullText.slice(0, chars));
+        },
       });
-    }
+
+      setTimeout(() => window.scrollY < 30 && ScrollTrigger.refresh(), 400);
+
+      return () => {
+        scrollTween.kill();
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+        gsap.globalTimeline.clear();
+      };
+    });
+
     return () => (mounted = false);
   }, [phase, framesReady]);
 
-  // JSX اصلی (مانند نسخه‌ی ارسالی)
+  // --- JSX ---
   return (
-    <section ref={containerRef} className="relative w-full min-h-screen bg-white overflow-hidden">
-      {/* لودر موقت */}
+    <section
+      ref={containerRef}
+      className="relative w-full min-h-screen bg-white overflow-hidden"
+    >
       {!framesReady && (
-        <div
-          className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white overflow-hidden"
-        >
-          {/* SVG کامیون ثابت روی جاده متحرک */}
+        <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white overflow-hidden">
           <div className="relative w-[220px] h-[100px]">
             <svg
               id="loader-truck"
@@ -236,12 +236,37 @@ export default function IntroAnimation() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* 👇 سه خط جاده متحرک */}
-              <line className="road-line" x1="0" y1="85" x2="220" y2="85" stroke="#3C9BD8" strokeWidth="3" strokeDasharray="12 8" />
-              <line className="road-line" x1="0" y1="92" x2="220" y2="92" stroke="#3C9BD8" strokeWidth="3" strokeDasharray="12 8" />
-              <line className="road-line" x1="0" y1="99" x2="220" y2="99" stroke="#3C9BD8" strokeWidth="3" strokeDasharray="12 8" />
+              <line
+                className="road-line"
+                x1="0"
+                y1="85"
+                x2="220"
+                y2="85"
+                stroke="#3C9BD8"
+                strokeWidth="3"
+                strokeDasharray="12 8"
+              />
+              <line
+                className="road-line"
+                x1="0"
+                y1="92"
+                x2="220"
+                y2="92"
+                stroke="#3C9BD8"
+                strokeWidth="3"
+                strokeDasharray="12 8"
+              />
+              <line
+                className="road-line"
+                x1="0"
+                y1="99"
+                x2="220"
+                y2="99"
+                stroke="#3C9BD8"
+                strokeWidth="3"
+                strokeDasharray="12 8"
+              />
 
-              {/* 🚚 خود کامیون – ثابت */}
               <svg
                 id="loader-truck"
                 xmlns="http://www.w3.org/2000/svg"
@@ -257,24 +282,46 @@ export default function IntroAnimation() {
                 </defs>
                 <g id="Free_delivery" data-name="Free delivery">
                   <path className="cls-1" d="M31 8v28H16a4 4 0 0 0-8 0H1V8z" />
-                  <path d="M47 28v8h-4a4 4 0 0 0-8 0h-4V14h6.65a2 2 0 0 1 1.85 1.26L43 24a4 4 0 0 1 4 4z" style={{ fill: "#6fabe6" }} />
-                  <path d="M47 28v6h-4.54a4 4 0 0 0-6.92 0A2.54 2.54 0 0 1 33 31.46V14h4.65a2 2 0 0 1 1.85 1.26L43 24a4 4 0 0 1 4 4z" style={{ fill: "#82bcf4" }} />
-                  <path d="M43 24h-8V14h2.65a2 2 0 0 1 1.85 1.26z" style={{ fill: "#9fdbf3" }} />
-                  <path d="M43 24a6 6 0 0 1-6-6v-4h.65a2 2 0 0 1 1.85 1.26z" style={{ fill: "#b2e5fb" }} />
+                  <path
+                    d="M47 28v8h-4a4 4 0 0 0-8 0h-4V14h6.65a2 2 0 0 1 1.85 1.26L43 24a4 4 0 0 1 4 4z"
+                    style={{ fill: "#6fabe6" }}
+                  />
+                  <path
+                    d="M47 28v6h-4.54a4 4 0 0 0-6.92 0A2.54 2.54 0 0 1 33 31.46V14h4.65a2 2 0 0 1 1.85 1.26L43 24a4 4 0 0 1 4 4z"
+                    style={{ fill: "#82bcf4" }}
+                  />
+                  <path
+                    d="M43 24h-8V14h2.65a2 2 0 0 1 1.85 1.26z"
+                    style={{ fill: "#9fdbf3" }}
+                  />
+                  <path
+                    d="M43 24a6 6 0 0 1-6-6v-4h.65a2 2 0 0 1 1.85 1.26z"
+                    style={{ fill: "#b2e5fb" }}
+                  />
                   <path id="wheel-left" className="cls-6" d="M16 36a4 4 0 1 1-4-4 4 4 0 0 1 4 4z" />
-                  <path className="cls-7" d="M14.93 38.72c-2.73 3-7.69.37-6.86-3.44 2.74-2.97 7.69-.36 6.86 3.44z" />
+                  <path
+                    className="cls-7"
+                    d="M14.93 38.72c-2.73 3-7.69.37-6.86-3.44 2.74-2.97 7.69-.36 6.86 3.44z"
+                  />
                   <path id="wheel-right" className="cls-6" d="M43 36a4 4 0 1 1-4-4 4 4 0 0 1 4 4z" />
-                  <path className="cls-7" d="M41.93 38.72c-2.73 3-7.69.37-6.86-3.44 2.74-2.97 7.69-.36 6.86 3.44z" />
+                  <path
+                    className="cls-7"
+                    d="M41.93 38.72c-2.73 3-7.69.37-6.86-3.44 2.74-2.97 7.69-.36 6.86 3.44z"
+                  />
                   <path className="cls-1" d="M13 36a1 1 0 0 0-2 0 1 1 0 0 0 2 0z" />
-                  <path d="M31 8v26H15.46a4 4 0 0 0-6.92 0A4.54 4.54 0 0 1 4 29.46V8z" style={{ fill: "#edebf2" }} />
+                  <path
+                    d="M31 8v26H15.46a4 4 0 0 0-6.92 0A4.54 4.54 0 0 1 4 29.46V8z"
+                    style={{ fill: "#edebf2" }}
+                  />
                   <path className="cls-1" d="M40 36a1 1 0 0 0-2 0 1 1 0 0 0 2 0z" />
 
                   <path className="cls-1" d="M1 27h30v2H1z" />
                 </g>
+
                 <text
-                  x="27"   // موقعیت افقی داخل بدنه کامیون
-                  y="21"   // موقعیت عمودی داخل بدنه
-                  fill="#3C9BD8"          // رنگ آبی روشن برند تمکو
+                  x="27"
+                  y="21"
+                  fill="#3C9BD8"
                   fontSize="5.8"
                   fontWeight="bold"
                   fontFamily="Montserrat, sans-serif"
@@ -283,18 +330,16 @@ export default function IntroAnimation() {
                   TMCO
                 </text>
               </svg>
-
             </svg>
           </div>
 
-          {/* متن پایین لودر */}
           <p className="text-sm text-[#2A446F] mt-6 font-semibold tracking-wide">
             در حال بارگذاری...
           </p>
         </div>
       )}
 
-      {/* SVG پس‌زمینه */}
+      {/* SVG های پس‌زمینه */}
       <div className="absolute inset-0 z-0">
         <svg className="intro-line absolute top-0 left-0 w-1/4 h-3/5" width="508" height="570" viewBox="0 0 508 570" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M506.5 0V349.767C506.5 369.254 492.458 385.904 473.251 389.193L247.749 427.807C228.542 431.096 214.5 447.746 214.5 467.233V528.727C214.5 559.065 182.049 578.36 155.396 563.87L-32 462" stroke="url(#paint0_linear_164_185)" strokeOpacity="0.23" strokeWidth="5" />
@@ -337,7 +382,6 @@ export default function IntroAnimation() {
         </svg>
       </div>
 
-
       {/* مرکز صفحه */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
         <img
@@ -365,7 +409,6 @@ export default function IntroAnimation() {
       <img
         ref={truckRef}
         alt="Truck"
-        src={firstFrame}
         className="absolute w-screen h-screen lg:h-[115vh] object-cover lg:object-fill z-40"
         style={{ visibility: "hidden", transform: "scaleY(0)", opacity: 0 }}
       />
@@ -375,7 +418,9 @@ export default function IntroAnimation() {
         {typedText.length > 6 ? (
           <>
             {typedText.slice(0, typedText.length - 6)}
-            <span className="text-[#64c2fc] bg-[#00123096] p-1 rounded-4xl">{typedText.slice(-6)}</span>
+            <span className="text-[#64c2fc] bg-[#00123096] p-1 rounded-4xl">
+              {typedText.slice(-6)}
+            </span>
           </>
         ) : (
           <span className="text-[#64c2fc]">{typedText}</span>
