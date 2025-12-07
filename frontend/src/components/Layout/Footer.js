@@ -15,6 +15,7 @@ gsap.registerPlugin(MotionPathPlugin);
 let _wormTweens = [];
 
 export default function Footer() {
+  const token = "b5200023f4fd4c1f69b37c44901d31cec4e436aa";
 
   const [dailyViews, setDailyViews] = useState(0);
   const [totalViews, setTotalViews] = useState(0);
@@ -34,7 +35,12 @@ export default function Footer() {
     setTrackingResult(null);
 
     try {
-      const res = await fetch(`https://core.tmcopars.ir/core/task/${trackingCode}/`);
+      const res = await fetch(`https://core.tmcopars.ir/core/task/${trackingCode}/`, {
+        headers: {
+          "Authorization": `Token ${token}`,
+          "Accept": "application/json"
+        },
+      });
       if (!res.ok) throw new Error("Tracking failed");
 
       const data = await res.json();
