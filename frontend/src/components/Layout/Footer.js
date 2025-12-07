@@ -18,8 +18,34 @@ export default function Footer() {
 
   const [dailyViews, setDailyViews] = useState(0);
   const [totalViews, setTotalViews] = useState(0);
+  const [trackingOpen, setTrackingOpen] = useState(false);
+  const [trackingCode, setTrackingCode] = useState("");
+  const [trackingResult, setTrackingResult] = useState(null);
+  const [loadingTrack, setLoadingTrack] = useState(false);
+  const [errorTrack, setErrorTrack] = useState(null);
 
   const pathname = usePathname();
+
+  const handleTrackRequest = async () => {
+    if (!trackingCode.trim()) return;
+
+    setLoadingTrack(true);
+    setErrorTrack(null);
+    setTrackingResult(null);
+
+    try {
+      const res = await fetch(`/api/track/${trackingCode}`);
+      if (!res.ok) throw new Error("Tracking failed");
+
+      const data = await res.json();
+      setTrackingResult(data);
+    } catch (err) {
+      setErrorTrack("نتیجه‌ای یافت نشد یا مشکلی پیش آمد.");
+    }
+
+    setLoadingTrack(false);
+  };
+
 
   useEffect(() => {
     fetch("/api/add-views")
@@ -243,9 +269,13 @@ export default function Footer() {
           <h2 className="w-auto h-auto md:translate-y-[-90px] translate-y-[-180px] 2xl:translate-y-[-60px] text-center font-bold text-3xl">
             همین حالا حمل و نقل خود را آغاز کنید.
           </h2>
-          <button className="bg-[#3C9BD8] text-white font-bold mx-auto translate-y-[-100px] md:translate-y-0 py-2.5 w-[200px] rounded-md hover:bg-blue-500">
+          <button
+            onClick={() => setTrackingOpen(true)}
+            className="bg-[#3C9BD8] text-white font-bold mx-auto translate-y-[-100px] md:translate-y-0 py-2.5 w-[200px] rounded-md hover:bg-blue-500"
+          >
             رهگیری محموله
           </button>
+
         </section>
 
         <section className="relative footer-dark-section w-full h-[1200px] md:h-[767px] bg-[#0F2747] px-6 py-[clamp(8rem,16vw,12rem)] text-slate-100 lg:px-12">
@@ -298,6 +328,55 @@ export default function Footer() {
           </div>
         </section>
       </div>
+      {trackingOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-[9999] flex items-center justify-center px-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative">
+
+            {/* دکمه بستن */}
+            <button
+              onClick={() => { setTrackingOpen(false); setTrackingCode(""); setTrackingResult(null); }}
+              className="absolute top-3 left-3 text-gray-500 hover:text-black text-xl"
+            >
+              ×
+            </button>
+
+            <h2 className="text-xl font-bold text-center mb-4">رهگیری مرسوله</h2>
+
+            {/* input + آیکون */}
+            <div className="flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2">
+              <input
+                value={trackingCode}
+                onChange={(e) => setTrackingCode(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleTrackRequest()}
+                className="w-full outline-none"
+                placeholder="کد رهگیری را وارد کنید..."
+              />
+              <button onClick={handleTrackRequest} className="text-blue-600 font-bold text-xl">
+                🔍
+              </button>
+            </div>
+
+            {/* Loading */}
+            {loadingTrack && (
+              <p className="mt-4 text-center text-gray-700">در حال دریافت اطلاعات...</p>
+            )}
+
+            {/* Error */}
+            {errorTrack && (
+              <p className="mt-4 text-center text-red-500">{errorTrack}</p>
+            )}
+
+            {/* Result */}
+            {trackingResult && (
+              <pre className="mt-4 bg-gray-100 p-3 rounded-md text-xs overflow-auto max-h-60">
+                {JSON.stringify(trackingResult, null, 2)}
+              </pre>
+            )}
+
+          </div>
+        </div>
+      )}
+
     </footer>
   );
 }
