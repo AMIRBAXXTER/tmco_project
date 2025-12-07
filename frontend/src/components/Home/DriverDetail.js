@@ -28,7 +28,7 @@ export default function DriverDetail() {
             </MotionEffect>
             <div className="flex gap-6 mt-7">
                 <a
-                    href="http://core.tmcopars.ir/media/app/raya-release-1.0.6.apk"
+                    href="https://core.tmcopars.ir/media/app/raya-release-1.0.6.apk"
                     download
                     target="_blank"
                     className="bg-[#3C9BD8] text-center text-white font-bold w-1/2 py-3 rounded-xl 
@@ -38,7 +38,7 @@ export default function DriverDetail() {
                     دانلود اپلیکیشن
                 </a>
                 <a
-                    href="http://core.tmcopars.ir/accounts/signup"
+                    href="https://core.tmcopars.ir/accounts/signup"
                     target="_blank"
                     className="bg-white text-center text-[#3C9BD8] border border-[#3C9BD8] font-bold w-1/2 py-3 rounded-xl 
                transition-colors duration-100 ease-in
