@@ -64,7 +64,6 @@ export default function Footer() {
   }, []);
 
   useLayoutEffect(() => {
-    // 🚫 در محیط SSR اصلاً اجرا نکن
     if (typeof window === "undefined" || typeof document === "undefined") return;
 
     gsap.registerPlugin(MotionPathPlugin);
@@ -162,6 +161,23 @@ export default function Footer() {
       clearTimeout(timeout)
     };
   }, [pathname]);
+
+  useEffect(() => {
+    if (trackingOpen) {
+      const now = new Date();
+
+      const shamsi = new Intl.DateTimeFormat("fa-IR-u-nu-latn", {
+        year: "numeric"
+      }).format(now);
+
+      const englishDigits = shamsi.replace(/[٠-٩۰-۹]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹".indexOf(d) % 10]);
+
+      const twoDigit = englishDigits.slice(-3); // مثال: "04"
+
+      setTrackingCode(`RAYA${twoDigit}`);
+    }
+  }, [trackingOpen]);
+
 
   return (
     <footer className="relative w-full overflow-hidden bg-white">
@@ -335,53 +351,76 @@ export default function Footer() {
         </section>
       </div>
       {trackingOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-[9999] flex items-center justify-center px-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9999] flex items-center justify-center px-4">
+          <div className="bg-white rounded-2xl p-7 w-full max-w-md shadow-2xl relative animate-fadeIn">
 
-            {/* دکمه بستن */}
+            {/* دکمه بستن – سمت راست */}
             <button
               onClick={() => { setTrackingOpen(false); setTrackingCode(""); setTrackingResult(null); }}
-              className="absolute top-3 left-3 text-gray-500 hover:text-black text-xl"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-3xl font-bold transition-all"
             >
               ×
             </button>
 
-            <h2 className="text-xl font-bold text-center mb-4">رهگیری مرسوله</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">رهگیری مرسوله</h2>
 
-            {/* input + آیکون */}
-            <div className="flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2">
+            {/* input + آیکون - هر دو سمت راست */}
+            <div className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 flex-row">
+
+              <button onClick={handleTrackRequest} className="text-blue-600 font-bold text-2xl">
+                🔍
+              </button>
+
               <input
                 value={trackingCode}
                 onChange={(e) => setTrackingCode(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleTrackRequest()}
-                className="w-full outline-none"
-                placeholder="کد رهگیری را وارد کنید..."
+                className="w-full outline-none font-semibold tracking-wide ltr text-left placeholder:text-left"
+                placeholder="Enter Tracking Code..."
               />
-              <button onClick={handleTrackRequest} className="text-blue-600 font-bold text-xl">
-                🔍
-              </button>
             </div>
 
-            {/* Loading */}
             {loadingTrack && (
               <p className="mt-4 text-center text-gray-700">در حال دریافت اطلاعات...</p>
             )}
 
-            {/* Error */}
             {errorTrack && (
               <p className="mt-4 text-center text-red-500">{errorTrack}</p>
             )}
 
-            {/* Result */}
             {trackingResult && (
-              <pre className="mt-4 bg-gray-100 p-3 rounded-md text-xs overflow-auto max-h-60">
-                {JSON.stringify(trackingResult, null, 2)}
-              </pre>
+              <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-5 text-sm text-gray-700 space-y-4">
+
+                {/* مسیر سفر */}
+                <div className="flex justify-between">
+                  <span className="font-bold text-gray-900">مسیر سفر:</span>
+                  <span>{trackingResult.title}</span>
+                </div>
+
+                {/* وضعیت سفر */}
+                <div className="flex justify-between">
+                  <span className="font-bold text-gray-900">وضعیت:</span>
+                  <span>{trackingResult.status}</span>
+                </div>
+
+                {/* اکشن سفر */}
+                <div className="flex justify-between">
+                  <span className="font-bold text-gray-900">وضعیت فعلی سفر:</span>
+                  <span>
+                    {trackingResult.actions?.length > 0
+                      ? trackingResult.actions[0].translation
+                      : "—"}
+                  </span>
+                </div>
+
+              </div>
             )}
 
           </div>
         </div>
       )}
+
+
 
     </footer>
   );
