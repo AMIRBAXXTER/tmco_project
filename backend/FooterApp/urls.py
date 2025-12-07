@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import DailyViewsViewSet, AddViewsToRedis, track_package
+from .views import DailyViewsViewSet, AddViewsToRedis
 
 router = routers.DefaultRouter()
 router.register(r'daily-views', DailyViewsViewSet)
