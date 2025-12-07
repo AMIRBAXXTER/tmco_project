@@ -1,13 +1,35 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 import MotionEffect from "@/animations/MotionEffect";
 
 export default function DriverDetail() {
+    const [downloadUrl, setDownloadUrl] = useState(null);
     const features = [
         { title: "مقایسه و انتخاب هوشمند ارائه‌دهندگان حمل‌ونقل" },
         { title: "مدیریت یکپارچه سفارش‌ها" },
         { title: "مدیریت کامل فرآیند حمل‌ونقل" },
         { title: "پیگیری وضعیت محموله به صورت لحظه‌ای" },
     ]
+
+    useEffect(() => {
+    const fetchLatest = async () => {
+      try {
+        const res = await fetch("https://core.tmcopars.ir/core/client/mobile/app/latest/");
+        const data = await res.json();
+
+        // ساخت لینک کامل
+        const fullUrl = `https://core.tmcopars.ir${data.app_file}`;
+
+        console.log("Full URL:", fullUrl);
+
+        setDownloadUrl(fullUrl);
+      } catch (err) {
+        console.error("Error fetching latest APK:", err);
+      }
+    };
+
+    fetchLatest();
+  }, []);
+
     return (
         <div className="w-full lg:w-3/4 h-[600px] md:h-full lg:mr-20">
             <MotionEffect effect="slideRight">
@@ -28,7 +50,7 @@ export default function DriverDetail() {
             </MotionEffect>
             <div className="flex gap-6 mt-7">
                 <a
-                    href="https://core.tmcopars.ir/media/app/raya-release-1.0.6.apk"
+                    href={downloadUrl || "#"}
                     download
                     target="_blank"
                     className="bg-[#3C9BD8] text-center text-white font-bold w-1/2 py-3 rounded-xl 

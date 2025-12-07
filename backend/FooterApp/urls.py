@@ -8,5 +8,4 @@ router.register(r'daily-views', DailyViewsViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('add-views/', AddViewsToRedis.as_view(), name='add-views'),
-    path('track/<str:code>/', track_package, name='track-package'),
 ]

@@ -36,20 +36,3 @@ class AddViewsToRedis(APIView):
         total_views = cache.get(total_key) or 0
 
         return Response({"daily_views": daily_views, "total_views": total_views})
-
-
-def track_package(request, code):
-    url = f"https://core.tmcopars.ir/core/task/{code}"
-
-    try:
-        response = requests.get(url, timeout=20)
-
-        try:
-            data = response.json()
-        except:
-            return JsonResponse({"error": "Invalid JSON from remote API"}, status=500)
-
-        return JsonResponse(data, safe=False, status=response.status_code)
-
-    except requests.exceptions.RequestException:
-        return JsonResponse({"error": "Failed to connect to tracking server"}, status=500)
