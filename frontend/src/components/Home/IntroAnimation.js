@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import gsap from "gsap";
 import JSZip from "jszip";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -105,6 +105,48 @@ export default function IntroAnimation() {
       }
     });
   }, [framesReady, deviceType]);
+
+  // --- لودر ---
+  useLayoutEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined") return;
+
+    document.body.style.overflow = "hidden";
+
+    if (!framesReady) {
+      const ctx = gsap.context(() => {
+        gsap.to("#loader-truck", {
+          scale: 1.02,
+          duration: 1.2,
+          yoyo: true,
+          repeat: -1,
+          ease: "sine.inOut",
+        });
+        gsap.to("#loader-truck .road-line", {
+          strokeDashoffset: 100,
+          duration: 0.8,
+          repeat: -1,
+          ease: "linear",
+        });
+        gsap.to(["#wheel-left", "#wheel-right"], {
+          rotation: 360,
+          scale: 1.05,
+          yoyo: true,
+          transformOrigin: "center center",
+          duration: 1.2,
+          repeat: -1,
+          ease: "linear",
+        });
+        gsap.to("#truck-body", {
+          repeat: -1,
+          yoyo: true,
+          duration: 0.8,
+          filter: "brightness(1.6)",
+          ease: "power1.inOut",
+        });
+      });
+      return () => ctx.revert();
+    }
+  }, [framesReady]);
 
   // --- انیمیشن INTRO ---
   useEffect(() => {
