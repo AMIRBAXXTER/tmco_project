@@ -2,8 +2,6 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.cache import cache
-import requests
-from django.http import JsonResponse
 
 from .models import DailyView
 from .serializers import DailyViewsSerializer
