@@ -34,7 +34,7 @@ export default function Footer() {
     setTrackingResult(null);
 
     try {
-      const res = await fetch(`/api/track/${trackingCode}/`);
+      const res = await fetch(`https://core.tmcopars.ir/core/task/${trackingCode}`);
       if (!res.ok) throw new Error("Tracking failed");
 
       const data = await res.json();
