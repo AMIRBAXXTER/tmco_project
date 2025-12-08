@@ -145,7 +145,6 @@ export default function Home() {
             <li className="mr-5 my-2">قیمت‌ها را به‌صورت لحظه‌ای مقایسه کنید.</li>
             <li className="mr-5 mb-2">بهترین روش حمل‌ونقل را انتخاب کنید.</li>
             <li className="mr-5 mb-2">از هزینه‌های پنهان جلوگیری کنید.</li>
-            <li className="mr-5 mb-2">از هزینه‌های پنهان جلوگیری کنید.</li>
           </ul>
         </div>
 

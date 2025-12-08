@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Combobox } from "@headlessui/react";
 
 const TariffInquiry = () => {
   const [origins, setOrigins] = useState([]);
@@ -16,7 +15,7 @@ const TariffInquiry = () => {
   const [lastQueryKey, setLastQueryKey] = useState(null);
   const [error, setError] = useState("");
 
-  // دریافت لیست مبداها
+  // دریافت مبداها
   useEffect(() => {
     let alive = true;
     axios
@@ -25,34 +24,42 @@ const TariffInquiry = () => {
         if (alive) setOrigins(res.data || []);
       })
       .catch((err) => console.error(err));
-
-    return () => (alive = false);
+    return () => {
+      alive = false;
+    };
   }, []);
 
-  // دریافت مقاصد با تغییر مبدا
+  // دریافت مقصدها با تغییر مبدا
   useEffect(() => {
     if (selectedOrigin) {
       let alive = true;
-
       axios
         .get(`/api/destinations/?origin=${encodeURIComponent(selectedOrigin)}`)
         .then((res) => {
           if (alive) setDestinations(res.data || []);
         })
         .catch((err) => console.error(err));
-
-      return () => (alive = false);
+      return () => {
+        alive = false;
+      };
     } else {
       setDestinations([]);
     }
   }, [selectedOrigin]);
+
+  // تغییر مبدا: مقصد و نتیجه پاک شود تا ناسازگار نباشد
+  const handleOriginChange = (e) => {
+    setSelectedOrigin(e.target.value);
+    setSelectedDestination("");
+    // setResult(null); // اگر نمی‌خواهی نتیجه قبلی حفظ شود، این خط را از حالت کامنت خارج کن
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
     const w = parseFloat(weight);
-    if (Number.isNaN(w) || w <= 2000 || w > 10000) {
+    if (Number.isNaN(w) || w < 2000 || w > 10000) {
       setError("لطفاً وزن معتبر بزرگ‌تر از 2000 و کوچک‌تر از 10000 وارد کنید.");
       return;
     }
@@ -64,9 +71,13 @@ const TariffInquiry = () => {
       carrier_type: carrierType,
     };
 
-    const key = `${currentQuery.origin}|${currentQuery.destination}|${currentQuery.weight}`;
+    // کلید یکتا برای جلوگیری از درخواست تکراری
+    const key = `${currentQuery.origin}|${currentQuery.destination}|${currentQuery.weight} || ""}`;
 
-    if (lastQueryKey === key) return;
+    // اگر دقیقاً همان ورودی‌هاست، کاری نکن
+    if (lastQueryKey === key) {
+      return; // چون setLoading(true) هنوز نزده‌ایم، UI گیر نمی‌کند
+    }
 
     setLoading(true);
 
@@ -88,7 +99,8 @@ const TariffInquiry = () => {
     !selectedOrigin ||
     !selectedDestination ||
     !weight ||
-    Number.isNaN(parseFloat(weight));
+    Number.isNaN(parseFloat(weight)) ||
+    parseFloat(weight) <= 0;
 
   return (
     <div className="w-full flex justify-center mt-20">
@@ -103,42 +115,32 @@ const TariffInquiry = () => {
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مبدا
             </label>
+            <select
+              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none pr-10"
+              value={selectedOrigin}
+              onChange={handleOriginChange}
+              required
+            >
+              <option value="">انتخاب مبدا</option>
+              {origins.map((origin, i) => (
+                <option key={i} value={origin}>
+                  {origin}
+                </option>
+              ))}
+            </select>
 
-            <Combobox value={selectedOrigin} onChange={(v) => {
-              setSelectedOrigin(v);
-              setSelectedDestination(""); // ریست مقصد
-            }}>
-              <div className="relative">
-                <Combobox.Input
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
-                  placeholder="مبدا را تایپ کنید..."
-                  onChange={(e) => setSelectedOrigin(e.target.value)}
-                  displayValue={(v) => v}
-                />
-
-                {origins.length > 0 && (
-                  <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white shadow-lg z-50 border border-gray-200">
-                    {origins
-                      .filter((item) =>
-                        item.toLowerCase().includes(selectedOrigin.toLowerCase())
-                      )
-                      .map((item, i) => (
-                        <Combobox.Option
-                          key={i}
-                          value={item}
-                          className={({ active }) =>
-                            `cursor-pointer select-none px-4 py-2 ${
-                              active ? "bg-blue-100" : ""
-                            }`
-                          }
-                        >
-                          {item}
-                        </Combobox.Option>
-                      ))}
-                  </Combobox.Options>
-                )}
-              </div>
-            </Combobox>
+            {/* فلش سفارشی سمت راست */}
+            <div className="absolute right-3 top-[40px] pointer-events-none">
+              <svg
+                fill="none"
+                stroke="#3C9BD8"
+                strokeWidth="2.2"
+                viewBox="0 0 24 24"
+                className="w-5 h-5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
           </div>
 
           {/* مقصد */}
@@ -146,49 +148,35 @@ const TariffInquiry = () => {
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مقصد
             </label>
+            <select
+              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none pr-10"
+              value={selectedDestination}
+              onChange={(e) => setSelectedDestination(e.target.value)}
+              disabled={!selectedOrigin}
+              required
+            >
+              <option value="">انتخاب مقصد</option>
+              {destinations.map((dest, i) => (
+                <option key={i} value={dest}>
+                  {dest}
+                </option>
+              ))}
+            </select>
 
-            <Combobox value={selectedDestination} onChange={setSelectedDestination}>
-              <div className="relative">
-                <Combobox.Input
-                  disabled={!selectedOrigin}
-                  className={`w-full px-4 py-2 border border-gray-300 rounded-xl outline-none ${
-                    selectedOrigin ? "focus:ring-2 focus:ring-[#3C9BD8]" : "bg-gray-100"
-                  }`}
-                  placeholder={
-                    selectedOrigin ? "مقصد را تایپ کنید..." : "ابتدا مبدا را انتخاب کنید"
-                  }
-                  onChange={(e) => setSelectedDestination(e.target.value)}
-                  displayValue={(v) => v}
-                />
-
-                {selectedOrigin && destinations.length > 0 && (
-                  <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white shadow-lg z-50 border border-gray-200">
-                    {destinations
-                      .filter((item) =>
-                        item
-                          .toLowerCase()
-                          .includes(selectedDestination.toLowerCase())
-                      )
-                      .map((item, i) => (
-                        <Combobox.Option
-                          key={i}
-                          value={item}
-                          className={({ active }) =>
-                            `cursor-pointer select-none px-4 py-2 ${
-                              active ? "bg-blue-100" : ""
-                            }`
-                          }
-                        >
-                          {item}
-                        </Combobox.Option>
-                      ))}
-                  </Combobox.Options>
-                )}
-              </div>
-            </Combobox>
+            <div className="absolute right-3 top-[40px] pointer-events-none">
+              <svg
+                fill="none"
+                stroke="#3C9BD8"
+                strokeWidth="2.2"
+                viewBox="0 0 24 24"
+                className="w-5 h-5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
           </div>
 
-          {/* وزن */}
+          {/* مقدار بار */}
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مقدار بار (کیلوگرم)
@@ -210,7 +198,6 @@ const TariffInquiry = () => {
             <label className="block text-sm font-medium text-gray-600 mb-2">
               نوع حامل
             </label>
-
             <select
               className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none pr-10"
               value={carrierType}
@@ -222,8 +209,21 @@ const TariffInquiry = () => {
               <option value="تانکری">تانکری</option>
               <option value="یخچالی">یخچالی</option>
             </select>
+
+            <div className="absolute right-3 top-[40px] pointer-events-none">
+              <svg
+                fill="none"
+                stroke="#3C9BD8"
+                strokeWidth="2.2"
+                viewBox="0 0 24 24"
+                className="w-5 h-5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
           </div>
 
+          {/* خطای اعتبارسنجی */}
           {error && (
             <div className="text-red-600 text-sm bg-red-50 rounded-lg p-3">
               {error}
@@ -243,30 +243,22 @@ const TariffInquiry = () => {
           </button>
         </form>
 
-        {/* نمایش نتیجه */}
+        {/* نتیجه استعلام */}
         <div className="border-t border-gray-200 pt-6 mt-6">
-          <h6 className="font-semibold text-[#425466] text-center">
-            نتیجه استعلام
-          </h6>
+          <h6 className="font-semibold text-[#425466] text-center">نتیجه استعلام</h6>
 
           {loading && (
-            <p className="text-center text-gray-500 mt-2">
-              در حال دریافت نتیجه...
-            </p>
+            <p className="text-center text-gray-500 mt-2">در حال دریافت نتیجه...</p>
           )}
 
           {!loading && result ? (
             <div className="bg-gray-50 rounded-xl p-4 text-center mt-3">
-              {result.tariff !== null && result.tariff !== undefined ? (
-                <p className="font-bold text-3xl text-[#3C9BD8]">
-                  {Number(result.tariff).toLocaleString()} تومان
-                </p>
-              ) : (
-                <p className="font-bold text-xl text-[#d83c3c]">
-                  تعرفه‌ای برای این مسیر یافت نشد
-                </p>
-              )}
-
+              
+                {result.tariff !== null && result.tariff !== undefined
+                  ? <p className="font-bold text-3xl text-[#3C9BD8]">{`${Number(result.tariff).toLocaleString()} تومان`}</p>
+                  : <p className="font-bold text-xl text-[#d83c3c]">{"تعرفه‌ای برای این مسیر یافت نشد"}</p>}
+              
+              {/* اگر فیلدهای دیگری هم از API می‌گیری مثل زمان، جزئیات مسیر، نمایش بده */}
               {result.note && (
                 <p className="text-sm text-gray-500 mt-2">{result.note}</p>
               )}
