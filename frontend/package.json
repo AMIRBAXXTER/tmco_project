@@ -18,7 +18,8 @@
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "swiper": "^12.0.2",
-    "typed.js": "^2.1.0"
+    "typed.js": "^2.1.0",
+    "@headlessui/react": "^2.1.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

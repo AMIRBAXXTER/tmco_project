@@ -12,7 +12,6 @@ export default function ServicesTitle() {
     { title: "پروفایل مشتری", url: "/DemoVideos/ClientProfile.mp4" },
     { title: "پروفایل مالک", url: "/DemoVideos/OwnerProfile.mp4" },
     { title: "پروفایل راننده", url: "/DemoVideos/DriverProfile.mp4" },
-    { title: "پروفایل مدیر منطقه", url: "/DemoVideos/ManagerProfile.mp4" },
   ];
 
   return (
