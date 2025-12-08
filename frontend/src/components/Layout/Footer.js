@@ -8,6 +8,7 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { LuHeadphones } from "react-icons/lu";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
+import { FaSearchLocation } from "react-icons/fa";
 
 gsap.registerPlugin(MotionPathPlugin);
 
@@ -46,7 +47,7 @@ export default function Footer() {
       const data = await res.json();
       setTrackingResult(data);
     } catch (err) {
-      setErrorTrack("نتیجه‌ای یافت نشد یا مشکلی پیش آمد.");
+      setErrorTrack("نتیجه‌ای یافت نشد.");
     }
 
     setLoadingTrack(false);
@@ -362,22 +363,28 @@ export default function Footer() {
               ×
             </button>
 
-            <h2 className="text-2xl font-bold text-center mb-6">رهگیری مرسوله</h2>
+            <h3 className="text-xl font-bold text-center mb-6">پنج کاراکتر آخر شناسه را وارد کنید</h3>
 
             {/* input + آیکون - هر دو سمت راست */}
             <div className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 flex-row">
 
               <button onClick={handleTrackRequest} className="text-blue-600 font-bold text-2xl">
-                🔍
+                <FaSearchLocation color="#3C9BD8" size={20} className="cursor-pointer" />
               </button>
 
               <input
                 value={trackingCode}
                 onChange={(e) => setTrackingCode(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleTrackRequest()}
-                className="w-full outline-none font-semibold tracking-wide ltr text-left placeholder:text-left"
+                dir="ltr"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                className="w-full outline-none font-semibold tracking-wide text-left placeholder:text-left"
                 placeholder="Enter Tracking Code..."
               />
+
             </div>
 
             {loadingTrack && (
