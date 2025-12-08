@@ -296,7 +296,7 @@ export default function Footer() {
             onClick={() => setTrackingOpen(true)}
             className="bg-[#3C9BD8] text-white font-bold mx-auto translate-y-[-100px] md:translate-y-0 py-2.5 w-[200px] rounded-md hover:bg-blue-500"
           >
-            رهگیری محموله
+            رهگیری سفارش
           </button>
 
         </section>
@@ -341,7 +341,7 @@ export default function Footer() {
                 <MdOutlineMailOutline size={20} color={"#ADBDCC"} /> <span>info@tmcopars.ir</span>
               </div>
               <div className="flex-col">
-                <IoLocationOutline size={20} color={"#ADBDCC"} /> <span>تهران ، شهرک استقلال ريا، خیابان سپاه اسلام 36، خیابان شهید عباس شفیعی هنجنی، پلاک 4 طبقه همکف</span>
+                <IoLocationOutline size={20} color={"#ADBDCC"} /> <span>تهران ، شهرک استقلال ، خیابان سپاه اسلام ۳۶ ،خیابان شهید عباس شفیعی هنجنی ، پلاک ۴ ، طبقه همکف</span>
               </div>
             </div>
 

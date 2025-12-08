@@ -59,8 +59,8 @@ const TariffInquiry = () => {
     setError("");
 
     const w = parseFloat(weight);
-    if (Number.isNaN(w) || w <= 0) {
-      setError("لطفاً وزن معتبر بزرگ‌تر از صفر وارد کنید.");
+    if (Number.isNaN(w) || w <= 2000 || w > 10000) {
+      setError("لطفاً وزن معتبر بزرگ‌تر از 2000 و کوچک‌تر از 10000 وارد کنید.");
       return;
     }
 
