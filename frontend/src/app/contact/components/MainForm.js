@@ -7,6 +7,7 @@ export default function MainForm() {
   // 🧠 state های فرم
   const [formData, setFormData] = useState({
     full_name: '',
+    phone_number: '',
     email: '',
     subject: '',
     message: '',
@@ -50,7 +51,7 @@ export default function MainForm() {
 
       if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
 
-      setFormData({ full_name: '', email: '', subject: '', message: '' });
+      setFormData({ full_name: '', phone_number: '', email: '', subject: '', message: '' });
 
       setModal({
         visible: true,
@@ -71,13 +72,13 @@ export default function MainForm() {
 
   return (
     <section className="relative flex justify-center items-center w-full overflow-hidden md:py-8">
-      <div className="relative w-full md:w-[80%] mx-auto flex justify-center items-center h-[900px] md:h-[620px]">
+      <div className="relative w-full md:w-[80%] mx-auto flex justify-center items-center h-[1000px] md:h-[700px]">
 
         {/* 🔵 پس‌زمینه SVG */}
         <svg
           viewBox="0 0 1175 751"
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute inset-0 w-full h-full z-0 object-cover max-h-[900px] md:max-h-[650px]"
+          className="absolute inset-0 w-full z-0 object-cover h-[1000px] md:h-[700px]"
           preserveAspectRatio="none"
         >
           <path
@@ -94,7 +95,7 @@ export default function MainForm() {
         <div className="relative z-10 w-full text-white flex flex-col items-center justify-center -translate-y-6 md:translate-y-0">
 
           {/* 📢 عنوان بالای فرم */}
-          <h2 className="text-center text-2xl md:text-3xl font-extrabold mt-25 md:mt-6">
+          <h2 className="text-center text-2xl md:text-3xl font-extrabold mt-25 md:mt-15">
             با ما در ارتباط باشید
           </h2>
 
@@ -166,6 +167,21 @@ export default function MainForm() {
                              border-[#888888] placeholder-[#888888]
                              focus:ring-2 focus:ring-[#3C9BD8]"
                   placeholder="نام و نام خانوادگی"
+                  required
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="full_name" className="text-xs font-bold">شماره همراه</label>
+                <input
+                  id="phone_number"
+                  type="text"
+                  value={formData.phone_number}
+                  onChange={handleChange}
+                  className="px-3 py-2 rounded-md font-bold outline-none border 
+                             border-[#888888] placeholder-[#888888]
+                             focus:ring-2 focus:ring-[#3C9BD8]"
+                  placeholder="شماره همراه"
                   required
                 />
               </div>

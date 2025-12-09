@@ -3,4 +3,4 @@ from .models import Suggestion
 
 @admin.register(Suggestion)
 class SuggestionAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'subject', 'email', 'message')
+    list_display = ('full_name', 'phone_number', 'subject', 'email', 'message')

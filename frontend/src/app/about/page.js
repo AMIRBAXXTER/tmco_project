@@ -15,7 +15,7 @@ export default function AboutPage() {
       <TopSection />
       <BottomSection />
       <AboutBottom />
-      <OurLeaders />
+      {/* <OurLeaders /> */}
     </>
   );
 }

@@ -52,10 +52,10 @@ export default function Header() {
             } items-center justify-start`}
         >
           <Image
-            src="/logofull.svg"
+            src="/logofull.png"
             alt="لوگوی شرکت"
-            width={40}
-            height={40}
+            width={50}
+            height={50}
             priority
           />
         </div>
@@ -76,7 +76,7 @@ export default function Header() {
 
       <header className="absolute top-4 left-4 z-50 flex justify-center drop-shadow-[0_2px_4px_rgba(255,255,255,1)] md:hidden">
         <Image
-          src="/logofull.svg"
+          src="/logofull.png"
           alt="لوگوی شرکت"
           width={40}
           height={40}

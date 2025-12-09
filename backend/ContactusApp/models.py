@@ -27,6 +27,7 @@ class Suggestion(models.Model):
 
     )
     full_name = models.CharField(max_length=200, verbose_name="نام و نام خانوادگی")
+    phone_number = models.CharField(max_length=200, verbose_name="شماره همراه")
     email = models.EmailField(verbose_name="ایمیل")
     subject = models.CharField(max_length=200, choices=subjects, verbose_name="موضوع")
     message = models.TextField(verbose_name="توضیحات")
