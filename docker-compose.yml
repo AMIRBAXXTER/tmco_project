@@ -42,16 +42,16 @@ services:
   frontend:
     container_name: frontend
 # -------- DEV STAGE ----------
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: npm run dev
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile.dev
+#    volumes:
+#      - ./frontend:/app
+#      - /app/node_modules
+#    command: npm run dev
 # --------------------------------
 # -------- PROD STAGE ----------
-#    image: ghcr.io/amirbaxxter/tmco-frontend:latest
+    image: ghcr.io/amirbaxxter/tmco-frontend:latest
 # --------------------------------
     environment:
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
