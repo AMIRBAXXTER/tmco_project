@@ -3,14 +3,16 @@ import Image from "next/image";
 import MotionEffect from "@/animations/MotionEffect";
 
 const clients = [
-  { id: 1, src: "/Clients/dashboard.png", alt: "همراه اول" },
-  { id: 2, src: "/Clients/images (1).png", alt: "اسنپ‌ترک" },
-  { id: 3, src: "/Clients/6.png", alt: "پست ایران" },
-  { id: 4, src: "/Clients/tnext.jpg", alt: "بانک سینا" },
-  { id: 5, src: "/Clients/Final-Ziboom-30Dec-12-300x109.png", alt: "مپنا" },
-  { id: 6, src: "/Clients/snap-shop.png", alt: "مپنا" },
-  { id: 7, src: "/Clients/1658044772_تی-هاب.jpg", alt: "مپنا" },
-  { id: 8, src: "/Clients/تی-اکسپرس.png", alt: "مپنا" },
+  { id: 1, src: "/Clients/dashboard.png", alt: "تیپاکس" },
+  { id: 2, src: "/Clients/images (1).png", alt: "ایرانسل" },
+  { id: 3, src: "/Clients/snap-shop.png", alt: "اسنپ شاپ" },
+  { id: 4, src: "/Clients/1658044772_تی-هاب.jpg", alt: "تیهاب" },
+  { id: 5, src: "/Clients/kavir_tire.jpg", alt: "کویر تایر" },
+  { id: 6, src: "/Clients/barez_tire.jpg", alt: "بارز تایر" },
+  { id: 9, src: "/Clients/Final-Ziboom-30Dec-12-300x109.png", alt: "مپنا" },
+  { id: 8, src: "/Clients/tnext.jpg", alt: "بانک سینا" },
+  { id: 10, src: "/Clients/تی-اکسپرس.png", alt: "مپنا" },
+  { id: 7, src: "/Clients/6.png", alt: "پست ایران" },
 ];
 
 export default function ClientsSection() {

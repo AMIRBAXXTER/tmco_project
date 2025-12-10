@@ -51,16 +51,16 @@ export default function BlogDetail({ params }) {
     <>
       <div
         onClick={handleBack}
-        className="cursor-pointer select-none flex items-center gap-2 text-[#3C9BD8] text-sm md:text-base font-medium px-6 md:px-20 pt-10 hover:text-[#0A2540] transition"
+        className="cursor-pointer mt-30 select-none flex items-center gap-2 text-[#3C9BD8] text-sm md:text-base font-medium px-6 md:px-20 pt-10 hover:text-[#0A2540] transition"
       >
+        <p className="pt-1">بازگشت به لیست پست‌ها</p>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
              strokeWidth={1.8} stroke="currentColor" className="w-4 h-4">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
         </svg>
-        بازگشت به لیست پست‌ها
       </div>
 
-      <div className="w-full min-h-screen mt-18 bg-white px-6 md:px-20 py-16 flex flex-col items-center">
+      <div className="w-full min-h-screen bg-white px-6 md:px-20 flex flex-col items-center">
         <div className="max-w-4xl w-full shadow-lg rounded-xl p-8 border border-gray-200">
 
           <img
@@ -134,12 +134,12 @@ export default function BlogDetail({ params }) {
               onClick={handleBack}
               className="flex items-center gap-2 bg-[#45B2E8] text-white font-medium px-6 py-3 rounded-lg shadow-md hover:bg-[#3C9BD8] transition-all duration-200"
             >
+              <p className="pt-1">بازگشت به لیست پست‌ها</p>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                    viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor"
                    className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
               </svg>
-              بازگشت به لیست پست‌ها
             </button>
           </div>
         </div>
