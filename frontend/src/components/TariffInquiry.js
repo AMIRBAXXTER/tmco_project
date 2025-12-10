@@ -116,7 +116,7 @@ const TariffInquiry = () => {
               مبدا
             </label>
             <select
-              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none pr-10"
+              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
               value={selectedOrigin}
               onChange={handleOriginChange}
               required
@@ -130,7 +130,7 @@ const TariffInquiry = () => {
             </select>
 
             {/* فلش سفارشی سمت راست */}
-            <div className="absolute right-3 top-[40px] pointer-events-none">
+            <div className="absolute left-3 top-[40px] pointer-events-none">
               <svg
                 fill="none"
                 stroke="#3C9BD8"
@@ -149,13 +149,13 @@ const TariffInquiry = () => {
               مقصد
             </label>
             <select
-              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none pr-10"
+              className={`appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none` + (selectedOrigin ? "" : " opacity-50")}
               value={selectedDestination}
               onChange={(e) => setSelectedDestination(e.target.value)}
               disabled={!selectedOrigin}
               required
             >
-              <option value="">انتخاب مقصد</option>
+              <option value="">{selectedOrigin ? "انتخاب مقصد" : "ابتدا مبدا را انتخاب کنید"}</option>
               {destinations.map((dest, i) => (
                 <option key={i} value={dest}>
                   {dest}
@@ -163,17 +163,19 @@ const TariffInquiry = () => {
               ))}
             </select>
 
-            <div className="absolute right-3 top-[40px] pointer-events-none">
-              <svg
-                fill="none"
-                stroke="#3C9BD8"
-                strokeWidth="2.2"
-                viewBox="0 0 24 24"
-                className="w-5 h-5"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-              </svg>
-            </div>
+            {selectedOrigin && (
+              <div className="absolute left-3 top-[40px] pointer-events-none">
+                <svg
+                  fill="none"
+                  stroke="#3C9BD8"
+                  strokeWidth="2.2"
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                </svg>
+              </div>
+            )}
           </div>
 
           {/* مقدار بار */}
@@ -181,16 +183,38 @@ const TariffInquiry = () => {
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مقدار بار (کیلوگرم)
             </label>
-            <input
-              type="number"
-              min="0"
-              step="any"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
-              placeholder="مثلاً 1500"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              required
-            />
+            <div className="relative flex items-center">
+              <input
+                type="number"
+                min="0"
+                step="100"
+                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none appearance-none [&::-webkit-inner-spin-button]:appearance-none 
+                 [&::-webkit-outer-spin-button]:appearance-none"
+                placeholder="مثلاً 3000"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                required
+              />
+
+              {/* فلش بالا و پایین */}
+              <div className="absolute left-3 top-0.5 flex flex-col h-full justify-center">
+                <button
+                  type="button"
+                  className="text-[#3C9BD8] hover:text-[#3185c0] leading-none"
+                  onClick={() => setWeight((prev) => (prev ? +prev + 100 : 100))}
+                >
+                  ▲
+                </button>
+                <button
+                  type="button"
+                  className="text-[#3C9BD8] hover:text-[#3185c0] leading-none mt-0.5"
+                  onClick={() => setWeight((prev) => (prev && +prev >= 100 ? +prev - 100 : 0))}
+                >
+                  ▼
+                </button>
+              </div>
+            </div>
+
           </div>
 
           {/* نوع حامل */}
@@ -199,7 +223,7 @@ const TariffInquiry = () => {
               نوع حامل
             </label>
             <select
-              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none pr-10"
+              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
               value={carrierType}
               onChange={(e) => setCarrierType(e.target.value)}
             >
@@ -210,7 +234,7 @@ const TariffInquiry = () => {
               <option value="یخچالی">یخچالی</option>
             </select>
 
-            <div className="absolute right-3 top-[40px] pointer-events-none">
+            <div className="absolute left-3 top-[40px] pointer-events-none">
               <svg
                 fill="none"
                 stroke="#3C9BD8"
@@ -233,11 +257,10 @@ const TariffInquiry = () => {
           <button
             type="submit"
             disabled={isSubmitDisabled}
-            className={`w-full text-white font-semibold py-2 rounded-xl transition-all duration-200 ${
-              isSubmitDisabled
+            className={`w-full text-white font-semibold py-2 rounded-xl transition-all duration-200 ${isSubmitDisabled
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-[#3C9BD8] hover:bg-[#3185c0]"
-            }`}
+              }`}
           >
             {loading ? "در حال محاسبه..." : "محاسبه کرایه"}
           </button>
@@ -253,11 +276,11 @@ const TariffInquiry = () => {
 
           {!loading && result ? (
             <div className="bg-gray-50 rounded-xl p-4 text-center mt-3">
-              
-                {result.tariff !== null && result.tariff !== undefined
-                  ? <p className="font-bold text-3xl text-[#3C9BD8]">{`${Number(result.tariff).toLocaleString()} تومان`}</p>
-                  : <p className="font-bold text-xl text-[#d83c3c]">{"تعرفه‌ای برای این مسیر یافت نشد"}</p>}
-              
+
+              {result.tariff !== null && result.tariff !== undefined
+                ? <p className="font-bold text-3xl text-[#3C9BD8]">{`${Number(result.tariff).toLocaleString()} تومان`}</p>
+                : <p className="font-bold text-xl text-[#d83c3c]">{"تعرفه‌ای برای این مسیر یافت نشد"}</p>}
+
               {/* اگر فیلدهای دیگری هم از API می‌گیری مثل زمان، جزئیات مسیر، نمایش بده */}
               {result.note && (
                 <p className="text-sm text-gray-500 mt-2">{result.note}</p>

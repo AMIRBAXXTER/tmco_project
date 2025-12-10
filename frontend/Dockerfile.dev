@@ -4,8 +4,8 @@ FROM node:18-alpine AS development
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm ci
+RUN npm install --force
+RUN npm ci --legacy-peer-deps
 
 COPY . .
 

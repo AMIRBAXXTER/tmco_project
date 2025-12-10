@@ -142,6 +142,10 @@ export default function DriverApp() {
             scale: 1.2,
             duration: 0.4,
             onStart: () => {
+              if (i === 0) {
+                const mainSvg = structureRef.current.querySelector("svg");
+                if (mainSvg) gsap.to(mainSvg, { opacity: 0, duration: 0.6 });
+              }
               const img = icon.ref.current.querySelector("img");
               if (!img) return;
 
@@ -361,7 +365,7 @@ export default function DriverApp() {
       {/* profile icon */}
       <div
         ref={profileRef}
-        className="absolute bottom-0 left-0 md:bottom-20 md:left-5 border border-gray-200 rounded-xl z-20"
+        className="absolute bottom-0 left-0 md:bottom-40 md:left-5 border border-gray-200 rounded-xl z-20"
       >
         <Image src="/DriverApp/4d.svg" alt="Chat Icon" width={56} height={56} />
       </div>
@@ -369,7 +373,7 @@ export default function DriverApp() {
       {/* خط اتصال profile */}
       <svg
         ref={profileLineRef}
-        className='absolute md:bottom-25 md:left-12 z-10'
+        className='absolute md:bottom-45 md:left-12 z-10'
         width="129"
         height="129"
         viewBox="0 0 127 129"
