@@ -49,7 +49,7 @@ export default function Home() {
         {/* 🧩 معرفی پلتفرم */}
         <MotionEffect effect="fadeUp">
           <div>
-            <h3 className="font-bold mb-5 text-2xl text-justify">
+            <h3 className="font-bold mb-5 text-md md:text-2xl text-justify">
               یک بستر یکپارچه برای مدیریت حمل و نقل سازمانی
             </h3>
             <p className="text-justify [word-spacing:2px]">
@@ -84,7 +84,7 @@ export default function Home() {
           </MotionEffect>
 
           <MotionEffect effect="slideUp">
-            <h2 className="font-bold text-2xl text-[#121212] my-5">
+            <h2 className="font-bold text-md md:text-2xl text-[#121212] my-5">
               ابزاری برای مدیریت حرفه‌ای زنجیره تأمین
             </h2>
             <p className="w-4/5 text-justify">
@@ -134,7 +134,7 @@ export default function Home() {
       {/* 🚛 بخش استعلام تعرفه */}
       <MotionEffect effect="slideUp" className="px-10 flex flex-col md:flex-row mt-20 mb-40 w-full h-[700px]">
         <div className="md:w-2/5 w-full">
-          <h2 className="font-bold mt-30 text-2xl text-[#121212] my-5">
+          <h2 className="font-bold mt-30 text-md md:text-2xl text-[#121212] my-5">
             هزینه حمل بار من چقدر می‌شود؟
           </h2>
           <p className="text-justify">

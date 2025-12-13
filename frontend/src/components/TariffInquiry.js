@@ -7,7 +7,7 @@ const TariffInquiry = () => {
 
   const [selectedOrigin, setSelectedOrigin] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("");
-  const [weight, setWeight] = useState("");
+  const [weight, setWeight] = useState(2000);
   const [carrierType, setCarrierType] = useState("");
 
   const [result, setResult] = useState(null);
@@ -47,11 +47,9 @@ const TariffInquiry = () => {
     }
   }, [selectedOrigin]);
 
-  // تغییر مبدا: مقصد و نتیجه پاک شود تا ناسازگار نباشد
   const handleOriginChange = (e) => {
     setSelectedOrigin(e.target.value);
     setSelectedDestination("");
-    // setResult(null); // اگر نمی‌خواهی نتیجه قبلی حفظ شود، این خط را از حالت کامنت خارج کن
   };
 
   const handleSubmit = (e) => {
@@ -71,12 +69,10 @@ const TariffInquiry = () => {
       carrier_type: carrierType,
     };
 
-    // کلید یکتا برای جلوگیری از درخواست تکراری
     const key = `${currentQuery.origin}|${currentQuery.destination}|${currentQuery.weight} || ""}`;
 
-    // اگر دقیقاً همان ورودی‌هاست، کاری نکن
     if (lastQueryKey === key) {
-      return; // چون setLoading(true) هنوز نزده‌ایم، UI گیر نمی‌کند
+      return;
     }
 
     setLoading(true);
@@ -186,29 +182,39 @@ const TariffInquiry = () => {
             <div className="relative flex items-center">
               <input
                 type="number"
-                min="0"
+                min="2000"
                 step="100"
-                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none appearance-none [&::-webkit-inner-spin-button]:appearance-none 
-                 [&::-webkit-outer-spin-button]:appearance-none"
+                className="
+                    w-full px-4 py-2 border border-gray-300 rounded-xl
+                    focus:ring-2 focus:ring-[#3C9BD8] outline-none
+
+                    appearance-none
+                    [&::-webkit-inner-spin-button]:appearance-none
+                    [&::-webkit-outer-spin-button]:appearance-none
+
+                    [appearance:textfield]
+                    [-moz-appearance:textfield]
+                    "
                 placeholder="مثلاً 3000"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 required
               />
 
+
               {/* فلش بالا و پایین */}
               <div className="absolute left-3 top-0.5 flex flex-col h-full justify-center">
                 <button
                   type="button"
                   className="text-[#3C9BD8] hover:text-[#3185c0] leading-none"
-                  onClick={() => setWeight((prev) => (prev ? +prev + 100 : 100))}
+                  onClick={() => setWeight((prev) => (prev && +prev < 10000 ? +prev + 100 : 10000))}
                 >
                   ▲
                 </button>
                 <button
                   type="button"
                   className="text-[#3C9BD8] hover:text-[#3185c0] leading-none mt-0.5"
-                  onClick={() => setWeight((prev) => (prev && +prev >= 100 ? +prev - 100 : 0))}
+                  onClick={() => setWeight((prev) => (prev && +prev > 2000 ? +prev - 100 : 2000))}
                 >
                   ▼
                 </button>
@@ -230,7 +236,6 @@ const TariffInquiry = () => {
               <option value="">انتخاب نوع حامل</option>
               <option value="چادری">چادری</option>
               <option value="فلزی">فلزی</option>
-              <option value="تانکری">تانکری</option>
               <option value="یخچالی">یخچالی</option>
             </select>
 
@@ -258,8 +263,8 @@ const TariffInquiry = () => {
             type="submit"
             disabled={isSubmitDisabled}
             className={`w-full text-white font-semibold py-2 rounded-xl transition-all duration-200 ${isSubmitDisabled
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-[#3C9BD8] hover:bg-[#3185c0]"
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-[#3C9BD8] hover:bg-[#3185c0]"
               }`}
           >
             {loading ? "در حال محاسبه..." : "محاسبه کرایه"}

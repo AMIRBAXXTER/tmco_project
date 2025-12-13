@@ -43,7 +43,7 @@ export default function ServicesTitle() {
             خدمات ما
           </h2>
 
-          <h1 className="font-bold text-3xl leading-tight text-justify">
+          <h1 className="font-bold text-xl md:text-3xl leading-tight text-justify">
             راهکارهای جامع حمل و نقل و لجستیک برای کسب و کارهای مدرن
           </h1>
 

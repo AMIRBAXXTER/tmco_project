@@ -30,9 +30,9 @@ export default function AboutTitle() {
 
           <h1
             key="main-title"
-            className="font-bold text-3xl leading-tight text-justify"
+            className="font-bold text-md md:text-3xl leading-tight text-justify"
           >
-            تمکو – اولین پلتفرم حمل‌ونقل ترکیبی در ایران
+            تمکو اولین پلتفرم حمل‌ونقل ترکیبی در ایران
           </h1>,
 
           <p key="paragraph" className="w-full sm:w-4/5 text-base md:text-lg mx-auto leading-relaxed text-gray-700 text-justify">

@@ -22,7 +22,7 @@ export default function AboutBottom() {
         {[
           <h1
             key="title"
-            className="font-bold text-4xl text-center leading-tight"
+            className="font-bold text-3xl md:text-4xl text-center leading-tight"
           >
             آینده‌ای که با هم می‌سازیم
           </h1>,

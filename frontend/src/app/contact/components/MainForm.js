@@ -112,17 +112,25 @@ export default function MainForm() {
               </h3>
 
               {/* ☎ تلفن */}
-              <div className="flex items-center justify-start gap-4 text-[#036FD0] w-full">
+              <a
+                href="tel:02191095436"
+                className="flex items-center justify-start gap-4 text-[#036FD0] w-full hover:scale-[1.02] transition"
+              >
                 <svg className="w-15 h-15 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="60" height="60" rx="30" fill="#036FD0" />
                   <path d="M16.5 28.5H21C21.7956 28.5 22.5587 28.8161 23.1213 29.3787C23.6839 29.9413 24 30.7044 24 31.5V36C24 36.7956 23.6839 37.5587 23.1213 38.1213C22.5587 38.6839 21.7956 39 21 39H19.5C18.7044 39 17.9413 38.6839 17.3787 38.1213C16.8161 37.5587 16.5 36.7956 16.5 36V28.5ZM16.5 28.5C16.5 26.7272 16.8492 24.9717 17.5276 23.3338C18.2061 21.6959 19.2005 20.2076 20.4541 18.9541C21.7076 17.7005 23.1959 16.7061 24.8338 16.0276C26.4717 15.3492 28.2272 15 30 15C31.7728 15 33.5283 15.3492 35.1662 16.0276C36.8041 16.7061 38.2923 17.7005 39.5459 18.9541C40.7995 20.2076 41.7939 21.6959 42.4724 23.3338C43.1508 24.9717 43.5 26.7272 43.5 28.5M43.5 28.5V36C43.5 36.7956 43.1839 37.5587 42.6213 38.1213C42.0587 38.6839 41.2956 39 40.5 39H39C38.2044 39 37.4413 38.6839 36.8787 38.1213C36.3161 37.5587 36 36.7956 36 36V31.5C36 30.7044 36.3161 29.9413 36.8787 29.3787C37.4413 28.8161 38.2044 28.5 39 28.5H43.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M43.5 36V39C43.5 40.5913 42.8679 42.1174 41.7426 43.2426C40.6174 44.3679 39.0913 45 37.5 45H30" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-base md:text-lg font-medium">02191095436</span>
-              </div>
+                <span className="text-base md:text-lg font-medium" dir="ltr">
+                  021 9109 5436
+                </span>
+              </a>
 
               {/* ✉ ایمیل */}
-              <div className="flex items-center justify-start gap-4 text-[#036FD0] w-full">
+              <a
+                href="mailto:info@tmcopars.ir"
+                className="flex items-center justify-start gap-4 text-[#036FD0] w-full hover:scale-[1.02] transition"
+              >
                 <svg className="w-15 h-15 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="60" height="60" rx="30" fill="#036FD0" />
                   <path d="M45 22.5L31.5135 31.0905C31.0558 31.3563 30.536 31.4963 30.0068 31.4963C29.4775 31.4963 28.9577 31.3563 28.5 31.0905L15 22.5"
@@ -130,8 +138,10 @@ export default function MainForm() {
                   <path d="M42 18H18C16.3431 18 15 19.3431 15 21V39C15 40.6569 16.3431 42 18 42H42C43.6569 42 45 40.6569 45 39V21C45 19.3431 43.6569 18 42 18Z"
                     stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-base md:text-lg font-medium">info@tmcopars.ir</span>
-              </div>
+                <span className="text-base md:text-lg font-medium">
+                  info@tmcopars.ir
+                </span>
+              </a>
 
               {/* 📍 آدرس */}
               <div className="flex items-center justify-start gap-4 text-[#036FD0] w-full">

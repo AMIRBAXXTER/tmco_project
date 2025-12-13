@@ -52,8 +52,8 @@ export default function TrainSection() {
         className="md:w-2/3  w-full pt-10 md:pt-0 flex flex-col justify-center items-start md:px-16 px-8 bg-white"
       >
         <h3 className="text-[#3C9BD8] mb-5 font-bold text-xl md:text-2xl text-center">خدمات ریلی</h3>
-        <h2 className="text-3xl md:text-5xl font-bold mb-6 text-[#0A2540]">
-          مطمئن، اقتصادی و کاملاً قابل‌اعتماد
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-[#0A2540]">
+          مطمئن، اقتصادی و قابل‌اعتماد
         </h2>
         <p className="text-[#0A2540] text-xl leading-relaxed max-w-2xl text-justify">
           در دنیای امروز، سرعت تنها یک مزیت نیست؛ <strong>دقت، ثبات و برنامه‌ریزی هوشمند</strong> نقش مهم‌تری در موفقیت زنجیره تأمین بازی می‌کنند.

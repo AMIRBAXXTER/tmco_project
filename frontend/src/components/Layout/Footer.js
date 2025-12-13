@@ -289,7 +289,7 @@ export default function Footer() {
       {/* محتوای فوتر — بدون تغییر نسبت به نسخه‌ی تو */}
       <div className="relative z-20 grid min-h-[1500px] grid-rows-[auto_auto_auto]">
         <section className="mx-auto flex w-full h-[735px] flex-col justify-end px-6 pb-[clamp(8rem,16vw,12rem)] pt-[clamp(6rem,12vw,8rem)] text-right text-slate-700 lg:px-12">
-          <h2 className="w-auto h-auto md:translate-y-[-90px] translate-y-[-180px] 2xl:translate-y-[-60px] text-center font-bold text-3xl">
+          <h2 className="w-auto h-auto md:translate-y-[-90px] translate-y-[-180px] 2xl:translate-y-[-60px] text-center font-bold text-md md:text-2xl">
             همین حالا حمل و نقل خود را آغاز کنید.
           </h2>
           <button
@@ -302,7 +302,7 @@ export default function Footer() {
         </section>
 
         <section className="relative footer-dark-section w-full h-[1200px] md:h-[767px] bg-[#0F2747] px-6 py-[clamp(8rem,16vw,12rem)] text-slate-100 lg:px-12">
-          <h2 className="w-auto h-auto md:translate-y-[-90px] mt-16 md:mt-0 text-center font-bold text-2xl">
+          <h2 className="w-auto h-auto md:translate-y-[-90px] mt-16 md:mt-0 text-center font-bold text-md md:text-2xl">
             اولین پلتفرم حمل و نقل ترکیبی در ایران
           </h2>
           <h2 className="w-auto h-auto mt-10 md:mt-0 font-bold text-3xl">تمکو</h2>
@@ -335,10 +335,22 @@ export default function Footer() {
             <div className="flex flex-col w-full md:w-1/4 h-3/6 mt-10 gap-8">
               <p className="font-bold">اطلاعات تماس</p>
               <div className="flex gap-4">
-                <LuHeadphones size={20} color={"#ADBDCC"} /> <span>02191095436</span>
+                <a
+                  href="tel:02191095436"
+                  className="flex gap-4 items-center hover:text-white transition"
+                >
+                  <LuHeadphones size={20} color="#ADBDCC" />
+                  <span>02191095436</span>
+                </a>
               </div>
               <div className="flex gap-4">
-                <MdOutlineMailOutline size={20} color={"#ADBDCC"} /> <span>info@tmcopars.ir</span>
+                <a
+                  href="mailto:info@tmcopars.ir"
+                  className="flex gap-4 items-center hover:text-white transition"
+                >
+                  <MdOutlineMailOutline size={20} color="#ADBDCC" />
+                  <span>info@tmcopars.ir</span>
+                </a>
               </div>
               <div className="flex-col">
                 <IoLocationOutline size={20} color={"#ADBDCC"} /> <span>تهران ، شهرک استقلال ، خیابان سپاه اسلام ۳۶ ،خیابان شهید عباس شفیعی هنجنی ، پلاک ۴ ، طبقه همکف</span>

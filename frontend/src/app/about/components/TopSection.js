@@ -43,7 +43,7 @@ export default function TopSection() {
         {[
           <h2
             key="title"
-            className="text-3xl font-bold mb-6 text-[#0A2540] text-justify"
+            className="text-xl md:text-3xl font-bold mb-6 text-[#0A2540] text-justify"
           >
             پیوند هوشمند میان بار و مسیر
           </h2>,

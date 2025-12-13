@@ -4,7 +4,7 @@ import MotionEffect from "@/animations/MotionEffect";
 export default function DriverDetail() {
     const [downloadUrl, setDownloadUrl] = useState(null);
     const features = [
-        { title: "مقایسه و انتخاب هوشمند ارائه‌دهندگان حمل‌ونقل" },
+        { title: "انتخاب هوشمند ارائه‌دهندگان حمل‌ونقل" },
         { title: "مدیریت یکپارچه سفارش‌ها" },
         { title: "مدیریت کامل فرآیند حمل‌ونقل" },
         { title: "پیگیری وضعیت محموله به صورت لحظه‌ای" },
@@ -37,7 +37,7 @@ export default function DriverDetail() {
             </MotionEffect>
 
             <MotionEffect effect='slideUp'>
-                <h2 className="font-bold text-2xl text-[#121212] my-5">انتخاب بهترین مسیر، تنها با یک کلیک</h2>
+                <h2 className="font-bold text-md md:text-2xl text-[#121212] my-5">انتخاب بهترین مسیر، تنها با یک کلیک</h2>
                 <p className="w-4/5 text-justify">اپلیکیشن راننده تمکو، تمام نیازهای حمل‌ونقل را در یک بستر هوشمند و ساده در اختیار رانندگان قرار می‌دهد.</p>
             </MotionEffect>
             <MotionEffect effect='fadeIn'>

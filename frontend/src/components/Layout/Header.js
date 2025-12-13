@@ -52,10 +52,10 @@ export default function Header() {
             } items-center justify-start`}
         >
           <Image
-            src="/logofull.png"
+            src={scrolled ? "/logofull.png" : "/logofull.svg"}
             alt="لوگوی شرکت"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
             priority
           />
         </div>

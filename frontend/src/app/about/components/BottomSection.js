@@ -44,7 +44,7 @@ export default function BottomSection() {
         {[
           <h2
             key="title"
-            className="text-3xl font-bold mb-6 text-[#0A2540] text-justify"
+            className="text-xl md:text-3xl font-bold mb-6 text-[#0A2540] text-justify"
           >
             فناوری، موتور محرک لجستیک نوین
           </h2>,

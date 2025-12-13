@@ -10,7 +10,6 @@ export default function BlogDetail({ params }) {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
 
-  // ✅ محافظت در برابر SSR
   const isClient = typeof window !== "undefined";
   const router = isClient ? useRouter() : null;
   const searchParams = isClient ? useSearchParams() : new URLSearchParams();
