@@ -38,7 +38,7 @@ export default function DriverDetail() {
 
             <MotionEffect effect='slideUp'>
                 <h2 className="font-bold text-md md:text-2xl text-[#121212] my-5">انتخاب بهترین مسیر، تنها با یک کلیک</h2>
-                <p className="w-4/5 text-justify">اپلیکیشن راننده تمکو، تمام نیازهای حمل‌ونقل را در یک بستر هوشمند و ساده در اختیار رانندگان قرار می‌دهد.</p>
+                <p className="w-4/5 text-right">اپلیکیشن راننده تمکو، تمام نیازهای حمل‌ونقل را در یک بستر هوشمند و ساده در اختیار رانندگان قرار می‌دهد.</p>
             </MotionEffect>
             <MotionEffect effect='fadeIn'>
                 <span className="my-8 text-2xl font-bold block">ویژگی ها:</span>

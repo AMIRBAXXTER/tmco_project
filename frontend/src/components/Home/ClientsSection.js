@@ -3,16 +3,16 @@ import Image from "next/image";
 import MotionEffect from "@/animations/MotionEffect";
 
 const clients = [
-  { id: 1, src: "/Clients/dashboard.png", alt: "تیپاکس" },
-  { id: 2, src: "/Clients/images (1).png", alt: "ایرانسل" },
+  { id: 1, src: "/Clients/tipax.png", alt: "تیپاکس" },
+  { id: 2, src: "/Clients/irancell.png", alt: "ایرانسل" },
   { id: 3, src: "/Clients/snap-shop.png", alt: "اسنپ شاپ" },
-  { id: 4, src: "/Clients/1658044772_تی-هاب.jpg", alt: "تیهاب" },
+  { id: 4, src: "/Clients/tihub.jpg", alt: "تی هاب" },
   { id: 5, src: "/Clients/kavir_tire.jpg", alt: "کویر تایر" },
   { id: 6, src: "/Clients/barez_tire.jpg", alt: "بارز تایر" },
-  { id: 9, src: "/Clients/Final-Ziboom-30Dec-12-300x109.png", alt: "مپنا" },
-  { id: 8, src: "/Clients/tnext.jpg", alt: "بانک سینا" },
-  { id: 10, src: "/Clients/تی-اکسپرس.png", alt: "مپنا" },
-  { id: 7, src: "/Clients/6.png", alt: "پست ایران" },
+  { id: 9, src: "/Clients/ziboom.png", alt: "زیبوم" },
+  { id: 8, src: "/Clients/tnext.jpg", alt: "تی نکست" },
+  { id: 10, src: "/Clients/tiexpress.png", alt: "تی اکسپرس" },
+  { id: 7, src: "/Clients/jaabaar.png", alt: "جابار" },
 ];
 
 export default function ClientsSection() {
