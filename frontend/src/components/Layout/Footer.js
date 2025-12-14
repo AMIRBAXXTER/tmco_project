@@ -15,7 +15,15 @@ gsap.registerPlugin(MotionPathPlugin);
 // ✅ جلوگیری از انباشته‌شدن انیمیشن‌ها بین رندرها
 let _wormTweens = [];
 
+const HIDE_HEADER_ROUTES = ["/invitation"];
+
 export default function Footer() {
+  const pathname = usePathname();
+  
+  if (HIDE_HEADER_ROUTES.some((r) => pathname.startsWith(r))) {
+    return null;
+  }
+
   const token = "b5200023f4fd4c1f69b37c44901d31cec4e436aa";
 
   const [dailyViews, setDailyViews] = useState(0);
@@ -25,8 +33,6 @@ export default function Footer() {
   const [trackingResult, setTrackingResult] = useState(null);
   const [loadingTrack, setLoadingTrack] = useState(false);
   const [errorTrack, setErrorTrack] = useState(null);
-
-  const pathname = usePathname();
 
   const handleTrackRequest = async () => {
     if (!trackingCode.trim()) return;

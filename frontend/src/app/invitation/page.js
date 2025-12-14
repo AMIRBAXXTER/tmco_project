@@ -1,21 +1,21 @@
-import { IntroAnimation } from '@/components/Home'
-import MotionEffect from '@/animations/MotionEffect'
+import LuminousGrid from '@/components/Layout/LuminousGrid'
 import React from 'react'
 
 export default function Page() {
     return (
         <div className="w-full overflow-x-hidden">
-            <IntroAnimation />
+            <LuminousGrid />
 
             {/* Event Intro */}
-            <section className="max-w-7xl mx-auto px-5 md:px-10 py-20">
+            <section className="max-w-7xl mx-auto px-5 md:px-10 py-30 md:py-40">
                 <div className="bg-white rounded-2xl shadow-md p-6 md:p-12">
-                    <h1 className="font-extrabold text-xl md:text-3xl leading-relaxed">
-                        رویداد رسمی تمکو به مناسبت روز ملی حمل‌ونقل
+                    <h1 className="font-extrabold text-[#3C9BD8] text-2xl md:text-3xl leading-relaxed mb-1">
+                        رویداد رسمی تمکو
                     </h1>
+                    <h2 className="mb-10 text-2xl md:text-3xl"> به مناسبت روز ملی حمل‌ونقل | ۲۶ آذر</h2>
 
                     <p className="mt-4 text-gray-600 text-sm md:text-base">
-                        ۲۶ آذر | همراهان مسیر، قهرمانان حرکت
+                        همراهان مسیر، قهرمانان حرکت
                     </p>
 
                     <p className="mt-6 text-gray-800 leading-8 text-justify">
@@ -54,16 +54,20 @@ export default function Page() {
                     <video
                         src="/invitation.MP4"
                         className="w-full"
-                        controls
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
                     />
                 </div>
+
             </section>
 
             {/* Event Details */}
             <section className="max-w-5xl mx-auto px-5 md:px-10 py-20">
                 <div className="bg-white rounded-2xl shadow-md p-6 md:p-10 space-y-4 text-gray-800">
                     <p><span className="font-bold">تاریخ:</span> ۲۶ آذر – روز ملی حمل‌ونقل</p>
-                    <p><span className="font-bold">ساعت:</span> ۱۷ الی ۱۹</p>
+                    <p><span className="font-bold">ساعت:</span> ۱۵ الی ۱۷</p>
                     <p><span className="font-bold">محل برگزاری:</span> هلدینگ فاخر – طبقه سوم – سالن اجتماعات</p>
 
                     <div className="pt-6 border-t text-sm md:text-base leading-8 text-gray-700">
