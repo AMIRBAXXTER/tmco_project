@@ -12,7 +12,7 @@ export default function Page() {
                     <h1 className="font-extrabold text-[#3C9BD8] text-2xl md:text-3xl leading-relaxed mb-1">
                         رویداد رسمی تمکو
                     </h1>
-                    <h2 className="mb-10 text-2xl md:text-3xl"> به مناسبت روز ملی حمل‌ونقل | ۲۶ آذر</h2>
+                    <h2 className="mb-10 text-xl md:text-3xl"> به مناسبت روز ملی حمل‌ونقل | ۲۶ آذر</h2>
 
                     <p className="mt-4 text-gray-600 text-sm md:text-base">
                         همراهان مسیر، قهرمانان حرکت
