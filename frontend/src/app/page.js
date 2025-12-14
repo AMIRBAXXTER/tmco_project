@@ -116,11 +116,11 @@ export default function Home() {
         </div>
 
         {/* بخش تصویر */}
-        <MotionEffect effect="fadeUp" className="relative h-80 w-full lg:w-1/2 mt-35 md:mt-20 lg:mt-20">
+        <MotionEffect effect="fadeUp" className="relative h-125 w-full lg:w-1/2 mt-25 md:mt-15 lg:mt-0 overflow-hidden">
           <img
             src="/CustomerPanel/dashboard.png"
-            alt="driver"
-            className="absolute top-0 left-0 h-full w-[450px] object-contain mt-20 mb-5 lg:mt-0 deep-blur-shadow rounded-r-2xl z-10"
+            alt="dashboard"
+            className="absolute top-0 right-0 md:right-25 h-full w-auto max-w-none object-none z-10"
           />
           <div className="absolute hidden lg:block top-0 right-0 border border-gray-200 rounded-xl">
             <Image src="/DriverApp/1d.svg" alt="Truck Icon" width={56} height={56} />

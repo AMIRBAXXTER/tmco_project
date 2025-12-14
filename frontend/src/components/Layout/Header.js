@@ -3,8 +3,16 @@ import { useState, useEffect } from "react";
 import LinkList from "./HeaderLink";
 import Image from "next/image";
 import { HiMenu, HiX } from "react-icons/hi";
+import { usePathname } from "next/navigation";
+
+const HIDE_HEADER_ROUTES = ["/invitation"];
 
 export default function Header() {
+  const pathname = usePathname();
+
+  if (HIDE_HEADER_ROUTES.some((r) => pathname.startsWith(r))) {
+    return null;
+  }
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -41,14 +49,14 @@ export default function Header() {
       {/* 📦 هدر دسکتاپ */}
       <header
         className={`fixed ${scrolled
-            ? "top-0 h-12 bg-[#254662]/40 backdrop-blur-sm"
-            : "top-10 bg-[#254662]"
+          ? "top-0 h-12 bg-[#254662]/40 backdrop-blur-sm"
+          : "top-10 bg-[#254662]"
           } left-1/2 -translate-x-1/2 w-4/5 lg:w-3/5 z-50 hidden md:flex justify-between items-center shadow-2xl rounded-md py-2 px-6 transition-all duration-300`}
       >
         {/* ستون راست: لوگو */}
         <div
           className={`flex ${scrolled
-              && "w-7"
+            && "w-7"
             } items-center justify-start`}
         >
           <Image
@@ -95,8 +103,8 @@ export default function Header() {
       {/* منوی موبایل */}
       <div
         className={`fixed top-0 right-0 h-full w-64 bg-[#254662] text-white z-50 transform transition-transform duration-300 ${menuOpen
-            ? "translate-x-0"
-            : "translate-x-full"
+          ? "translate-x-0"
+          : "translate-x-full"
           }`}
       >
         <div className="flex justify-between items-center p-4 border-b border-white/20">

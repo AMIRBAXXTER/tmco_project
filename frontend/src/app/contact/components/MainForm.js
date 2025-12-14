@@ -72,13 +72,13 @@ export default function MainForm() {
 
   return (
     <section className="relative flex justify-center items-center w-full overflow-hidden md:py-8">
-      <div className="relative w-full md:w-[80%] mx-auto flex justify-center items-center h-[1000px] md:h-[700px]">
+      <div className="relative w-full md:w-[80%] mx-auto flex justify-center items-center h-[1100px] md:h-[700px]">
 
         {/* 🔵 پس‌زمینه SVG */}
         <svg
           viewBox="0 0 1175 751"
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute inset-0 w-full z-0 object-cover h-[1000px] md:h-[700px]"
+          className="absolute inset-0 w-full z-0 object-cover h-[1100px] md:h-[700px]"
           preserveAspectRatio="none"
         >
           <path
@@ -95,7 +95,7 @@ export default function MainForm() {
         <div className="relative z-10 w-full text-white flex flex-col items-center justify-center -translate-y-6 md:translate-y-0">
 
           {/* 📢 عنوان بالای فرم */}
-          <h2 className="text-center text-2xl md:text-3xl font-extrabold mt-25 md:mt-15">
+          <h2 className="text-center text-2xl md:text-3xl font-extrabold mt-15 mb-5 md:mt-15">
             با ما در ارتباط باشید
           </h2>
 
@@ -106,7 +106,7 @@ export default function MainForm() {
           >
 
             {/* 🧾 بخش اطلاعات تماس */}
-            <div className="flex flex-col justify-center items-start gap-6 bg-white rounded-xl p-5 md:p-8 shadow-lg text-[#001230] w-full md:w-[95%]">
+            <div className="flex flex-col justify-center items-start gap-6 bg-white rounded-xl p-7 md:p-10 shadow-lg text-[#001230] w-full md:w-[95%]">
               <h3 className="text-2xl font-extrabold w-full text-center text-[#414042] mb-1">
                 اطلاعات تماس
               </h3>
@@ -116,7 +116,7 @@ export default function MainForm() {
                 href="tel:02191095436"
                 className="flex items-center justify-start gap-4 text-[#036FD0] w-full hover:scale-[1.02] transition"
               >
-                <svg className="w-15 h-15 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-10 h-10 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="60" height="60" rx="30" fill="#036FD0" />
                   <path d="M16.5 28.5H21C21.7956 28.5 22.5587 28.8161 23.1213 29.3787C23.6839 29.9413 24 30.7044 24 31.5V36C24 36.7956 23.6839 37.5587 23.1213 38.1213C22.5587 38.6839 21.7956 39 21 39H19.5C18.7044 39 17.9413 38.6839 17.3787 38.1213C16.8161 37.5587 16.5 36.7956 16.5 36V28.5ZM16.5 28.5C16.5 26.7272 16.8492 24.9717 17.5276 23.3338C18.2061 21.6959 19.2005 20.2076 20.4541 18.9541C21.7076 17.7005 23.1959 16.7061 24.8338 16.0276C26.4717 15.3492 28.2272 15 30 15C31.7728 15 33.5283 15.3492 35.1662 16.0276C36.8041 16.7061 38.2923 17.7005 39.5459 18.9541C40.7995 20.2076 41.7939 21.6959 42.4724 23.3338C43.1508 24.9717 43.5 26.7272 43.5 28.5M43.5 28.5V36C43.5 36.7956 43.1839 37.5587 42.6213 38.1213C42.0587 38.6839 41.2956 39 40.5 39H39C38.2044 39 37.4413 38.6839 36.8787 38.1213C36.3161 37.5587 36 36.7956 36 36V31.5C36 30.7044 36.3161 29.9413 36.8787 29.3787C37.4413 28.8161 38.2044 28.5 39 28.5H43.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M43.5 36V39C43.5 40.5913 42.8679 42.1174 41.7426 43.2426C40.6174 44.3679 39.0913 45 37.5 45H30" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -126,12 +126,27 @@ export default function MainForm() {
                 </span>
               </a>
 
-              {/* ✉ ایمیل */}
+              {/* ایمیل */}
               <a
                 href="mailto:info@tmcopars.ir"
                 className="flex items-center justify-start gap-4 text-[#036FD0] w-full hover:scale-[1.02] transition"
               >
-                <svg className="w-15 h-15 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-10 h-10 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="60" height="60" rx="30" fill="#036FD0" />
+                  <path d="M30 36C33.3137 36 36 33.3137 36 30C36 26.6863 33.3137 24 30 24C26.6863 24 24 26.6863 24 30C24 33.3137 26.6863 36 30 36Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M36 24V31.5C36 32.6935 36.4741 33.8381 37.318 34.682C38.1619 35.5259 39.3065 36 40.5 36C41.6935 36 42.8381 35.5259 43.682 34.682C44.5259 33.8381 45 32.6935 45 31.5V30C45 26.621 43.8591 23.3409 41.7621 20.6913C39.6651 18.0416 36.7349 16.1776 33.4463 15.4013C30.1576 14.6249 26.7032 14.9817 23.6427 16.4138C20.5821 17.846 18.0947 20.2695 16.5836 23.2918C15.0724 26.3141 14.626 29.7581 15.3167 33.0658C16.0073 36.3735 17.7945 39.3512 20.3888 41.5163C22.9831 43.6814 26.2324 44.9072 29.6103 44.9949C32.9882 45.0827 36.2968 44.0274 39 42" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span className="text-base md:text-lg font-medium">
+                  info@tmcopars.ir
+                </span>
+              </a>
+
+
+              {/* ✉ کدپستی */}
+              <div
+                className="flex items-center justify-start gap-4 text-[#036FD0] w-full"
+              >
+                <svg className="w-10 h-10 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="60" height="60" rx="30" fill="#036FD0" />
                   <path d="M45 22.5L31.5135 31.0905C31.0558 31.3563 30.536 31.4963 30.0068 31.4963C29.4775 31.4963 28.9577 31.3563 28.5 31.0905L15 22.5"
                     stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -139,13 +154,13 @@ export default function MainForm() {
                     stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className="text-base md:text-lg font-medium">
-                  info@tmcopars.ir
+                  1389817671
                 </span>
-              </a>
+              </div>
 
               {/* 📍 آدرس */}
               <div className="flex items-center justify-start gap-4 text-[#036FD0] w-full">
-                <svg className="w-15 h-15 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-10 h-10 shrink-0" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="60" height="60" rx="30" fill="#036FD0" />
                   <path d="M42 27C42 34.4895 33.6915 42.2895 30.9015 44.6985C30.6416 44.8939 30.3252 44.9996 30 44.9996C29.6748 44.9996 29.3584 44.8939 29.0985 44.6985C26.3085 42.2895 18 34.4895 18 27C18 23.8174 19.2643 20.7652 21.5147 18.5147C23.7652 16.2643 26.8174 15 30 15C33.1826 15 36.2348 16.2643 38.4853 18.5147C40.7357 20.7652 42 23.8174 42 27Z"
                     stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
