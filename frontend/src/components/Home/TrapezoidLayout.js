@@ -145,7 +145,7 @@ export default function TrapezoidLayout() {
                       priority
                     />
                     <h3 className="font-bold text-lg text-white">{item.title}</h3>
-                    <p className="text-sm mt-3 text-gray-300 leading-relaxed text-justify">
+                    <p className="text-sm mt-3 text-gray-300 text-start">
                       {item.description}
                     </p>
                   </div>

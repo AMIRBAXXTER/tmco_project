@@ -44,7 +44,7 @@ export default function ServicesTitle() {
           </h2>
 
           <h1 className="font-bold text-xl md:text-3xl leading-tight text-justify">
-            راهکارهای جامع حمل و نقل و لجستیک برای کسب و کارهای مدرن
+            دستیاری هوشمند در هر تصمیم لجستیکی
           </h1>
 
           <p className="w-full sm:w-4/5 text-base md:text-lg mx-auto leading-relaxed text-gray-700 text-justify">

@@ -88,7 +88,7 @@ export default function Home() {
               ابزاری برای مدیریت حرفه‌ای زنجیره تأمین
             </h2>
             <p className="w-4/5 text-justify">
-              نمایندگان و شرکای تجاری با اپلیکیشن تمکو می‌توانند دسترسی مستقیم به درخواست‌ها، سفارش‌ها و گزارش‌های حمل‌ونقل داشته باشند. این ابزار امکان هماهنگی سریع‌تر با مشتریان سازمانی و مدیریت بهینه ظرفیت را فراهم می‌کند.
+              شرکای تجاری با اپلیکیشن تمکو می‌توانند دسترسی مستقیم به درخواست‌ها، سفارش‌ها و گزارش‌های حمل‌ونقل داشته باشند. این ابزار امکان هماهنگی سریع‌تر با مشتریان سازمانی و مدیریت بهینه ظرفیت را فراهم می‌کند.
             </p>
           </MotionEffect>
 
@@ -103,7 +103,7 @@ export default function Home() {
 
           <MotionEffect effect="scaleSlideUp">
             <a
-              href="https://core.tmcopars.ir/panel/login"
+              href="https://order.tmcopars.ir/accounts/login"
               download
               target="_blank"
               className="bg-[#3C9BD8] text-center text-white font-bold py-3 px-25 rounded-xl 
