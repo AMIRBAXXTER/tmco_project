@@ -7,14 +7,15 @@ export default function Page() {
             <LuminousGrid />
 
             {/* Event Intro */}
-            <section className="max-w-7xl mx-auto px-5 md:px-10 py-30 md:py-40">
+            <section className="max-w-7xl mt-25 mx-auto px-5 md:px-10 py-16 md:py-20">
                 <div className="bg-white rounded-2xl shadow-md p-6 md:p-12">
-                    <h1 className="font-extrabold text-[#3C9BD8] text-2xl md:text-3xl leading-relaxed mb-1">
+                    <h1 className="font-extrabold w-full mx-auto text-[#3C9BD8] text-2xl md:text-3xl leading-relaxed mb-10 text-center">
                         رویداد رسمی تمکو
                     </h1>
-                    <h2 className="mb-10 text-xl md:text-3xl"> به مناسبت روز ملی حمل‌ونقل | ۲۶ آذر</h2>
 
-                    <p className="mt-4 text-gray-600 text-sm md:text-base">
+                    <h2 className="mb-10 text-xl md:text-3xl"> روز ملی حمل‌ونقل | ۲۶ آذر</h2>
+
+                    <p className="mt-4 text-gray-600 text-xl font-medium">
                         همراهان مسیر، قهرمانان حرکت
                     </p>
 
@@ -39,7 +40,7 @@ export default function Page() {
                         ].map((item, index) => (
                             <div
                                 key={index}
-                                className="bg-gray-50 rounded-xl p-4 text-sm text-gray-700 text-center shadow-sm"
+                                className="rounded-xl p-4 text-sm bg-blue-200 text-center shadow-sm"
                             >
                                 {item}
                             </div>
@@ -49,7 +50,7 @@ export default function Page() {
             </section>
 
             {/* Video */}
-            <section className="max-w-7xl mx-auto px-5 md:px-10">
+            <section className="max-w-7xl mx-auto px-5 md:px-10 -mt-6 md:-mt-10">
                 <div className="rounded-2xl overflow-hidden shadow-lg">
                     <video
                         src="/invitation.MP4"
@@ -60,23 +61,35 @@ export default function Page() {
                         playsInline
                     />
                 </div>
-
             </section>
 
             {/* Event Details */}
             <section className="max-w-5xl mx-auto px-5 md:px-10 py-20">
                 <div className="bg-white rounded-2xl shadow-md p-6 md:p-10 space-y-4 text-gray-800">
-                    <p><span className="font-bold">تاریخ:</span> ۲۶ آذر – روز ملی حمل‌ونقل</p>
-                    <p><span className="font-bold">ساعت:</span> ۱۵ الی ۱۷</p>
-                    <p><span className="font-bold">محل برگزاری:</span> هلدینگ فاخر – طبقه سوم – سالن اجتماعات</p>
+
+                    <p className="font-bold text-lg text-gray-900">
+                        حضور شما باعث افتخار تمکو است.
+                    </p>
 
                     <div className="pt-6 border-t text-sm md:text-base leading-8 text-gray-700">
-                        <p>حضور شما باعث افتخار تمکو است.</p>
                         <p>
                             شما ستون‌های این مسیر هستید؛
-                            مسیری که هر روز با تلاش، نظم و تعهد شما معنا پیدا می‌کند.
+                        </p>
+                        <p>مسیری که هر روز با تلاش و تعهد شما معنا پیدا می‌کند.</p>
+                    </div>
+
+                    <div className="text-sm md:text-base space-y-2">
+                        <p>
+                            <span className="font-bold">تاریخ:</span> ۲۶ آذر – روز ملی حمل‌ونقل
+                        </p>
+                        <p>
+                            <span className="font-bold">ساعت:</span> ۱۵ الی ۱۷
+                        </p>
+                        <p>
+                            <span className="font-bold">محل برگزاری:</span> هلدینگ فاخر – طبقه سوم – سالن اجتماعات
                         </p>
                     </div>
+
                 </div>
             </section>
 
