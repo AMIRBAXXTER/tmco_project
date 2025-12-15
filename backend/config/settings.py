@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e_ldx_@y&fk+=))(8+8d%)om@q9j)qu+096$^3#9^hsmut(g^c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["tmcopars.ir", "www.tmcopars.ir"]
 
 # Application definition
 
@@ -185,3 +185,15 @@ CELERY_TASK_DEFAULT_QUEUE = "main"
 CELERY_TASK_DEFAULT_EXCHANGE_TYPE = "direct"
 CELERY_TASK_DEFAULT_ROUTING_KEY = "main.default"
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://tmcopars.ir",
+    "https://www.tmcopars.ir",
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
