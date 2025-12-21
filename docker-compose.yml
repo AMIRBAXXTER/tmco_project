@@ -102,8 +102,7 @@ services:
         --requirepass ${REDIS_PASSWORD}
         --maxmemory 256mb
         --maxmemory-policy allkeys-lru
-    ports:
-      - "6379:6379" # در پروداکشن حذف شود
+
     volumes:
       - redis_data:/data
     healthcheck:
