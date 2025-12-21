@@ -29,7 +29,7 @@ export default function AboutBottom() {
 
           <p
             key="paragraph"
-            className="w-full sm:w-4/5 mx-auto text-base md:text-lg leading-relaxed text-gray-700 text-justify"
+            className="w-full sm:w-4/5 mx-auto text-base md:text-lg leading-relaxed text-gray-700 md:text-justify"
           >
             در تمکو باور داریم که حمل‌ونقل تنها جابه‌جایی بار نیست؛
             <br />

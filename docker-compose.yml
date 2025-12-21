@@ -47,7 +47,6 @@ services:
 #      dockerfile: Dockerfile.dev
 #    volumes:
 #      - ./frontend:/app
-#      - /app/node_modules
 #    command: npm run dev
 # --------------------------------
 # -------- PROD STAGE ----------

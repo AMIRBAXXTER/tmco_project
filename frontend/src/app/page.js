@@ -87,7 +87,7 @@ export default function Home() {
             <h2 className="font-bold text-md md:text-2xl text-[#121212] my-5">
               ابزاری برای مدیریت حرفه‌ای زنجیره تأمین
             </h2>
-            <p className="w-4/5 text-justify">
+            <p className="w-4/5 text-right md:text-justify">
               شرکای تجاری با اپلیکیشن تمکو می‌توانند دسترسی مستقیم به درخواست‌ها، سفارش‌ها و گزارش‌های حمل‌ونقل داشته باشند. این ابزار امکان هماهنگی سریع‌تر با مشتریان سازمانی و مدیریت بهینه ظرفیت را فراهم می‌کند.
             </p>
           </MotionEffect>
@@ -137,7 +137,7 @@ export default function Home() {
           <h2 className="font-bold mt-30 text-md md:text-2xl text-[#121212] my-5">
             هزینه حمل بار من چقدر می‌شود؟
           </h2>
-          <p className="text-justify">
+          <p className="md:text-justify">
             برای محاسبه دقیق هزینه حمل بار، کافی است مبدأ، مقصد و مشخصات محموله را ثبت کنید. سامانه آنلاین محاسبه کرایه باربری تمکو با استفاده از داده‌های به‌روز و اتصال به شبکه گسترده ارائه‌دهندگان حمل‌ونقل، هزینه واقعی و منصفانه حمل‌ونقل را در چند ثانیه به شما نمایش می‌دهد.
           </p>
           <p className="text-justify mt-10 text-2xl">با این ابزار می‌توانید:</p>
