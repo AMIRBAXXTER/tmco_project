@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import moment from "moment-jalaali";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 moment.loadPersian({ usePersianDigits: true });
 
-export default function BlogDetail({ params }) {
-  const { slug } = params;
+export default function BlogDetail() {
+  const { slug } = useParams();
   console.log(slug);
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);

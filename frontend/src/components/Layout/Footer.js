@@ -66,7 +66,6 @@ export default function Footer() {
       .then((data) => {
         setDailyViews(data.daily_views);
         setTotalViews(data.total_views);
-        console.log(data);
       }).catch(err => console.error("Get views failed:", err));
   }, []);
 
