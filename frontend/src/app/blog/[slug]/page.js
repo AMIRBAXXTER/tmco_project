@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import moment from "moment-jalaali";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -6,21 +7,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 moment.loadPersian({ usePersianDigits: true });
 
 export default function BlogDetail({ params }) {
-  const { slug } = params;
+  const slug = params?.slug; ✅
+
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
 
-  const isClient = typeof window !== "undefined";
-  const router = isClient ? useRouter() : null;
-  const searchParams = isClient ? useSearchParams() : new URLSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const category = searchParams.get("category") || "";
   const search = searchParams.get("search") || "";
   const page = searchParams.get("page") || "1";
 
   useEffect(() => {
-    if (!isClient) return;
-    (async () => {
+    if (!slug) return; ✅ مهم
+
+    const fetchPost = async () => {
       try {
         const res = await fetch(`/api/articles/${slug}/`);
         if (!res.ok) throw new Error("خطا در دریافت پست");
@@ -29,13 +31,18 @@ export default function BlogDetail({ params }) {
       } catch (err) {
         setError(err.message);
       }
-    })();
-  }, [slug, isClient]);
+    };
+
+    fetchPost();
+  }, [slug]);
 
   if (error)
     return <p className="text-red-500 text-center mt-10">{error}</p>;
   if (!post)
     return <p className="text-gray-500 text-center mt-10">در حال بارگذاری...</p>;
+
+}
+
 
   const handleBack = () => {
     if (!router) return;
