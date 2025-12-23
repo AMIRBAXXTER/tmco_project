@@ -7,6 +7,7 @@ moment.loadPersian({ usePersianDigits: true });
 
 export default function BlogDetail({ params }) {
   const { slug } = params;
+  console.log(slug);
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
 
