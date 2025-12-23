@@ -46,12 +46,9 @@ export default function BlogCarousel({ posts }) {
                   <h3 className="text-lg md:text-xl font-bold mb-3 text-[#0A2540] line-clamp-2">
                     {post.title}
                   </h3>
-                  <p
-                    className="text-gray-800 leading-relaxed text-base md:text-lg whitespace-pre-line"
-                    dangerouslySetInnerHTML={{
-                      __html: post.content || "<p>بدون محتوا</p>",
-                    }}
-                  />
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed line-clamp-3 text-justify">
+                    {post.content || "—"}
+                  </p>
                 </div>
 
                 <div className="flex items-center justify-between mt-5 text-sm text-gray-600">
