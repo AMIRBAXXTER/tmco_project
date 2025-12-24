@@ -14,12 +14,11 @@ class CategoryViewSet(ModelViewSet):
 
 
 class BlogViewSet(ModelViewSet):
-    queryset = Blog.approved.all()
     serializer_class = BlogSerializer
     pagination_class = BlogPagination
 
     def get_queryset(self):
-        queryset = Blog.objects.all()
+        queryset = Blog.approved.all()
 
         category = self.request.query_params.get('category')
         search = self.request.query_params.get('search')
@@ -37,6 +36,6 @@ class BlogViewSet(ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='(?P<slug>[^/.]+)')
     def get_by_slug(self, request, slug=None):
-        blog = get_object_or_404(Blog, slug=slug)
+        blog = get_object_or_404(Blog.approved, slug=slug)
         serializer = self.get_serializer(blog)
         return Response(serializer.data)
