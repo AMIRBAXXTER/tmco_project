@@ -2,6 +2,7 @@ from autoslug import AutoSlugField
 from django.utils.text import slugify
 import re
 from django.db import models
+from tasks import send_new_blog_sms
 
 def slugify_farsi(value):
     value = re.sub(r'[^ا-ی0-9A-Za-z\s-]', '', value)
@@ -37,6 +38,14 @@ class Blog(models.Model):
 
     objects = models.Manager()
     approved = ApprovedBlogManager()
+
+    def save_model(self, request, obj, form, change):
+        is_new = obj.pk is None
+
+        super().save_model(request, obj, form, change)
+
+        if is_new and not obj.is_approved:
+            send_new_blog_sms.delay(obj.title)
 
 class Category(models.Model):
     name = models.CharField(max_length=200, verbose_name="نام دسته بندی")
