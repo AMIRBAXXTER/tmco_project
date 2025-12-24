@@ -4,9 +4,13 @@ import re
 from django.db import models
 
 def slugify_farsi(value):
-    # حروف و فاصله‌ها و اعداد رو نگه می‌داره
     value = re.sub(r'[^ا-ی0-9A-Za-z\s-]', '', value)
     return slugify(value, allow_unicode=True)
+
+class ApprovedBlogManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_approved=True)
+
 
 class Blog(models.Model):
 
@@ -16,8 +20,13 @@ class Blog(models.Model):
     image = models.ImageField(upload_to='images/', verbose_name="تصویر")
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, verbose_name="دسته بندی")
     reading_time = models.IntegerField(verbose_name="زمان خواندن")
+    is_approved = models.BooleanField(
+        default=False,
+        verbose_name="تأیید شده"
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ بروزرسانی")
+
 
     class Meta:
         verbose_name = "مقاله"
@@ -26,9 +35,7 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify_farsi(self.title)
-        super().save(*args, **kwargs)
+    approved = ApprovedBlogManager()
 
 class Category(models.Model):
     name = models.CharField(max_length=200, verbose_name="نام دسته بندی")

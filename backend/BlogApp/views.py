@@ -14,7 +14,7 @@ class CategoryViewSet(ModelViewSet):
 
 
 class BlogViewSet(ModelViewSet):
-    queryset = Blog.objects.all()
+    queryset = Blog.approved.all()
     serializer_class = BlogSerializer
     pagination_class = BlogPagination
 
