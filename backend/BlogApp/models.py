@@ -2,7 +2,7 @@ from autoslug import AutoSlugField
 from django.utils.text import slugify
 import re
 from django.db import models
-from tasks import send_new_blog_sms
+from .tasks import send_new_blog_sms
 
 def slugify_farsi(value):
     value = re.sub(r'[^ا-ی0-9A-Za-z\s-]', '', value)
