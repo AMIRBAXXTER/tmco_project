@@ -12,8 +12,8 @@ def send_admin_sms(title: str):
         raise RuntimeError("ADMIN_PHONE_NUMBER is not set")
     title = (title or "").strip()
     title = title.replace("\n", " ").replace("\r", " ")
-    if len(title) > 20:
-        title = title[:17] + "..."
+    if len(title) > 10:
+        title = title[:7] + "..."
 
     api = KavenegarAPI(settings.KAVENEGAR_API_KEY)
 
