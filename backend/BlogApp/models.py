@@ -35,6 +35,7 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
 
+    objects = models.Manager()
     approved = ApprovedBlogManager()
 
 class Category(models.Model):
