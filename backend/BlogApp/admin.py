@@ -22,6 +22,6 @@ class BlogAdmin(admin.ModelAdmin):
             obj.is_approved = False
 
         super().save_model(request, obj, form, change)
-        
+
         if is_new and not obj.is_approved:
             send_new_blog_sms.delay(obj.title)
