@@ -1,14 +1,33 @@
+import logging
 from kavenegar import KavenegarAPI
 from django.conf import settings
 
-def send_admin_sms(title):
+logger = logging.getLogger(__name__)
+
+def send_admin_sms(title: str):
+    if not settings.KAVENEGAR_API_KEY:
+        raise RuntimeError("KAVENEGAR_API_KEY is not set")
+
+    if not settings.ADMIN_PHONE_NUMBER:
+        raise RuntimeError("ADMIN_PHONE_NUMBER is not set")
+    title = (title or "").strip()
+    title = title.replace("\n", " ").replace("\r", " ")
+    if len(title) > 20:
+        title = title[:17] + "..."
+
+    api = KavenegarAPI(settings.KAVENEGAR_API_KEY)
+
+    params = {
+        "receptor": settings.ADMIN_PHONE_NUMBER,
+        "template": "blog-notif",
+        "token": title,
+        "type": "sms",
+    }
+
     try:
-        api = KavenegarAPI(settings.KAVENEGAR_API_KEY)
-        api.verify_lookup({
-            'receptor': settings.ADMIN_PHONE_NUMBER,
-            'template': 'blog-notif',
-            'token': title,
-            'type': 'sms'
-        })
+        res = api.verify_lookup(params)
+        logger.warning("Kavenegar verify_lookup response: %s", res)
+        return res
     except Exception as e:
-        print("SMS Error:", e)
+        logger.exception("Kavenegar verify_lookup failed. params=%s error=%r", params, e)
+        raise
