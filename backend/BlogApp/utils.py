@@ -10,13 +10,15 @@ def send_admin_sms(title: str):
 
     if not settings.ADMIN_PHONE_NUMBER:
         raise RuntimeError("ADMIN_PHONE_NUMBER is not set")
+    new_title = title[:7] + "..."
+    logger.warning("DEBUG TOKEN_LEN=%s TOKEN=%r", len(new_title), new_title)
 
     api = KavenegarAPI(settings.KAVENEGAR_API_KEY)
 
     params = {
         "receptor": settings.ADMIN_PHONE_NUMBER,
         "template": "blog-notif",
-        "token": title[:7] + '...',
+        "token": new_title,
         "type": "sms",
     }
 
