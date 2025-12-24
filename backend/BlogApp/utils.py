@@ -1,4 +1,5 @@
 import logging
+import re
 from kavenegar import KavenegarAPI
 from django.conf import settings
 
@@ -10,15 +11,18 @@ def send_admin_sms(title: str):
 
     if not settings.ADMIN_PHONE_NUMBER:
         raise RuntimeError("ADMIN_PHONE_NUMBER is not set")
-    new_title = title[:7] + "..."
-    logger.warning("DEBUG TOKEN_LEN=%s TOKEN=%r", len(new_title), new_title)
+    title = re.sub(r"\s+", " ", title)
+    title = title.replace(" ", "\u200c")
+    if len(title) > 10:
+        title = title[:7] + "..."
+    logger.warning("DEBUG TOKEN_LEN=%s TOKEN=%r", len(title), title)
 
     api = KavenegarAPI(settings.KAVENEGAR_API_KEY)
 
     params = {
         "receptor": settings.ADMIN_PHONE_NUMBER,
         "template": "blog-notif",
-        "token": new_title,
+        "token": title,
         "type": "sms",
     }
 
