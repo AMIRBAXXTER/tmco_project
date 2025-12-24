@@ -178,6 +178,7 @@ CELERY_RESULT_BACKEND = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{R
 CELERY_TASK_QUEUES = (
     Queue("db_backup", routing_key="db_backup.#"),
     Queue("views_handler", routing_key="views_handler.#"),
+    Queue("sms_handler", routing_key="sms_handler.#"),
     Queue("main", routing_key="main.#"),
 )
 

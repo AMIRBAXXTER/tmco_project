@@ -138,7 +138,7 @@ services:
     image: ghcr.io/amirbaxxter/tmco-backend:latest
     # --------------------------------
     entrypoint: ""
-    command: python -m celery -A config.celery_base worker -Q db_backup,views_handler -l info
+    command: python -m celery -A config.celery_base worker -Q db_backup,views_handler,sms_handler -l info
     volumes:
 #      - ./backend:/code
       - ./backups:/backups
