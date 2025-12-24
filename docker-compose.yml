@@ -35,6 +35,8 @@ services:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - KAVENEGAR_API_KEY=${KAVENEGAR_API_KEY}
+      - ADMIN_PHONE_NUMBER=${ADMIN_PHONE_NUMBER}
       - TZ=Asia/Tehran
     networks:
       - main
@@ -159,6 +161,8 @@ services:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - KAVENEGAR_API_KEY=${KAVENEGAR_API_KEY}
+      - ADMIN_PHONE_NUMBER=${ADMIN_PHONE_NUMBER}
       - TZ=Asia/Tehran
     networks:
       - main
