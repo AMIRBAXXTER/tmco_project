@@ -179,6 +179,7 @@ CELERY_TASK_QUEUES = (
     Queue("db_backup", routing_key="db_backup.#"),
     Queue("views_handler", routing_key="views_handler.#"),
     Queue("sms_handler", routing_key="sms_handler.#"),
+    Queue("email_handler", routing_key="email_handler.#"),
     Queue("main", routing_key="main.#"),
 )
 
