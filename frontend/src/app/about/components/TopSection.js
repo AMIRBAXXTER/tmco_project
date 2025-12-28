@@ -50,7 +50,7 @@ export default function TopSection() {
           <p key="desc" className="text-[#0A2540] text-xl leading-relaxed text-justify">
             در تمکو، ما پلی مطمئن میان <strong>صاحبان کالا</strong> و <strong>ناوگان حمل‌ونقل</strong> ایجاد کرده‌ایم.
             با استفاده از <strong>سامانه هوشمند تخصیص سفر</strong>، هر سفارش در کوتاه‌ترین زمان ممکن به <strong>مناسب‌ترین راننده</strong> متصل می‌شود؛ بر اساس مسیر، نوع بار، ظرفیت، زمان تحویل و ده‌ها شاخص عملیاتی دیگر.
-            این یعنی:<strong>سرعت بیشتر در آغاز عملیات</strong>، <strong>سرعت بیشتر در آغاز عملیات</strong>، <strong>اطمینان و شفافیت در تمام کیلومترهای مسیر</strong>
+            این یعنی: <strong>سرعت بیشتر در آغاز عملیات</strong>، <strong>اطمینان و شفافیت در تمام کیلومترهای مسیر</strong>
           </p>,
           <p key="desc2" className="text-[#0A2540] text-xl leading-relaxed text-justify mt-5">در تمکو، بار و مسیر فقط وصل نمی‌شوند بلکه <strong>به‌صورت هوشمند، دقیق و بهینه هماهنگ می‌شوند</strong>.</p>
         ]}
