@@ -2,303 +2,183 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const TariffInquiry = () => {
+  const [areas, setAreas] = useState([]);
   const [origins, setOrigins] = useState([]);
   const [destinations, setDestinations] = useState([]);
 
   const [selectedOrigin, setSelectedOrigin] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("");
+
   const [weight, setWeight] = useState(2000);
   const [carrierType, setCarrierType] = useState("");
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [lastQueryKey, setLastQueryKey] = useState(null);
   const [error, setError] = useState("");
 
-  // دریافت مبداها
+  // گرفتن مناطق
   useEffect(() => {
-    let alive = true;
     axios
-      .get("/api/origins/")
+      .get("https://core.tmcopars.ir/core/hotspot_area/?limit=10000")
       .then((res) => {
-        if (alive) setOrigins(res.data || []);
+        const data = res.data?.results || [];
+
+        setAreas(data);
+        setOrigins(data);
       })
       .catch((err) => console.error(err));
-    return () => {
-      alive = false;
-    };
   }, []);
 
-  // دریافت مقصدها با تغییر مبدا
+  // فیلتر مقصدها
   useEffect(() => {
-    if (selectedOrigin) {
-      let alive = true;
-      axios
-        .get(`/api/destinations/?origin=${encodeURIComponent(selectedOrigin)}`)
-        .then((res) => {
-          if (alive) setDestinations(res.data || []);
-        })
-        .catch((err) => console.error(err));
-      return () => {
-        alive = false;
-      };
-    } else {
+    if (!selectedOrigin) {
       setDestinations([]);
-    }
-  }, [selectedOrigin]);
-
-  const handleOriginChange = (e) => {
-    setSelectedOrigin(e.target.value);
-    setSelectedDestination("");
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError("");
-
-    const w = parseFloat(weight);
-    if (Number.isNaN(w) || w < 2000 || w > 10000) {
-      setError("لطفاً وزن معتبر بزرگ‌تر از 2000 و کوچک‌تر از 10000 وارد کنید.");
       return;
     }
 
-    const currentQuery = {
-      origin: selectedOrigin,
-      destination: selectedDestination,
+    const filtered = areas.filter((item) => item.id !== Number(selectedOrigin));
+    setDestinations(filtered);
+  }, [selectedOrigin, areas]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const w = parseFloat(weight);
+    if (Number.isNaN(w) || w < 2000 || w > 10000) {
+      setError("وزن باید بین 2000 تا 10000 باشد");
+      return;
+    }
+
+    const payload = {
+      origin_id: selectedOrigin,
+      destination_id: selectedDestination,
       weight: w,
       carrier_type: carrierType,
     };
 
-    const key = `${currentQuery.origin}|${currentQuery.destination}|${currentQuery.weight} || ""}`;
-
-    if (lastQueryKey === key) {
-      return;
-    }
-
     setLoading(true);
 
     axios
-      .post("/api/calculate/", currentQuery)
+      .post("/api/calculate/", payload)
       .then((res) => {
         setResult(res.data);
-        setLastQueryKey(key);
       })
-      .catch((err) => {
-        console.error(err);
-        setError("خطایی رخ داد. لطفاً دوباره تلاش کنید.");
+      .catch(() => {
+        setError("خطا در دریافت نتیجه");
       })
       .finally(() => setLoading(false));
   };
 
-  const isSubmitDisabled =
-    loading ||
-    !selectedOrigin ||
-    !selectedDestination ||
-    !weight ||
-    Number.isNaN(parseFloat(weight)) ||
-    parseFloat(weight) <= 0;
-
   return (
     <div className="w-full flex justify-center mt-20">
-      <div className="w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl mt-30 border border-gray-200 rounded-3xl p-8 bg-white relative">
-        <h5 className="font-bold text-lg text-[#425466] text-center mb-8">
+      <div className="w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl border border-gray-200 rounded-3xl p-8 bg-white">
+
+        <h5 className="font-bold text-lg text-center mb-8">
           استعلام کرایه حمل
         </h5>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+
           {/* مبدا */}
-          <div className="relative">
-            <label className="block text-sm font-medium text-gray-600 mb-2">
-              مبدا
-            </label>
+          <div>
+            <label className="block text-sm mb-2">مبدا</label>
+
             <select
-              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
               value={selectedOrigin}
-              onChange={handleOriginChange}
-              required
+              onChange={(e) => {
+                setSelectedOrigin(e.target.value);
+                setSelectedDestination("");
+              }}
+              className="w-full border rounded-xl px-4 py-2"
             >
               <option value="">انتخاب مبدا</option>
-              {origins.map((origin, i) => (
-                <option key={i} value={origin}>
-                  {origin}
+
+              {origins.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
                 </option>
               ))}
-            </select>
 
-            {/* فلش سفارشی سمت راست */}
-            <div className="absolute left-3 top-[40px] pointer-events-none">
-              <svg
-                fill="none"
-                stroke="#3C9BD8"
-                strokeWidth="2.2"
-                viewBox="0 0 24 24"
-                className="w-5 h-5"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-              </svg>
-            </div>
+            </select>
           </div>
 
           {/* مقصد */}
-          <div className="relative">
-            <label className="block text-sm font-medium text-gray-600 mb-2">
-              مقصد
-            </label>
+          <div>
+            <label className="block text-sm mb-2">مقصد</label>
+
             <select
-              className={`appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none` + (selectedOrigin ? "" : " opacity-50")}
               value={selectedDestination}
               onChange={(e) => setSelectedDestination(e.target.value)}
               disabled={!selectedOrigin}
-              required
+              className="w-full border rounded-xl px-4 py-2"
             >
-              <option value="">{selectedOrigin ? "انتخاب مقصد" : "ابتدا مبدا را انتخاب کنید"}</option>
-              {destinations.map((dest, i) => (
-                <option key={i} value={dest}>
-                  {dest}
+              <option value="">
+                {selectedOrigin ? "انتخاب مقصد" : "ابتدا مبدا را انتخاب کنید"}
+              </option>
+
+              {destinations.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
                 </option>
               ))}
-            </select>
 
-            {selectedOrigin && (
-              <div className="absolute left-3 top-[40px] pointer-events-none">
-                <svg
-                  fill="none"
-                  stroke="#3C9BD8"
-                  strokeWidth="2.2"
-                  viewBox="0 0 24 24"
-                  className="w-5 h-5"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-                </svg>
-              </div>
-            )}
+            </select>
           </div>
 
-          {/* مقدار بار */}
+          {/* وزن */}
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-2">
+            <label className="block text-sm mb-2">
               مقدار بار (کیلوگرم)
             </label>
-            <div className="relative flex items-center">
-              <input
-                type="number"
-                min="2000"
-                step="100"
-                className="
-                    w-full px-4 py-2 border border-gray-300 rounded-xl
-                    focus:ring-2 focus:ring-[#3C9BD8] outline-none
 
-                    appearance-none
-                    [&::-webkit-inner-spin-button]:appearance-none
-                    [&::-webkit-outer-spin-button]:appearance-none
-
-                    [appearance:textfield]
-                    [-moz-appearance:textfield]
-                    "
-                placeholder="مثلاً 3000"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                required
-              />
-
-
-              {/* فلش بالا و پایین */}
-              <div className="absolute left-3 top-0.5 flex flex-col h-full justify-center">
-                <button
-                  type="button"
-                  className="text-[#3C9BD8] hover:text-[#3185c0] leading-none"
-                  onClick={() => setWeight((prev) => (prev && +prev < 10000 ? +prev + 100 : 10000))}
-                >
-                  ▲
-                </button>
-                <button
-                  type="button"
-                  className="text-[#3C9BD8] hover:text-[#3185c0] leading-none mt-0.5"
-                  onClick={() => setWeight((prev) => (prev && +prev > 2000 ? +prev - 100 : 2000))}
-                >
-                  ▼
-                </button>
-              </div>
-            </div>
-
+            <input
+              type="number"
+              value={weight}
+              min="2000"
+              step="100"
+              onChange={(e) => setWeight(e.target.value)}
+              className="w-full border rounded-xl px-4 py-2"
+            />
           </div>
 
           {/* نوع حامل */}
-          <div className="relative">
-            <label className="block text-sm font-medium text-gray-600 mb-2">
-              نوع حامل
-            </label>
+          <div>
+            <label className="block text-sm mb-2">نوع حامل</label>
+
             <select
-              className="appearance-none w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
               value={carrierType}
               onChange={(e) => setCarrierType(e.target.value)}
+              className="w-full border rounded-xl px-4 py-2"
             >
               <option value="">انتخاب نوع حامل</option>
               <option value="چادری">چادری</option>
               <option value="فلزی">فلزی</option>
               <option value="یخچالی">یخچالی</option>
             </select>
-
-            <div className="absolute left-3 top-[40px] pointer-events-none">
-              <svg
-                fill="none"
-                stroke="#3C9BD8"
-                strokeWidth="2.2"
-                viewBox="0 0 24 24"
-                className="w-5 h-5"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-              </svg>
-            </div>
           </div>
 
-          {/* خطای اعتبارسنجی */}
           {error && (
-            <div className="text-red-600 text-sm bg-red-50 rounded-lg p-3">
+            <div className="text-red-500 text-sm">
               {error}
             </div>
           )}
 
           <button
             type="submit"
-            disabled={isSubmitDisabled}
-            className={`w-full text-white font-semibold py-2 rounded-xl transition-all duration-200 ${isSubmitDisabled
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-[#3C9BD8] hover:bg-[#3185c0]"
-              }`}
+            className="w-full bg-[#3C9BD8] text-white py-2 rounded-xl"
           >
             {loading ? "در حال محاسبه..." : "محاسبه کرایه"}
           </button>
+
         </form>
 
-        {/* نتیجه استعلام */}
-        <div className="border-t border-gray-200 pt-6 mt-6">
-          <h6 className="font-semibold text-[#425466] text-center">نتیجه استعلام</h6>
-
-          {loading && (
-            <p className="text-center text-gray-500 mt-2">در حال دریافت نتیجه...</p>
-          )}
-
-          {!loading && result ? (
-            <div className="bg-gray-50 rounded-xl p-4 text-center mt-3">
-
-              {result.tariff !== null && result.tariff !== undefined
-                ? <p className="font-bold text-3xl text-[#3C9BD8]">{`${Number(result.tariff).toLocaleString()} تومان`}</p>
-                : <p className="font-bold text-xl text-[#d83c3c]">{"تعرفه‌ای برای این مسیر یافت نشد"}</p>}
-
-              {/* اگر فیلدهای دیگری هم از API می‌گیری مثل زمان، جزئیات مسیر، نمایش بده */}
-              {result.note && (
-                <p className="text-sm text-gray-500 mt-2">{result.note}</p>
-              )}
-            </div>
-          ) : (
-            !loading && (
-              <p className="text-center text-gray-400 text-sm mt-2">
-                نتیجه‌ای هنوز وجود ندارد.
-              </p>
-            )
-          )}
-        </div>
+        {result && (
+          <div className="mt-6 text-center">
+            {result.tariff
+              ? `${Number(result.tariff).toLocaleString()} تومان`
+              : "تعرفه‌ای یافت نشد"}
+          </div>
+        )}
       </div>
     </div>
   );
