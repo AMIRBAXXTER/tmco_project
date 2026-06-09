@@ -88,7 +88,7 @@ export default function Footer() {
     <div className="flex flex-col items-center my-3 select-none">
       <div 
         className="relative flex items-center bg-[#eeeeee] border-[3px] border-[#222] rounded-lg shadow-lg overflow-hidden"
-        style={{ width: '320px', height: '70px', fontFamily: 'Tahoma, Arial' }}
+        style={{ width: '260px', height: '60px', fontFamily: 'Tahoma, Arial' }}
       >
         {/* بخش آبی سمت چپ (پرچم) */}
         <div className="flex flex-col items-center justify-between bg-[#133989] w-[15%] h-full py-1 text-white">
