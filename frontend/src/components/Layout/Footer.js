@@ -19,7 +19,51 @@ const HIDE_HEADER_ROUTES = ["/invitation"];
 
 export default function Footer() {
   const pathname = usePathname();
-  
+
+  const formatDateTime = (ts) => {
+    if (!ts) return null;
+
+    const d = new Date(ts * 1000);
+
+    const date = new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).format(d);
+
+    const time = new Intl.DateTimeFormat("fa-IR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(d);
+
+    return { date, time };
+  };
+
+
+  const buildSteps = (steps) => {
+    if (!steps) return [];
+
+    const order = [
+      "START",
+      "REACHED_ORIGIN",
+      "RECEIVED_PACKAGES",
+      "HEAD_TO_DESTINATION",
+      "REACHED_DESTINATION",
+      "UNLOAD_INPROGRESS",
+      "FINISH"
+    ];
+
+    return order
+      .filter((key) => steps[key])
+      .map((key) => ({
+        title: steps[key].translation,
+        time: formatDateTime(steps[key].done_at)
+      }));
+  };
+
+
+
   if (HIDE_HEADER_ROUTES.some((r) => pathname.startsWith(r))) {
     return null;
   }
@@ -415,30 +459,66 @@ export default function Footer() {
             {trackingResult && (
               <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-5 text-sm text-gray-700 space-y-4">
 
-                {/* مسیر سفر */}
                 <div className="flex justify-between">
-                  <span className="font-bold text-gray-900">مسیر سفر:</span>
-                  <span>{trackingResult.title}</span>
+                  <span className="font-bold text-gray-900">مسیر:</span>
+                  <span>
+                    {trackingResult.order?.source?.name} → {trackingResult.order?.destination?.name}
+                  </span>
                 </div>
 
-                {/* وضعیت سفر */}
                 <div className="flex justify-between">
                   <span className="font-bold text-gray-900">وضعیت:</span>
                   <span>{trackingResult.status}</span>
                 </div>
 
-                {/* اکشن سفر */}
                 <div className="flex justify-between">
-                  <span className="font-bold text-gray-900">وضعیت فعلی سفر:</span>
+                  <span className="font-bold text-gray-900">راننده:</span>
                   <span>
-                    {trackingResult.actions?.length > 0
-                      ? trackingResult.actions[0].translation
+                    {trackingResult.employee_assistant
+                      ? `${trackingResult.employee_assistant.first_name} ${trackingResult.employee_assistant.last_name}`
                       : "—"}
                   </span>
                 </div>
 
+                <div className="flex justify-between">
+                  <span className="font-bold text-gray-900">پلاک:</span>
+                  <span dir="ltr">{trackingResult.truck?.jet_plate_number}</span>
+                </div>
+
+                {/* Progress Timeline */}
+
+                <div className="pt-4">
+                  <p className="font-bold text-gray-900 mb-4">مراحل سفر</p>
+
+                  <div className="space-y-4">
+                    {buildSteps(trackingResult.task_detail?.steps).map((step, i) => (
+                      <div key={i} className="flex items-start gap-3">
+
+                        <div className="flex flex-col items-center">
+                          <div className="w-3 h-3 bg-[#3C9BD8] rounded-full"></div>
+                          {i !== buildSteps(trackingResult.task_detail?.steps).length - 1 && (
+                            <div className="w-[2px] h-10 bg-gray-200"></div>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col text-right">
+                          <span className="font-semibold">{step.title}</span>
+
+                          {step.time && (
+                            <span className="text-xs text-gray-500">
+                              {step.time.date} - {step.time.time}
+                            </span>
+                          )}
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
             )}
+
 
           </div>
         </div>

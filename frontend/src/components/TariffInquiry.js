@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
+const API_TOKEN = "5a9fa2cf5e1f243e4d3fcc0c448ee8c4aefd2d4a";
+
 const TariffInquiry = () => {
   const [areas, setAreas] = useState([]);
   const [origins, setOrigins] = useState([]);
@@ -26,7 +28,6 @@ const TariffInquiry = () => {
   const originRef = useRef();
   const destinationRef = useRef();
 
-  // گرفتن مناطق
   useEffect(() => {
     let alive = true;
 
@@ -45,7 +46,6 @@ const TariffInquiry = () => {
     };
   }, []);
 
-  // فیلتر مقصدها
   useEffect(() => {
     if (!selectedOrigin) {
       setDestinations([]);
@@ -59,7 +59,6 @@ const TariffInquiry = () => {
     setDestinations(filtered);
   }, [selectedOrigin, areas]);
 
-  // بستن دراپ‌دان هنگام کلیک بیرون
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (originRef.current && !originRef.current.contains(e.target)) {
@@ -78,26 +77,29 @@ const TariffInquiry = () => {
     setError("");
 
     const w = parseFloat(weight);
-    if (Number.isNaN(w) || w < 2000 || w > 10000) {
-      setError("لطفاً وزن معتبر بزرگ‌تر از 2000 و کوچک‌تر از 10000 وارد کنید.");
+    if (Number.isNaN(w) || w > 10000) {
+      setError("لطفاً وزن معتبر و کوچک‌تر از 10000 وارد کنید.");
       return;
     }
 
-    const currentQuery = {
-      origin_id: selectedOrigin,
-      destination_id: selectedDestination,
-      weight: w,
-      carrier_type: carrierType,
-    };
-
-    const key = `${currentQuery.origin_id}|${currentQuery.destination_id}|${currentQuery.weight}`;
+    const key = `${selectedOrigin}|${selectedDestination}|${w}`;
 
     if (lastQueryKey === key) return;
 
     setLoading(true);
 
     axios
-      .post("/api/calculate/", currentQuery)
+      .get("https://core.tmcopars.ir/core/price/", {
+        params: {
+          source_id: selectedOrigin,
+          destination_id: selectedDestination,
+          weight: w,
+        },
+        headers: {
+          accept: "application/json",
+          Authorization: `Token ${API_TOKEN}`,
+        },
+      })
       .then((res) => {
         setResult(res.data);
         setLastQueryKey(key);
@@ -133,7 +135,6 @@ const TariffInquiry = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
 
-          {/* مبدا */}
           <div className="relative" ref={originRef}>
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مبدا
@@ -173,7 +174,6 @@ const TariffInquiry = () => {
             )}
           </div>
 
-          {/* مقصد */}
           <div className="relative" ref={destinationRef}>
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مقصد
@@ -212,15 +212,12 @@ const TariffInquiry = () => {
             )}
           </div>
 
-          {/* بقیه فرم بدون تغییر */}
-
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مقدار بار (کیلوگرم)
             </label>
             <input
               type="number"
-              min="2000"
               step="100"
               className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
               value={weight}
