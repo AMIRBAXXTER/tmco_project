@@ -78,7 +78,7 @@ export default function Footer() {
   return "—";
 };
 
-  const LicensePlate = (plateNumber) => {
+  const LicensePlate = ({plateNumber}) => {
   const part1 = plateNumber.slice(0, 2);
   const letter = plateNumber.slice(2, 3);
   const part2 = plateNumber.slice(3, 6);
