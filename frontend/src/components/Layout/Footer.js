@@ -414,7 +414,7 @@ export default function Footer() {
       </div>
       {trackingOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9999] flex items-center justify-center px-4">
-          <div className="bg-white rounded-2xl p-7 w-full max-w-md shadow-2xl relative animate-fadeIn">
+          <div className="bg-white rounded-2xl p-7 w-full max-w-md md:max-w-2xl shadow-2xl relative animate-fadeIn max-h-[85vh] overflow-y-auto">
 
             {/* دکمه بستن – سمت راست */}
             <button
@@ -457,12 +457,12 @@ export default function Footer() {
             )}
 
             {trackingResult && (
-              <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-5 text-sm text-gray-700 space-y-4">
+              <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-5 text-sm text-gray-700 space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
 
                 <div className="flex justify-between">
                   <span className="font-bold text-gray-900">مسیر:</span>
                   <span>
-                    {trackingResult.order?.source?.name} → {trackingResult.order?.destination?.name}
+                    {trackingResult.order?.source?.name} به {trackingResult.order?.destination?.name}
                   </span>
                 </div>
 
@@ -487,7 +487,7 @@ export default function Footer() {
 
                 {/* Progress Timeline */}
 
-                <div className="pt-4">
+                <div className="pt-4 md:col-span-2">
                   <p className="font-bold text-gray-900 mb-4">مراحل سفر</p>
 
                   <div className="space-y-4">

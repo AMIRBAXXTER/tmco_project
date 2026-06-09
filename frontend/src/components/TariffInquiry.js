@@ -29,21 +29,13 @@ const TariffInquiry = () => {
   const destinationRef = useRef();
 
   useEffect(() => {
-    let alive = true;
-
     axios
       .get("https://core.tmcopars.ir/core/hotspot_area/?limit=10000")
       .then((res) => {
-        if (!alive) return;
         const data = res.data?.results || [];
         setAreas(data);
         setOrigins(data);
-      })
-      .catch((err) => console.error(err));
-
-    return () => {
-      alive = false;
-    };
+      });
   }, []);
 
   useEffect(() => {
@@ -51,26 +43,11 @@ const TariffInquiry = () => {
       setDestinations([]);
       return;
     }
-
     const filtered = areas.filter(
       (item) => item.id !== Number(selectedOrigin)
     );
-
     setDestinations(filtered);
   }, [selectedOrigin, areas]);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (originRef.current && !originRef.current.contains(e.target)) {
-        setShowOriginDropdown(false);
-      }
-      if (destinationRef.current && !destinationRef.current.contains(e.target)) {
-        setShowDestinationDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,7 +60,6 @@ const TariffInquiry = () => {
     }
 
     const key = `${selectedOrigin}|${selectedDestination}|${w}`;
-
     if (lastQueryKey === key) return;
 
     setLoading(true);
@@ -103,20 +79,31 @@ const TariffInquiry = () => {
       .then((res) => {
         setResult(res.data);
         setLastQueryKey(key);
+        setError("");
       })
-      .catch(() => {
-        setError("خطایی رخ داد. لطفاً دوباره تلاش کنید.");
+      .catch((err) => {
+        const apiError = err?.response?.data?.extra?.fields?.price?.[0];
+        if (apiError) {
+          setError("تعرفه‌ای برای این مسیر موجود نیست");
+          setResult(null);
+        } else {
+          setError("خطایی رخ داد. لطفاً دوباره تلاش کنید.");
+        }
       })
       .finally(() => setLoading(false));
   };
 
-  const filteredOrigins = origins.filter((item) =>
-    item.name.toLowerCase().includes(originSearch.toLowerCase())
-  );
+  const increaseWeight = () => {
+    setWeight((prev) => String((parseFloat(prev) || 0) + 100));
+    setResult(null);
+  };
 
-  const filteredDestinations = destinations.filter((item) =>
-    item.name.toLowerCase().includes(destinationSearch.toLowerCase())
-  );
+  const decreaseWeight = () => {
+    setWeight((prev) =>
+      String(Math.max(0, (parseFloat(prev) || 0) - 100))
+    );
+    setResult(null);
+  };
 
   const isSubmitDisabled =
     loading ||
@@ -135,98 +122,46 @@ const TariffInquiry = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
 
-          <div className="relative" ref={originRef}>
-            <label className="block text-sm font-medium text-gray-600 mb-2">
-              مبدا
-            </label>
-
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
-              placeholder="جستجوی مبدا..."
-              value={originSearch}
-              onChange={(e) => {
-                setOriginSearch(e.target.value);
-                setShowOriginDropdown(true);
-              }}
-              onFocus={() => setShowOriginDropdown(true)}
-              required
-            />
-
-            {showOriginDropdown && (
-              <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl mt-1 max-h-60 overflow-y-auto shadow-lg">
-                {filteredOrigins.map((item) => (
-                  <div
-                    key={item.id}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                    onClick={() => {
-                      setSelectedOrigin(item.id);
-                      setOriginSearch(item.name);
-                      setShowOriginDropdown(false);
-                      setSelectedDestination("");
-                      setDestinationSearch("");
-                    }}
-                  >
-                    {item.name}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="relative" ref={destinationRef}>
-            <label className="block text-sm font-medium text-gray-600 mb-2">
-              مقصد
-            </label>
-
-            <input
-              type="text"
-              disabled={!selectedOrigin}
-              className={`w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none` + (!selectedOrigin ? " opacity-50" : "")}
-              placeholder={selectedOrigin ? "جستجوی مقصد..." : "ابتدا مبدا را انتخاب کنید"}
-              value={destinationSearch}
-              onChange={(e) => {
-                setDestinationSearch(e.target.value);
-                setShowDestinationDropdown(true);
-              }}
-              onFocus={() => selectedOrigin && setShowDestinationDropdown(true)}
-              required
-            />
-
-            {showDestinationDropdown && selectedOrigin && (
-              <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl mt-1 max-h-60 overflow-y-auto shadow-lg">
-                {filteredDestinations.map((item) => (
-                  <div
-                    key={item.id}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                    onClick={() => {
-                      setSelectedDestination(item.id);
-                      setDestinationSearch(item.name);
-                      setShowDestinationDropdown(false);
-                    }}
-                  >
-                    {item.name}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
+          {/* وزن با فلش سفارشی */}
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مقدار بار (کیلوگرم)
             </label>
-            <input
-              type="number"
-              step="100"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              required
-            />
+
+            <div className="relative flex items-center">
+              <input
+                type="number"
+                step="100"
+                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none appearance-none"
+                value={weight}
+                onChange={(e) => {
+                  setWeight(e.target.value);
+                  setResult(null);
+                }}
+                required
+              />
+
+              <div className="absolute left-2 flex flex-col">
+                <button
+                  type="button"
+                  onClick={increaseWeight}
+                  className="text-white bg-[#3C9BD8] hover:bg-[#3185c0] text-xs px-2 rounded-t-md"
+                >
+                  ▲
+                </button>
+                <button
+                  type="button"
+                  onClick={decreaseWeight}
+                  className="text-white bg-[#3C9BD8] hover:bg-[#3185c0] text-xs px-2 rounded-b-md"
+                >
+                  ▼
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="relative">
+          {/* نوع حامل */}
+          <div>
             <label className="block text-sm font-medium text-gray-600 mb-2">
               نوع حامل
             </label>
@@ -241,6 +176,16 @@ const TariffInquiry = () => {
               <option value="یخچالی">یخچالی</option>
             </select>
           </div>
+
+          {/* مبلغ */}
+          {result?.price && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+              <p className="text-gray-600 text-sm mb-1">مبلغ کرایه</p>
+              <p className="text-2xl font-bold text-green-600">
+                {Math.round(result.price / 10).toLocaleString("fa-IR")} تومان
+              </p>
+            </div>
+          )}
 
           {error && (
             <div className="text-red-600 text-sm bg-red-50 rounded-lg p-3">
