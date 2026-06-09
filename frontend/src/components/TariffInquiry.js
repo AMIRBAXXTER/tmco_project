@@ -29,13 +29,20 @@ const TariffInquiry = () => {
   const destinationRef = useRef();
 
   useEffect(() => {
+    let alive = true;
+
     axios
       .get("https://core.tmcopars.ir/core/hotspot_area/?limit=10000")
       .then((res) => {
+        if (!alive) return;
         const data = res.data?.results || [];
         setAreas(data);
         setOrigins(data);
       });
+
+    return () => {
+      alive = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -43,11 +50,26 @@ const TariffInquiry = () => {
       setDestinations([]);
       return;
     }
+
     const filtered = areas.filter(
       (item) => item.id !== Number(selectedOrigin)
     );
+
     setDestinations(filtered);
   }, [selectedOrigin, areas]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (originRef.current && !originRef.current.contains(e.target)) {
+        setShowOriginDropdown(false);
+      }
+      if (destinationRef.current && !destinationRef.current.contains(e.target)) {
+        setShowDestinationDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,6 +105,7 @@ const TariffInquiry = () => {
       })
       .catch((err) => {
         const apiError = err?.response?.data?.extra?.fields?.price?.[0];
+
         if (apiError) {
           setError("تعرفه‌ای برای این مسیر موجود نیست");
           setResult(null);
@@ -105,6 +128,14 @@ const TariffInquiry = () => {
     setResult(null);
   };
 
+  const filteredOrigins = origins.filter((item) =>
+    item.name.toLowerCase().includes(originSearch.toLowerCase())
+  );
+
+  const filteredDestinations = destinations.filter((item) =>
+    item.name.toLowerCase().includes(destinationSearch.toLowerCase())
+  );
+
   const isSubmitDisabled =
     loading ||
     !selectedOrigin ||
@@ -122,7 +153,88 @@ const TariffInquiry = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
 
-          {/* وزن با فلش سفارشی */}
+          {/* مبدا */}
+          <div className="relative" ref={originRef}>
+            <label className="block text-sm font-medium text-gray-600 mb-2">
+              مبدا
+            </label>
+
+            <input
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none"
+              placeholder="جستجوی مبدا..."
+              value={originSearch}
+              onChange={(e) => {
+                setOriginSearch(e.target.value);
+                setShowOriginDropdown(true);
+              }}
+              onFocus={() => setShowOriginDropdown(true)}
+              required
+            />
+
+            {showOriginDropdown && (
+              <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl mt-1 max-h-60 overflow-y-auto shadow-lg">
+                {filteredOrigins.map((item) => (
+                  <div
+                    key={item.id}
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => {
+                      setSelectedOrigin(item.id);
+                      setOriginSearch(item.name);
+                      setShowOriginDropdown(false);
+                      setSelectedDestination("");
+                      setDestinationSearch("");
+                      setResult(null);
+                    }}
+                  >
+                    {item.name}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* مقصد */}
+          <div className="relative" ref={destinationRef}>
+            <label className="block text-sm font-medium text-gray-600 mb-2">
+              مقصد
+            </label>
+
+            <input
+              type="text"
+              disabled={!selectedOrigin}
+              className={`w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#3C9BD8] outline-none` + (!selectedOrigin ? " opacity-50" : "")}
+              placeholder={selectedOrigin ? "جستجوی مقصد..." : "ابتدا مبدا را انتخاب کنید"}
+              value={destinationSearch}
+              onChange={(e) => {
+                setDestinationSearch(e.target.value);
+                setShowDestinationDropdown(true);
+              }}
+              onFocus={() => selectedOrigin && setShowDestinationDropdown(true)}
+              required
+            />
+
+            {showDestinationDropdown && selectedOrigin && (
+              <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl mt-1 max-h-60 overflow-y-auto shadow-lg">
+                {filteredDestinations.map((item) => (
+                  <div
+                    key={item.id}
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => {
+                      setSelectedDestination(item.id);
+                      setDestinationSearch(item.name);
+                      setShowDestinationDropdown(false);
+                      setResult(null);
+                    }}
+                  >
+                    {item.name}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* وزن */}
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-2">
               مقدار بار (کیلوگرم)
@@ -177,7 +289,6 @@ const TariffInquiry = () => {
             </select>
           </div>
 
-          {/* مبلغ */}
           {result?.price && (
             <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
               <p className="text-gray-600 text-sm mb-1">مبلغ کرایه</p>

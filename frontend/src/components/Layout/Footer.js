@@ -55,14 +55,73 @@ export default function Footer() {
     ];
 
     return order
-      .filter((key) => steps[key])
+      .filter((key) => steps[key] && steps[key].done_at)
       .map((key) => ({
         title: steps[key].translation,
         time: formatDateTime(steps[key].done_at)
       }));
   };
 
+  const getDriverName = (data) => {
+  if (data.employee_assistant) {
+    return `${data.employee_assistant.first_name} ${data.employee_assistant.last_name}`;
+  }
 
+  if (data.truck?.employee_assistant) {
+    return data.truck.employee_assistant;
+  }
+
+  if (data.truck?.employee) {
+    return data.truck.employee;
+  }
+
+  return "—";
+};
+
+  const LicensePlate = (plateNumber) => {
+  const part1 = plateNumber.slice(0, 2);
+  const letter = plateNumber.slice(2, 3);
+  const part2 = plateNumber.slice(3, 6);
+  const cityCode = plateNumber.slice(6, 8);
+
+  return (
+    <div className="flex flex-col items-center my-4 select-none">
+      <div 
+        className="relative flex items-center bg-[#eeeeee] border-[3px] border-[#222] rounded-lg shadow-lg overflow-hidden"
+        style={{ width: '320px', height: '70px', fontFamily: 'Tahoma, Arial' }}
+      >
+        {/* بخش آبی سمت چپ (پرچم) */}
+        <div className="flex flex-col items-center justify-between bg-[#133989] w-[15%] h-full py-1 text-white">
+          <div className="w-8 h-5 bg-white flex flex-col overflow-hidden rounded-sm">
+            <div className="h-1/3 bg-[#009246]"></div>
+            <div className="h-1/3 bg-white"></div>
+            <div className="h-1/3 bg-[#ff0000]"></div>
+          </div>
+          <div className="flex flex-col items-center leading-none">
+            <span className="text-[8px] font-bold">I.R.</span>
+            <span className="text-[10px] font-black">IRAN</span>
+          </div>
+        </div>
+
+        {/* بخش اصلی اعداد */}
+        <div className="flex flex-[3] items-center justify-around px-2 text-[#111] font-bold text-4xl tracking-tighter">
+          <span>{part1}</span>
+          <span className="text-3xl mb-1">{letter}</span>
+          <span>{part2}</span>
+        </div>
+
+        {/* خط جداکننده سمت راست */}
+        <div className="w-[2px] h-[80%] bg-[#222]"></div>
+
+        {/* بخش کد شهر (سمت راست) */}
+        <div className="flex flex-col items-center justify-center w-[20%] h-full">
+          <span className="text-[10px] font-bold text-[#333] -mb-1">ایران</span>
+          <span className="text-3xl font-bold text-[#111]">{cityCode}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
   if (HIDE_HEADER_ROUTES.some((r) => pathname.startsWith(r))) {
     return null;
@@ -473,16 +532,12 @@ export default function Footer() {
 
                 <div className="flex justify-between">
                   <span className="font-bold text-gray-900">راننده:</span>
-                  <span>
-                    {trackingResult.employee_assistant
-                      ? `${trackingResult.employee_assistant.first_name} ${trackingResult.employee_assistant.last_name}`
-                      : "—"}
-                  </span>
+                  <span>{getDriverName(trackingResult)}</span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="font-bold text-gray-900">پلاک:</span>
-                  <span dir="ltr">{trackingResult.truck?.jet_plate_number}</span>
+                  <span dir="ltr"><LicensePlate plateNumber={trackingResult.truck.plate_number} /></span>
                 </div>
 
                 {/* Progress Timeline */}
