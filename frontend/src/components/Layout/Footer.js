@@ -206,8 +206,6 @@ export default function Footer() {
     );
   };
 
-  export default LicensePlate;
-
   if (HIDE_HEADER_ROUTES.some((r) => pathname.startsWith(r))) {
     return null;
   }
