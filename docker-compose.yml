@@ -2,27 +2,30 @@ services:
   backend:
     container_name: backend
 
-# -------- DEV STAGE ----------
-#    build: ./backend
-#    image: backend
-#    command: sh /code/entrypoint.sh
-# --------------------------------
+    # -------- DEV STAGE ----------
+    # build: ./backend
+    # image: backend
+    # command: sh /code/entrypoint.sh
+    # --------------------------------
 
-# -------- PROD STAGE ----------
+    # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-backend:latest
-# --------------------------------
+    # --------------------------------
 
     volumes:
-#      - ./backend:/code
+      # - ./backend:/code
       - static_data:/code/static
       - media_data:/code/media
       - ${HOST_BACKUP_PATH}:/host_backups
+
     ports:
       - "8000:8000"
+
     depends_on:
       - db
       - redis
       - rabbitmq
+
     environment:
       - PHASE_ENV=${PHASE_ENV}
       - POSTGRES_DB=${POSTGRES_DB}
@@ -42,62 +45,93 @@ services:
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
       - TZ=Asia/Tehran
+
     networks:
       - main
 
   frontend:
     container_name: frontend
-# -------- DEV STAGE ----------
-#    build:
-#      context: ./frontend
-#      dockerfile: Dockerfile.dev
-#    volumes:
-#      - ./frontend:/app
-#    command: npm run dev
-# --------------------------------
-# -------- PROD STAGE ----------
+
+    # -------- DEV STAGE ----------
+    # build:
+    #   context: ./frontend
+    #   dockerfile: Dockerfile.dev
+    # volumes:
+    #   - ./frontend:/app
+    # command: npm run dev
+    # --------------------------------
+
+    # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-frontend:latest
-# --------------------------------
+    # --------------------------------
+
     environment:
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
     ports:
       - "3000:3000"
+
     restart: always
+
+    networks:
+      - main
+
+  catalog:
+    container_name: catalog
+    image: php:8.2-apache
+
+    restart: unless-stopped
+
+    volumes:
+      - ./catalog:/var/www/html
+
+    expose:
+      - "80"
+
     networks:
       - main
 
   nginx:
     container_name: nginx
     image: nginx:alpine
+
     ports:
       - "80:80"
+
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - static_data:/code/static
       - media_data:/code/media
+
     depends_on:
       - backend
       - frontend
+      - catalog
+
     networks:
       - main
 
   db:
     container_name: db
     image: postgres:17-alpine
+
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=Asia/Tehran
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backups:/backups
+
     networks:
       - main
 
   redis:
     container_name: redis
     image: redis:7.0.11-alpine
+
     command: >
       redis-server
         --dir /data
@@ -111,48 +145,63 @@ services:
 
     volumes:
       - redis_data:/data
+
     healthcheck:
-      test: [ "CMD-SHELL", "redis-cli -a $$REDIS_PASSWORD ping | grep PONG" ]
+      test: ["CMD-SHELL", "redis-cli -a $$REDIS_PASSWORD ping | grep PONG"]
       interval: 5s
       timeout: 2s
       retries: 20
+
     networks:
       - main
-
 
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:management
+
     ports:
       - "5672:5672"
       - "15672:15672"
+
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
       - RABBITMQ_DEFAULT_VHOST=/
+
     networks:
       - main
 
   celery:
     container_name: celery
+
     # -------- DEV STAGE ----------
-#    build: ./backend
-#    image: backend
+    # build: ./backend
+    # image: backend
     # --------------------------------
 
     # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-backend:latest
     # --------------------------------
+
     entrypoint: ""
-    command: python -m celery -A config.celery_base worker -Q db_backup,views_handler,sms_handler,email_handler -l info
+
+    command: >
+      python -m celery
+      -A config.celery_base
+      worker
+      -Q db_backup,views_handler,sms_handler,email_handler
+      -l info
+
     volumes:
-#      - ./backend:/code
+      # - ./backend:/code
       - ./backups:/backups
+
     depends_on:
       - backend
       - db
       - redis
       - rabbitmq
+
     environment:
       - PHASE_ENV=${PHASE_ENV}
       - POSTGRES_DB=${POSTGRES_DB}
@@ -172,29 +221,40 @@ services:
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
       - TZ=Asia/Tehran
+
     networks:
       - main
 
   celerybeat:
     container_name: celerybeat
+
     # -------- DEV STAGE ----------
-#    build: ./backend
-#    image: backend
+    # build: ./backend
+    # image: backend
     # --------------------------------
 
     # -------- PROD STAGE ----------
     image: ghcr.io/amirbaxxter/tmco-backend:latest
     # --------------------------------
+
     entrypoint: ""
-    command: python -m celery -A config.celery_base beat -l info
+
+    command: >
+      python -m celery
+      -A config.celery_base
+      beat
+      -l info
+
     volumes:
-#      - ./backend:/code
+      # - ./backend:/code
       - ./backups:/backups
+
     depends_on:
       - backend
       - db
       - redis
       - rabbitmq
+
     environment:
       - PHASE_ENV=${PHASE_ENV}
       - POSTGRES_DB=${POSTGRES_DB}
@@ -212,19 +272,25 @@ services:
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
       - TZ=Asia/Tehran
+
     networks:
       - main
 
   flower:
     container_name: flower
     image: mher/flower
+
     environment:
       - CELERY_BROKER_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672//
+
     ports:
       - "5555:5555"
+
     restart: always
+
     depends_on:
       - celery
+
     networks:
       - main
 
