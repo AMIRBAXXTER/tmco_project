@@ -63,65 +63,150 @@ export default function Footer() {
   };
 
   const getDriverName = (data) => {
-  if (data.employee_assistant) {
-    return `${data.employee_assistant.first_name} ${data.employee_assistant.last_name}`;
-  }
+    if (data.employee_assistant) {
+      return `${data.employee_assistant.first_name} ${data.employee_assistant.last_name}`;
+    }
 
-  if (data.truck?.employee_assistant) {
-    return data.truck.employee_assistant;
-  }
+    if (data.truck?.employee_assistant) {
+      return data.truck.employee_assistant;
+    }
 
-  if (data.truck?.employee) {
-    return data.truck.employee;
-  }
+    if (data.truck?.employee) {
+      return data.truck.employee;
+    }
 
-  return "—";
-};
+    return "—";
+  };
 
-  const LicensePlate = ({plateNumber}) => {
-  const part1 = plateNumber.slice(0, 2);
-  const letter = plateNumber.slice(2, 3);
-  const part2 = plateNumber.slice(3, 6);
-  const cityCode = plateNumber.slice(6, 8);
+  const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
 
-  return (
-    <div className="flex flex-col items-center my-3 select-none">
-      <div 
-        className="relative flex items-center bg-[#eeeeee] border-[3px] border-[#222] rounded-lg shadow-lg overflow-hidden"
-        style={{ width: '260px', height: '60px', fontFamily: 'Tahoma, Arial' }}
-      >
-        {/* بخش آبی سمت چپ (پرچم) */}
-        <div className="flex flex-col items-center justify-between bg-[#133989] w-[15%] h-full py-1 text-white">
-          <div className="w-8 h-5 bg-white flex flex-col overflow-hidden rounded-sm">
-            <div className="h-1/3 bg-[#009246]"></div>
-            <div className="h-1/3 bg-white"></div>
-            <div className="h-1/3 bg-[#ff0000]"></div>
+  const toPersianDigits = (value = "") => {
+    return String(value).replace(/[0-9]/g, (digit) => {
+      return persianDigits[Number(digit)];
+    });
+  };
+
+  const normalizePersianLetter = (value = "") => {
+    return String(value)
+      .replace(/ي/g, "ی")
+      .replace(/ك/g, "ک")
+      .trim();
+  };
+
+  const LicensePlate = ({ plateNumber = "" }) => {
+    // حذف فاصله و خط تیره احتمالی
+    const normalizedPlate = String(plateNumber).replace(/[\s-]/g, "");
+
+    const part1 = toPersianDigits(normalizedPlate.slice(0, 2));
+    const letter = normalizePersianLetter(normalizedPlate.slice(2, 3));
+    const part2 = toPersianDigits(normalizedPlate.slice(3, 6));
+    const cityCode = toPersianDigits(normalizedPlate.slice(6, 8));
+
+    return (
+      <div className="flex flex-col items-center my-3 select-none">
+        <div
+          dir="ltr"
+          className="
+          relative flex items-center
+          bg-[#eeeeee]
+          border-[3px] border-[#222]
+          rounded-lg shadow-lg
+          overflow-hidden
+        "
+          style={{
+            width: "240px",
+            height: "50px",
+          }}
+        >
+          {/* بخش آبی سمت چپ */}
+          <div className="flex flex-col items-center justify-between bg-[#133989] w-[15%] h-full py-1 text-white">
+            <div className="w-8 h-5 bg-white flex flex-col overflow-hidden rounded-sm">
+              <div className="h-1/3 bg-[#009246]" />
+              <div className="h-1/3 bg-white" />
+              <div className="h-1/3 bg-[#ff0000]" />
+            </div>
+
+            <div className="flex flex-col items-center leading-none">
+              <span className="text-[8px] font-bold">I.R.</span>
+              <span className="text-[10px] font-black">IRAN</span>
+            </div>
           </div>
-          <div className="flex flex-col items-center leading-none">
-            <span className="text-[8px] font-bold">I.R.</span>
-            <span className="text-[10px] font-black">IRAN</span>
+
+          {/* اعداد و حرف اصلی پلاک */}
+          <div className="flex flex-[3] items-center justify-around px-2 text-[#111]">
+            <span
+              lang="fa"
+              dir="ltr"
+              className="text-[36px] font-black leading-none tracking-[-3px]"
+              style={{
+                fontFamily: "'Vazirmatn', 'B Titr', Tahoma, sans-serif",
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {part1}
+            </span>
+
+            <span
+              lang="fa"
+              dir="rtl"
+              className="inline-flex items-center justify-center text-[34px] font-black leading-none"
+              style={{
+                fontFamily:
+                  "'IranPlate', 'B Titr', 'Vazirmatn', Tahoma, sans-serif",
+                transform: "translateY(-2px) scaleX(1.08)",
+                minWidth: "30px",
+              }}
+            >
+              {letter}
+            </span>
+
+            <span
+              lang="fa"
+              dir="ltr"
+              className="text-[36px] font-black leading-none tracking-[-3px]"
+              style={{
+                fontFamily: "'Vazirmatn', 'B Titr', Tahoma, sans-serif",
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {part2}
+            </span>
           </div>
-        </div>
 
-        {/* بخش اصلی اعداد */}
-        <div className="flex flex-[3] items-center justify-around px-2 text-[#111] font-bold text-4xl tracking-tighter">
-          <span>{part1}</span>
-          <span className="text-3xl mb-1">{letter}</span>
-          <span>{part2}</span>
-        </div>
+          {/* خط جداکننده */}
+          <div className="w-[2px] h-[80%] bg-[#222] shrink-0" />
 
-        {/* خط جداکننده سمت راست */}
-        <div className="w-[2px] h-[80%] bg-[#222]"></div>
+          {/* کد شهر */}
+          <div className="flex flex-col items-center justify-center w-[20%] h-full">
+            <span
+              lang="fa"
+              dir="rtl"
+              className="text-[10px] font-bold text-[#333] -mb-1"
+              style={{
+                fontFamily: "'Vazirmatn', Tahoma, sans-serif",
+              }}
+            >
+              ایران
+            </span>
 
-        {/* بخش کد شهر (سمت راست) */}
-        <div className="flex flex-col items-center justify-center w-[20%] h-full">
-          <span className="text-[10px] font-bold text-[#333] -mb-1">ایران</span>
-          <span className="text-3xl font-bold text-[#111]">{cityCode}</span>
+            <span
+              lang="fa"
+              dir="ltr"
+              className="text-[31px] font-black text-[#111] leading-none tracking-[-2px]"
+              style={{
+                fontFamily: "'Vazirmatn', 'B Titr', Tahoma, sans-serif",
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {cityCode}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
+
+  export default LicensePlate;
 
   if (HIDE_HEADER_ROUTES.some((r) => pathname.startsWith(r))) {
     return null;
