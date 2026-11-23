@@ -11,25 +11,98 @@ export default function DriverDetail() {
         { title: "پیگیری وضعیت محموله به صورت لحظه‌ای" },
     ]
 
+    
     useEffect(() => {
+    let isCancelled = false;
+    let activeController = null;
+    let retryTimer = null;
+
+    const MAX_RETRIES = 4;
+    const RETRY_DELAYS = [1000, 2000, 4000];
+    const REQUEST_TIMEOUT = 10000;
+
     const fetchLatest = async () => {
-      try {
-        const res = await fetch("https://core.tmcopars.ir/core/client/mobile/app/latest/");
-        const data = await res.json();
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        if (isCancelled) return;
 
-        // ساخت لینک کامل
-        const fullUrl = `https://core.tmcopars.ir${data.app_file}`;
+        const controller = new AbortController();
+        activeController = controller;
 
-        console.log("Full URL:", fullUrl);
+        const timeout = setTimeout(() => {
+            controller.abort();
+        }, REQUEST_TIMEOUT);
 
-        setDownloadUrl(fullUrl);
-      } catch (err) {
-        console.error("Error fetching latest APK:", err);
-      }
+        try {
+            const res = await fetch(
+            "https://core.tmcopars.ir/core/client/mobile/app/latest/",
+            {
+                signal: controller.signal,
+                cache: "no-store",
+            }
+            );
+
+            if (!res.ok) {
+            throw new Error(`HTTP Error: ${res.status}`);
+            }
+
+            const data = await res.json();
+
+            if (!data?.app_file) {
+            throw new Error("APK file URL not found");
+            }
+
+            const fullUrl = new URL(
+            data.app_file,
+            "https://core.tmcopars.ir"
+            ).href;
+
+            if (!isCancelled) {
+            setDownloadUrl(fullUrl);
+            console.log("Full URL:", fullUrl);
+            }
+
+            return;
+
+        } catch (err) {
+            if (isCancelled) return;
+
+            console.warn(
+            `Attempt ${attempt}/${MAX_RETRIES} failed:`,
+            err
+            );
+
+            if (attempt === MAX_RETRIES) {
+            console.error(
+                "Failed to fetch latest APK after all retries:",
+                err
+            );
+            return;
+            }
+
+        } finally {
+            clearTimeout(timeout);
+            activeController = null;
+        }
+
+        // تأخیر قبل از تلاش مجدد
+        await new Promise((resolve) => {
+            retryTimer = setTimeout(
+            resolve,
+            RETRY_DELAYS[attempt - 1]
+            );
+        });
+        }
     };
 
     fetchLatest();
-  }, []);
+
+    return () => {
+        isCancelled = true;
+        activeController?.abort();
+        clearTimeout(retryTimer);
+    };
+    }, []);
+
 
     return (
         <div className="w-full lg:w-3/4 h-[600px] md:h-full lg:mr-20">
