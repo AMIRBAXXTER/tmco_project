@@ -1,433 +1,227 @@
 "use client";
-import React, { useLayoutEffect, useRef } from "react";
+
+import React, { useId, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
-export default function DriverApp() {
-  const structureRef = useRef(null);
-  const keyRef = useRef(null);
-  const profileRef = useRef(null);
-  const truckRef = useRef(null);
-  const routeRef = useRef(null);
-  const mainImageRef = useRef(null);
+// ترتیب آرایه، ترتیب پخش است. port محل ورود خط روی ضلع گوشی در نمای عریض است.
+const STEPS = [
+  { id: 2, side: "left", row: "top", port: 0.54 },
+  { id: 4, side: "left", row: "bottom", port: 0.72 },
+  { id: 3, side: "right", row: "bottom", port: 0.72 },
+  { id: 1, side: "right", row: "top", port: 0.27 },
+];
+const HOLD_SECONDS = 1.5;
+const DASH = { pathLength: 1, strokeDasharray: "1 1", strokeDashoffset: 1 };
 
-  const keyLineRef = useRef(null);
-  const truckLineRef = useRef(null);
-  const profileLineRef = useRef(null);
-  const routeLineRef = useRef(null);
+function elbowPath(x1, y1, x2, y2, horizontalFirst) {
+  const radius = Math.min(22, Math.abs(x2 - x1), Math.abs(y2 - y1));
+  const dx = Math.sign(x2 - x1) * radius;
+  const dy = Math.sign(y2 - y1) * radius;
+  if (horizontalFirst) {
+    return `M ${x1} ${y1} H ${x2 - dx} Q ${x2} ${y1} ${x2} ${y1 + dy} V ${y2}`;
+  }
+  return `M ${x1} ${y1} V ${y2 - dy} Q ${x1} ${y2} ${x1 + dx} ${y2} H ${x2}`;
+}
+
+// آیکون، قاب و لایهٔ خطوط نسبت به یک والد چیده شده‌اند.
+function connectorPath(icon, frame, step) {
+  const fromLeft = step.side === "left";
+  const { offsetLeft: phoneX, offsetTop: phoneY, offsetWidth: phoneW, offsetHeight: phoneH } = frame;
+  const { offsetLeft: iconX, offsetTop: iconY, offsetWidth: iconW, offsetHeight: iconH } = icon;
+  const above = iconY + iconH <= phoneY;
+
+  if (above || iconY >= phoneY + phoneH) {
+    // در موبایل، خط از کنار آیکون به لبهٔ بالا یا پایین قاب می‌رسد.
+    const startX = fromLeft ? iconX + iconW : iconX;
+    const endX = phoneX + phoneW * (fromLeft ? 0.3 : 0.7);
+    return elbowPath(startX, iconY + iconH / 2, endX, above ? phoneY : phoneY + phoneH, true);
+  }
+
+  const endY = phoneY + phoneH * step.port;
+  const startY = endY > iconY + iconH / 2 ? iconY + iconH : iconY;
+  return elbowPath(iconX + iconW / 2, startY, fromLeft ? phoneX : phoneX + phoneW, endY, false);
+}
+
+export default function DriverApp() {
+  const stageRef = useRef(null);
+  const frameRef = useRef(null);
+  const uid = `driver-${useId().replace(/:/g, "")}`;
 
   useLayoutEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") return;
+    const stage = stageRef.current;
+    const frame = frameRef.current;
+    if (!stage || !frame) return;
+
     const ctx = gsap.context(() => {
-      const structureEl = structureRef.current;
-      if (!structureEl) return;
-      const svgEl = structureEl.querySelector("svg");
-      if (!svgEl) return;
-
-      const initialImg = structureEl.querySelector("img");
-      if (initialImg) initialImg.remove();
-
-      // آماده‌سازی فریم گوشی
-      const rects = svgEl.querySelectorAll("rect");
-      rects.forEach((rect) => {
-        const len = rect.getTotalLength?.() || 0;
-        gsap.set(rect, { strokeDasharray: len, strokeDashoffset: len });
+      const items = STEPS.map((step) => {
+        const icon = stage.querySelector(`[data-icon="${step.id}"]`);
+        return {
+          step, icon,
+          off: icon.querySelector("[data-off]"),
+          on: icon.querySelector("[data-on]"),
+          wire: stage.querySelector(`[data-wire="${step.id}"]`),
+          screen: frame.querySelector(`[data-screen="${step.id}"]`),
+        };
       });
-
-      // آماده‌سازی خطوط اتصال
-      const connectionRefs = [keyLineRef, truckLineRef, profileLineRef, routeLineRef];
-      connectionRefs.forEach((ref) => {
-        const path = ref.current?.querySelector("path");
-        if (!path) return;
-        const len = path.getTotalLength?.() || 0;
-        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 });
-      });
-
-      // مجموعه آیکون‌ها
-      const icons = [
-        {
-          ref: keyRef,
-          lineRef: keyLineRef,
-          srcActive: "/DriverApp/2a.svg",
-          srcInactive: "/DriverApp/2d.svg",
-          structureSrc: "/DriverApp/2.png",
-        },
-        {
-          ref: profileRef,
-          lineRef: profileLineRef,
-          srcActive: "/DriverApp/4a.svg",
-          srcInactive: "/DriverApp/4d.svg",
-          structureSrc: "/DriverApp/4.png",
-        },
-        {
-          ref: routeRef,
-          lineRef: routeLineRef,
-          srcActive: "/DriverApp/3a.svg",
-          srcInactive: "/DriverApp/3d.svg",
-          structureSrc: "/DriverApp/3.png",
-        },
-        {
-          ref: truckRef,
-          lineRef: truckLineRef,
-          srcActive: "/DriverApp/1a.svg",
-          srcInactive: "/DriverApp/1d.svg",
-          structureSrc: "/DriverApp/1.png",
-        },
-      ];
+      function positionWires() {
+        for (const { step, icon, wire } of items) {
+          wire.setAttribute("d", connectorPath(icon, frame, step));
+        }
+      }
+      positionWires();
 
       const tl = gsap.timeline({
         defaults: { ease: "power2.out" },
-        scrollTrigger: {
-          trigger: structureRef.current,
-          start: "top+=2000 70%",
-          end: "bottom+=2000 50%",
-          toggleActions: "play none none none",
-        },
+        scrollTrigger: { trigger: frame, start: "center center", once: true },
       });
-
-      // مرحله ۱: رسم بدنه موبایل
-      tl.to(rects, {
-        strokeDashoffset: 0,
-        duration: 2.8,
-        stagger: 0.25,
-        ease: "power1.inOut",
+      tl.to(frame.querySelectorAll("rect"), {
+        attr: { "stroke-dashoffset": 0 },
+        duration: 2.8, stagger: 0.25, ease: "power1.inOut",
       });
+      tl.to(items.map(({ icon }) => icon), {
+        opacity: 1, scale: 1, duration: 0.8, stagger: 0.25,
+      }, "-=1");
 
-      // مرحله ۲: ظاهر شدن همه آیکون‌ها
-      tl.from(
-        icons.map((i) => i.ref.current),
-        { opacity: 0, scale: 0.7, stagger: 0.25, duration: 0.8 },
-        "-=1"
-      );
+      let mounted = true;
+      items.forEach(({ icon, off, on, wire, screen }, i) => {
+        // کند بودن دانلود یک تصویر، نمایش مرحله‌های قبلی را عقب نمی‌اندازد.
+        const ready = Promise.allSettled([off, on, screen].map((img) => img.decode?.()));
+        tl.addPause(tl.duration(), () => {
+          ready.then(() => { if (mounted) tl.resume(); });
+        });
 
-      // مرحله ۳: رفتن مرحله‌به‌مرحله از آیکون ۱ تا ۴
-      icons.forEach((icon, i) => {
-        const prev = icons[i - 1];
+        // ۱. ابتدا آیکون کاملاً روشن می‌شود.
+        tl.to(icon, { scale: 1.2, duration: 0.35 })
+          .to(off, { opacity: 0, duration: 0.35 }, "<")
+          .to(on, { opacity: 1, duration: 0.35 }, "<");
 
-        // 🔹 غیرفعال‌کردن آیکون قبلی
-        if (prev?.ref.current) {
-          const prevPath = prev.lineRef.current?.querySelector("path");
-          if (prevPath) {
-            tl.to(
-              prevPath,
-              {
-                strokeDashoffset: prevPath.getTotalLength?.() || 0,
-                duration: 0.6,
-                ease: "power2.in",
-                onComplete: () => gsap.set(prevPath, { opacity: 0 }),
-              },
-              "<"
-            );
-          }
-          const prevImg = prev.ref.current.querySelector("img");
-          if (prevImg) {
-            tl.to(
-              prevImg,
-              {
-                opacity: 0,
-                duration: 0.3,
-                onComplete: () => (prevImg.src = prev.srcInactive),
-              },
-              "<"
-            ).to(prevImg, { opacity: 1, duration: 0.3 });
-          }
+        // ۲. سپس خط از آیکون تا مرز قاب رسم می‌شود.
+        tl.set(wire, { opacity: 1 })
+          .to(wire, { attr: { "stroke-dashoffset": 0 }, duration: 1, ease: "none" });
+
+        // ۳. تصویر جدید روی تصویر قبلی ظاهر می‌شود.
+        tl.to(screen, { opacity: 1, duration: 0.5 })
+          .to(icon, { scale: 1, duration: 0.5 }, "<");
+        if (i === 0) {
+          tl.to(frame.querySelector("[data-details]"), { opacity: 0, duration: 0.5 }, "<");
+        } else {
+          tl.set(items[i - 1].screen, { opacity: 0 });
         }
 
-        // 🔹 فعال‌کردن آیکون فعلی
-        if (icon.ref.current) {
-          tl.to(icon.ref.current, {
-            scale: 1.2,
-            duration: 0.4,
-            onStart: () => {
-              if (i === 0) {
-                const mainSvg = structureRef.current.querySelector("svg");
-                if (mainSvg) gsap.to(mainSvg, { opacity: 0, duration: 0.6 });
-              }
-              const img = icon.ref.current.querySelector("img");
-              if (!img) return;
-
-              gsap.to(img, { opacity: 0, duration: 0.3 });
-
-              const structureEl = structureRef.current;
-              const newImg = document.createElement("img");
-              Object.assign(newImg, {
-                src: icon.structureSrc,
-                alt: "structure-active",
-              });
-              Object.assign(newImg.style, {
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                opacity: "0",
-              });
-              structureEl.appendChild(newImg);
-
-              setTimeout(() => {
-                img.src = icon.srcActive;
-                gsap.to(newImg, { opacity: 1, duration: 0.5 });
-                const allImgs = structureEl.querySelectorAll("img");
-                if (allImgs.length > 1) allImgs[0].remove();
-                gsap.to(img, { opacity: 1, duration: 0.3 });
-              }, 300);
-            },
-          });
+        if (i < items.length - 1) {
+          tl.to(wire, {
+            attr: { "stroke-dashoffset": 1 }, duration: 0.45, ease: "power2.in",
+          }, `+=${HOLD_SECONDS}`)
+            .to(on, { opacity: 0, duration: 0.35 }, "<")
+            .to(off, { opacity: 1, duration: 0.35 }, "<")
+            .set(wire, { opacity: 0 });
         }
-
-        // 🔹 رسم خط ارتباط
-        const path = icon.lineRef.current?.querySelector("path");
-        if (path) {
-          tl.to(path, { opacity: 1, duration: 0.8 }, "<0.15");
-          tl.to(path, { strokeDashoffset: 0, duration: 1, ease: "linear" }, "<");
-        }
-
-        tl.to(icon.ref.current, { scale: 1.0, duration: 0.7 });
-        if (i < icons.length - 1) tl.to({}, { duration: 0.5 });
       });
 
-      ScrollTrigger.refresh();
-    }, structureRef);
+      const resize = new ResizeObserver(() => {
+        positionWires();
+        tl.scrollTrigger?.refresh();
+      });
+      resize.observe(stage);
+      return () => {
+        mounted = false;
+        resize.disconnect();
+      };
+    }, stage);
 
-    return () => {
-      ctx.revert();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <div className="relative flex items-center justify-center w-full md:w-[600px] h-[700px] mx-auto overflow-hidden">
-
-      {/* مرکز موبایل */}
-      <div
-        ref={structureRef}
-        className="absolute top-20 md:top-0 md:right-40 shadow-2xl rounded-4xl bg-transparent z-30"
-      >
-        <svg
-          width="270"
-          height="537"
-          ref={mainImageRef}
-          viewBox="0 0 270 537"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="0.5"
-            y="0.5"
-            width="269"
-            height="536"
-            rx="48.5"
-            stroke="url(#paint0_linear_402_5943)"
-          />
-          <rect
-            x="19.5"
-            y="219.5"
-            width="232"
-            height="36"
-            rx="5.5"
-            stroke="url(#paint1_linear_402_5943)"
-          />
-          <rect
-            x="19.5"
-            y="280.5"
-            width="232"
-            height="36"
-            rx="5.5"
-            stroke="url(#paint2_linear_402_5943)"
-          />
-          <rect
-            x="90.5"
-            y="74.5"
-            width="89"
-            height="67"
-            rx="5.5"
-            stroke="url(#paint3_linear_402_5943)"
-          />
+    <div className="driver-app-showcase">
+      <div ref={stageRef} className="driver-stage" role="img" aria-label="نمایش چهار صفحهٔ اپلیکیشن رانندگان">
+        <svg className="driver-wires" aria-hidden="true" width="100%" height="100%" fill="none">
           <defs>
-            <linearGradient
-              id="paint0_linear_402_5943"
-              x1="135"
-              y1="0"
-              x2="135"
-              y2="537"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#00D4FF" />
-              <stop offset="1" stopColor="#1B2F4F" />
+            <linearGradient id={`${uid}-wire-l`}>
+              <stop stopColor="#165072" /><stop offset="1" stopColor="#00D1FC" />
             </linearGradient>
-            <linearGradient
-              id="paint1_linear_402_5943"
-              x1="19"
-              y1="237.5"
-              x2="252"
-              y2="237.5"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#00D4FF" />
-              <stop offset="1" stopColor="#1B2F4F" />
-            </linearGradient>
-            <linearGradient
-              id="paint2_linear_402_5943"
-              x1="19"
-              y1="298.5"
-              x2="252"
-              y2="298.5"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#00D4FF" />
-              <stop offset="1" stopColor="#1B2F4F" />
-            </linearGradient>
-            <linearGradient
-              id="paint3_linear_402_5943"
-              x1="90"
-              y1="108"
-              x2="180"
-              y2="108"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#00D4FF" />
-              <stop offset="1" stopColor="#1B2F4F" />
+            <linearGradient id={`${uid}-wire-r`} x1="100%" x2="0%">
+              <stop stopColor="#165072" /><stop offset="1" stopColor="#00D1FC" />
             </linearGradient>
           </defs>
+          {STEPS.map(({ id, side }) => (
+            <path key={id} data-wire={id} {...DASH} opacity="0" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round"
+              stroke={`url(#${uid}-wire-${side === "left" ? "l" : "r"})`} />
+          ))}
         </svg>
+
+        <div ref={frameRef} className="driver-phone">
+          {STEPS.map(({ id }) => (
+            <Image key={id} data-screen={id} src={`/DriverApp/${id}.png`} alt="" fill
+              sizes="270px" loading="eager" style={{ opacity: 0, objectFit: "cover" }} />
+          ))}
+          <svg className="driver-outline" viewBox="0 0 270 537" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id={`${uid}-border`} x1="0" y1="0" x2="0" y2="100%">
+                <stop stopColor="#00D4FF" /><stop offset="1" stopColor="#1B2F4F" />
+              </linearGradient>
+              <linearGradient id={`${uid}-fields`}>
+                <stop stopColor="#00D4FF" /><stop offset="1" stopColor="#1B2F4F" />
+              </linearGradient>
+            </defs>
+            <rect {...DASH} x="0.5" y="0.5" width="269" height="536" rx="48.5"
+              stroke={`url(#${uid}-border)`} />
+            <g data-details="" stroke={`url(#${uid}-fields)`}>
+              <rect {...DASH} x="19.5" y="219.5" width="232" height="36" rx="5.5" />
+              <rect {...DASH} x="19.5" y="280.5" width="232" height="36" rx="5.5" />
+              <rect {...DASH} x="90.5" y="74.5" width="89" height="67" rx="5.5" />
+            </g>
+          </svg>
+        </div>
+
+        {STEPS.map(({ id, side, row }) => (
+          <div key={id} data-icon={id} data-side={side} data-row={row} className="driver-icon">
+            <Image data-off="" src={`/DriverApp/${id}d.svg`} alt="" fill sizes="56px" loading="eager" />
+            <Image data-on="" src={`/DriverApp/${id}a.svg`} alt="" fill sizes="56px" loading="eager"
+              style={{ opacity: 0 }} />
+          </div>
+        ))}
       </div>
 
-      {/* key icon */}
-      <div
-        ref={keyRef}
-        className="absolute top-0 left-0 md:top-32 md:left-5 border border-gray-200 rounded-xl z-20"
-      >
-        <Image src="/DriverApp/2d.svg" alt="Search Icon" width={56} height={56} />
-      </div>
-
-      {/* خط اتصال key */}
-      <svg
-        ref={keyLineRef}
-        className='absolute md:top-40 md:left-12 hidden md:block z-10'
-        width="127"
-        height="129"
-        viewBox="0 0 127 129"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          transform="rotate(180 64 64)"
-          d="M127 129L7.62939e-06 129L127 129ZM-3.73557e-06 -1L103 -1.00001C116.807 -1.00001 128 10.1929 128 24L126 24C126 11.2974 115.703 0.999986 103 0.999987L-3.56072e-06 0.999996L-3.73557e-06 -1ZM103 -1.00001C116.807 -1.00001 128 10.1929 128 24L128 129L126 129L126 24C126 11.2974 115.703 0.999986 103 0.999987L103 -1.00001ZM7.62939e-06 129L-3.64814e-06 -4.1561e-06L7.62939e-06 129Z"
-          stroke="url(#paint0_linear_310_1933_key)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-        <defs>
-          <linearGradient id="paint0_linear_310_1933_key" x1="123.068" y1="6.67239" x2="-52.074" y2="-15.7109" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#165072" />
-            <stop offset="1" stopColor="#00D1FC" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      {/* truck icon */}
-      <div
-        ref={truckRef}
-        className="absolute top-0 right-0 md:top-0 md:right-20 border border-gray-200 rounded-xl z-20"
-      >
-        <Image src="/DriverApp/1d.svg" alt="Truck Icon" width={56} height={56} />
-      </div>
-
-      {/* خط اتصال truck */}
-      <svg
-        ref={truckLineRef}
-        className='absolute md:top-5 md:right-27 z-10'
-        width="132"
-        height="129"
-        viewBox="0 130 129"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          transform="rotate(90 64 64)"
-          d="M127 129L7.62939e-06 129L127 129ZM-3.73557e-06 -1L103 -1.00001C116.807 -1.00001 128 10.1929 128 24L126 24C126 11.2974 115.703 0.999986 103 0.999987L-3.56072e-06 0.999996L-3.73557e-06 -1ZM103 -1.00001C116.807 -1.00001 128 10.1929 128 24L128 129L126 129L126 24C126 11.2974 115.703 0.999986 103 0.999987L103"
-          stroke="url(#paint0_linear_310_1933_truck)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-        <defs>
-          <linearGradient id="paint0_linear_310_1933_truck" x1="123.068" y1="6.67239" x2="-52.074" y2="-15.7109" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#165072" />
-            <stop offset="1" stopColor="#00D1FC" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      {/* profile icon */}
-      <div
-        ref={profileRef}
-        className="absolute bottom-0 left-0 md:bottom-40 md:left-5 border border-gray-200 rounded-xl z-20"
-      >
-        <Image src="/DriverApp/4d.svg" alt="Chat Icon" width={56} height={56} />
-      </div>
-
-      {/* خط اتصال profile */}
-      <svg
-        ref={profileLineRef}
-        className='absolute md:bottom-45 md:left-12 z-10'
-        width="129"
-        height="129"
-        viewBox="0 0 127 129"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          transform="rotate(270 64 64)"
-          d="M127 129L7.62939e-06 129L127 129ZM-3.73557e-06 -1L103 -1.00001C116.807 -1.00001 128 10.1929 128 24L126 24C126 11.2974 115.703 0.999986 103 0.999987L-3.56072e-06 0.999996L-3.73557e-06 -1ZM103 -1.00001C116.807 -1.00001 128 10.1929 128 24L128 129L126 129L126 24C126 11.2974 115.703 0.999986 103 0.999987L103 -1.00001ZM7.62939e-06 129L-3.64814e-06  "
-          stroke="url(#paint0_linear_310_1933_profile)"
-          strokeWidth="0.5"
-          fill="none"
-        />
-        <defs>
-          <linearGradient id="paint0_linear_310_1933_profile" x1="123.068" y1="6.67239" x2="-52.074" y2="-15.7109" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#165072" />
-            <stop offset="1" stopColor="#00D1FC" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      {/* route icon */}
-      <div
-        ref={routeRef}
-        className="absolute bottom-0 right-0 md:bottom-40 md:right-20 border border-gray-200 rounded-xl z-20"
-      >
-        <Image src="/DriverApp/3d.svg" alt="Settings Icon" width={56} height={56} />
-      </div>
-
-      {/* خط اتصال route */}
-      <svg
-        ref={routeLineRef}
-        className='absolute md:bottom-45 md:right-27 z-10'
-        width="129"
-        height="135"
-        viewBox="0 0 129 129"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M127 129ZM-3.73557e-06 -1L103 -1.00001C116.807 -1.00001 128 10.1929 128 24L126 24C126 11.2974 115.703 0.999986 103 0.999987L-3.56072e-06 0.999996L-3.73557e-06 -1ZM103 -1.00001C116.807 -1.00001 128 10.1929 128 24L128 129L126 129L126 24C126 11.2974 115.703 0.999986 103 0.999987L103 -1.00001ZM7.62939e-06 129L-3.64814e-06"
-          stroke="url(#paint0_linear_310_1933_route)"
-          strokeWidth="0.5"
-          fill="none"
-
-
-        />
-        <defs>
-          <linearGradient id="paint0_linear_310_1933_route" x1="123.068" y1="6.67239" x2="-52.074" y2="-15.7109" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#165072" />
-            <stop offset="1" stopColor="#00D1FC" />
-          </linearGradient>
-        </defs>
-      </svg>
-
+      <style>{`
+        .driver-app-showcase {
+          width: 100%; max-width: 600px; margin-inline: auto; container-type: inline-size;
+        }
+        .driver-app-showcase .driver-stage {
+          position: relative; isolation: isolate; display: grid;
+          justify-items: center; padding: 80px 0;
+        }
+        .driver-app-showcase .driver-wires, .driver-app-showcase .driver-outline {
+          position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+        }
+        .driver-app-showcase .driver-phone {
+          position: relative; z-index: 1; width: min(270px, calc(100% - 32px));
+          aspect-ratio: 270 / 537; overflow: hidden; isolation: isolate;
+          border-radius: 18% / 9.05%; box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+        }
+        .driver-app-showcase .driver-outline { z-index: 1; }
+        .driver-app-showcase .driver-icon {
+          position: absolute; z-index: 2; box-sizing: border-box; width: 56px; height: 56px;
+          border: 1px solid #e5e7eb; border-radius: 12px; opacity: 0; transform: scale(0.7);
+        }
+        .driver-app-showcase [data-side="left"] { left: 6px; }
+        .driver-app-showcase [data-side="right"] { right: 6px; }
+        .driver-app-showcase [data-row="top"] { top: 6px; }
+        .driver-app-showcase [data-row="bottom"] { bottom: 6px; }
+        @container (min-width: 500px) {
+          .driver-app-showcase .driver-stage { padding: 0 0 163px; }
+          .driver-app-showcase [data-side="left"] { left: 20px; }
+          .driver-app-showcase [data-side="right"] { right: calc(50% - 220px); }
+          .driver-app-showcase [data-row="top"][data-side="left"] { top: 128px; }
+          .driver-app-showcase [data-row="top"][data-side="right"] { top: 0; }
+          .driver-app-showcase [data-row="bottom"] { bottom: 160px; }
+        }
+      `}</style>
     </div>
   );
 }
